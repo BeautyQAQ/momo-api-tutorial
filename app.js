@@ -580,105 +580,380 @@ gemini --version</code></pre>
   "/codex": {
     title: "Codex CLI",
     section: "客户端教程",
-    meta: "按 OpenAI 兼容方式配置 Codex CLI。",
+    meta: "Codex CLI 的安装、配置、fast 与常见问题。",
     body: `
       <div class="doc">
-        <h1>Codex CLI</h1>
-        <p class="lead">Codex CLI 一般按 OpenAI 兼容方式接入，因此重点是 <code>OPENAI_API_KEY</code> 和兼容的 Base URL。</p>
+        <h1>Codex CLI 配置</h1>
 
-        <h2 id="install">安装</h2>
-        <pre><code>npm install -g @openai/codex@latest
+        <div class="quick-panel quick-panel--stacked">
+          <div class="quick-panel__group">
+            <strong>新人入口</strong>
+            <a class="chip-link chip-link--primary" href="https://www.momoapi.shop/" target="_blank" rel="noopener noreferrer">注册 / 登录</a>
+            <a class="chip-link" href="https://www.momoapi.shop/console/token" target="_blank" rel="noopener noreferrer">创建 API 令牌</a>
+          </div>
+          <div class="quick-panel__copy">
+            <strong>Base URL</strong>
+            <span class="copy-chip">https://www.momoapi.shop</span>
+            <button
+              class="copy-chip copy-chip--button"
+              type="button"
+              data-copy-text="https://www.momoapi.shop"
+              aria-label="复制 Base URL"
+            >
+              复制
+            </button>
+          </div>
+        </div>
+
+        <h2 id="install">1. 安装 Codex</h2>
+        <p>确保已安装 Node.js，然后安装或更新 Codex CLI：</p>
+        <pre><code>npm install -g @openai/codex
 codex --version</code></pre>
+        <p>启动：</p>
+        <pre><code>codex</code></pre>
+        <p>如果你明确知道自己在做什么，也可以使用跳过权限确认的模式：</p>
+        <pre><code>codex --dangerously-bypass-approvals-and-sandbox</code></pre>
 
-        <h2 id="env">环境变量</h2>
-        <pre><code>export OPENAI_API_KEY="sk-your-token"
+        <div class="callout callout--danger">
+          <strong>权限提醒</strong>
+          <p>跳过权限确认会让 Codex 直接执行命令。只建议在可信目录、可信机器上使用。</p>
+        </div>
+
+        <h2 id="base-url-token">2. 配置 Base URL 和 Token</h2>
+        <p>Codex 使用 OpenAI 兼容接口时，通常需要下面两项。临时试跑可以直接在当前终端里导出：</p>
+        <pre><code>export OPENAI_API_KEY="sk-你的令牌"
 export OPENAI_BASE_URL="https://www.momoapi.shop/v1"</code></pre>
+        <p>Windows PowerShell：</p>
+        <pre><code>$env:OPENAI_API_KEY="sk-你的令牌"
+$env:OPENAI_BASE_URL="https://www.momoapi.shop/v1"</code></pre>
+        <p>如果你要长期使用，不要只靠当前终端里的临时导出。按系统持久化保存：</p>
+        <ul>
+          <li>macOS / Linux：写到 <code>~/.zshrc</code> 或 <code>~/.bashrc</code>。</li>
+          <li>Windows PowerShell：写到 PowerShell profile，或用 <code>setx</code>。</li>
+          <li>systemd / 启动器 / 桌面快捷方式：写到对应 service 或 launcher 配置。</li>
+        </ul>
 
         <div class="callout callout--warning">
           <strong>地址格式要一致</strong>
-          <p>Codex CLI 走 OpenAI 兼容路径时，通常需要的是带 <code>/v1</code> 的根地址。少了这一段，模型列表和聊天接口往往都会 404。</p>
+          <p>Codex 走 OpenAI 兼容路径时，通常需要的是带 <code>/v1</code> 的根地址。少了这一段，模型列表和聊天接口往往都会 404。</p>
         </div>
 
-        <h2 id="test">最小测试</h2>
-        <pre><code>codex</code></pre>
-        <p>先进入 CLI，看是否能正常列出或请求模型。第一次不需要上来就跑大仓库上下文。</p>
+        <h2 id="auth-cache">3. 本地鉴权缓存</h2>
+        <p>Codex 还会在本地保存 <code>~/.codex/auth.json</code> 作为鉴权缓存，由客户端自动创建和更新。不要手动编辑；如果清掉它，就需要重新登录。</p>
 
-        <h2 id="persistent">长期固化</h2>
-        <ul>
-          <li>macOS / Linux 写进 shell profile。</li>
-          <li>Windows PowerShell 写进 profile 或系统环境变量。</li>
-          <li>CI 里用 secret 注入，不要把令牌写进仓库。</li>
-        </ul>
+        <h2 id="model-selection">4. 模型选择</h2>
+        <p>进入 Codex 后，通过客户端的模型设置选择可用模型。若提示模型元数据缺失，一般不影响基础请求，但可能影响 token 估算或使用体验。</p>
 
-        <h2 id="codex-errors">常见错误</h2>
-        <ul>
-          <li><strong>401</strong>：Key 填错。</li>
-          <li><strong>404</strong>：Base URL 漏了 <code>/v1</code>，或者多拼了一层路径。</li>
-          <li><strong>429</strong>：频率限制或配额不足。</li>
-          <li><strong>503</strong>：上游模型拥挤，先换模型试。</li>
-        </ul>
+        <h2 id="fast-context">5. fast 和百万上下文</h2>
+        <p>Codex fast 可以在 Codex 里执行：</p>
+        <pre><code>/fast</code></pre>
+        <p>GPT / Codex API 层对应：</p>
+        <pre><code>{
+  "service_tier": "fast"
+}</code></pre>
+        <p>momoapi 会按请求里的 fast / <code>service_tier</code> 动态计费。</p>
+        <p>GPT 百万上下文超过 <code>272k</code> 的部分会额外计费。不要默认把整个仓库、超长日志一次性塞进上下文。详见 <a href="#/fast-context">fast 与百万上下文</a>。</p>
+
+        <h2 id="common-issues">6. 常见问题</h2>
+        <h3 id="unexpected-404">Unexpected status 404 Not Found</h3>
+        <p>通常是 URL 填错。Codex 请求 <code>/v1/responses</code> 时，Base URL 应该类似：</p>
+        <pre><code>https://www.momoapi.shop/v1</code></pre>
+        <p>不要填成：</p>
+        <pre><code>https://www.momoapi.shop/v1/responses</code></pre>
+
+        <h3 id="service-unavailable">Service temporarily unavailable</h3>
+        <p>表示当前模型 / 分组 / 上游账号暂时不可用。处理方式：</p>
+        <ol>
+          <li>换同系列模型。</li>
+          <li>换支持的分组。</li>
+          <li>等待账号池恢复。</li>
+        </ol>
+
+        <h3 id="context-too-large">context too large</h3>
+        <p>上下文太大时，新开会话或减少附加文件。可以让 Codex 先读关键文件，不要一次性塞入整个项目。</p>
+
+        <h2 id="config-template">7. 最后统一模板</h2>
+        <p>前面讲的临时变量、长期固化、最后都可以收口到这两份文件<code>config.toml</code>：</p>
+        <pre><code>model_provider = "custom"
+model = "gpt-5.5"
+model_reasoning_effort = "high"
+network_access = "enabled"             # 启用网络访问（工具调用等）
+sandbox_mode = "danger-full-access"
+model_context_window = 1000000
+model_auto_compact_token_limit = 900000
+disable_response_storage = true
+
+# 模型提供者配置
+[model_providers.custom]
+name = "custom"              # 显示名称（自定义）
+base_url = "https://www.momoapi.shop/v1"  # 代理基地址（OpenAI 兼容）
+wire_api = "responses"                 # 使用 Responses API（推荐 GPT-5 系列，支持高级 reasoning）
+requires_openai_auth = true            # 需要标准 OpenAI 风格的 API Key 认证
+model_reasoning_effort = "high"
+network_access = "enabled"
+disable_response_storage = true
+
+[windows]
+sandbox = "elevated"</code></pre>
+        <p><code>fast</code> 仍然是请求层的设置，不写进这个 <code>config.toml</code>。要么在 Codex 里用 <code>/fast</code>，要么在请求里带 <code>service_tier=fast</code>。</p>
+        <p><code>auth.json</code>：</p>
+        <pre><code>{
+  "OPENAI_API_KEY": "sk-xxx"
+}</code></pre>
+      <p><code>auth.json</code>和<code>config.toml</code> 都在 ~/.codex目录（mac和linux），%USERPROFILE%\\.codex（windows）</p>
       </div>
     `,
   },
   "/claude-code": {
     title: "Claude Code",
     section: "客户端教程",
-    meta: "按 Anthropic 兼容方式配置 Claude Code。",
+    meta: "Claude Code 的安装、环境变量、CC Switch、fast 与 1M 上下文。",
     body: `
       <div class="doc">
-        <h1>Claude Code</h1>
-        <p class="lead">Claude Code 常见的坑不是命令本身，而是把 OpenAI 风格地址错误地照搬进 Anthropic 兼容配置。</p>
+        <h1>Claude Code 配置</h1>
 
-        <h2 id="install-claude">安装</h2>
+        <div class="quick-panel quick-panel--stacked">
+          <div class="quick-panel__group">
+            <strong>新人入口</strong>
+            <a class="chip-link chip-link--primary" href="https://www.momoapi.shop/" target="_blank" rel="noopener noreferrer">注册 / 登录</a>
+            <a class="chip-link" href="https://www.momoapi.shop/console/token" target="_blank" rel="noopener noreferrer">创建 API 令牌</a>
+          </div>
+          <div class="quick-panel__copy">
+            <strong>Base URL</strong>
+            <span class="copy-chip">https://www.momoapi.shop</span>
+            <button
+              class="copy-chip copy-chip--button"
+              type="button"
+              data-copy-text="https://www.momoapi.shop"
+              aria-label="复制 Base URL"
+            >
+              复制
+            </button>
+          </div>
+        </div>
+
+        <h2 id="install-deps">1. 安装依赖</h2>
+        <p>建议先安装：</p>
+        <ul>
+          <li>Node.js 18+，推荐 Node.js 22 LTS 或更高稳定版。</li>
+          <li>Git。</li>
+          <li>可选：CC Switch，用于管理不同中转配置。</li>
+        </ul>
+
+        <h2 id="install-claude">2. 安装 Claude Code</h2>
+        <p>推荐使用 npm：</p>
+        <pre><code>npm install -g @anthropic-ai/claude-code</code></pre>
+        <p>如果已经安装过，可以更新到最新版：</p>
         <pre><code>npm install -g @anthropic-ai/claude-code@latest
 claude --version</code></pre>
+        <p>如果 npm 安装失败，先看 <a href="#/network-proxy">网络与代理</a>，确认命令行能访问 npm 源。</p>
+        <p>启动：</p>
+        <pre><code>claude</code></pre>
+        <p>跳过权限询问：</p>
+        <pre><code>claude --dangerously-skip-permissions</code></pre>
 
-        <h2 id="anthropic-env">环境变量</h2>
-        <pre><code>export ANTHROPIC_AUTH_TOKEN="sk-your-token"
-export ANTHROPIC_BASE_URL="https://www.momoapi.shop"</code></pre>
+        <h2 id="cc-switch">3. 推荐使用 CC Switch</h2>
+        <p>打开 CC Switch，新建配置：</p>
+        <ul>
+          <li>Token：填写 momoapi 令牌。</li>
+          <li>Base URL：填写 <code>https://www.momoapi.shop</code>。</li>
+          <li>保存后切换配置。</li>
+          <li>重启 Claude Code。</li>
+        </ul>
+        <p>这类图形化配置适合长期使用。多个中转或多个令牌之间切换时，不建议反复手改环境变量。</p>
+        <p>如果要配置 fast 或百万上下文，先看 <a href="#/fast-context">fast 与百万上下文</a>。当前 fast 不再要求单独 fast 分组；Claude Code 里用 <code>/fast</code>，GPT / Codex 侧对应 <code>service_tier</code>。</p>
+
+        <h2 id="env-config">4. 使用环境变量配置</h2>
+        <p>如果只是临时验证，可以直接在当前终端里 <code>export</code>：</p>
+        <pre><code>export ANTHROPIC_AUTH_TOKEN="sk-你的令牌"
+export ANTHROPIC_BASE_URL="https://www.momoapi.shop"
+claude</code></pre>
+        <p>真正长期使用时，不要只在当前终端里临时 <code>export</code>。要把变量写进系统能持续读取的位置。</p>
+        <p>macOS / Linux：</p>
+        <pre><code>echo 'export ANTHROPIC_AUTH_TOKEN="sk-你的令牌"' >> ~/.zshrc
+echo 'export ANTHROPIC_BASE_URL="https://www.momoapi.shop"' >> ~/.zshrc
+source ~/.zshrc</code></pre>
+        <p>如果你用的是 Bash，把 <code>~/.zshrc</code> 换成 <code>~/.bashrc</code>。</p>
+        <p>Windows PowerShell：</p>
+        <pre><code>$env:ANTHROPIC_AUTH_TOKEN="sk-你的令牌"
+$env:ANTHROPIC_BASE_URL="https://www.momoapi.shop"
+claude</code></pre>
+        <p>如果是 systemd、启动器或桌面快捷方式，就把变量写进对应配置，不要依赖一次性 shell 会话。</p>
+        <p>如果你想把它永久写进 PowerShell 用户配置，也可以放到 <code>Microsoft.PowerShell_profile.ps1</code> 里；如果只是要写入新的用户环境变量，可以用 <code>setx</code>，但要重新打开终端才会生效。</p>
+        <p>一行临时启动只适合试跑：</p>
+        <pre><code>ANTHROPIC_AUTH_TOKEN="sk-你的令牌" ANTHROPIC_BASE_URL="https://www.momoapi.shop" claude</code></pre>
+        <p>这种写法关掉终端就失效，不适合长期使用。</p>
 
         <div class="callout callout--danger">
           <strong>不要默认补 /v1</strong>
           <p>Claude Code 这类 Anthropic 兼容客户端，很多时候要求的是服务根地址。把 OpenAI 的路径习惯照搬过来，反而更容易 404。</p>
         </div>
 
-        <h2 id="claude-workflow">推荐工作流</h2>
+        <h2 id="avoid-official">5. 防止跳转官方</h2>
+        <p>如果 Claude Code 没走中转，通常是配置未生效。可以检查：</p>
         <ul>
-          <li>先用小仓库测试鉴权。</li>
-          <li>再测试 <code>/init</code>、上下文注入和多文件修改。</li>
-          <li>最后再开大上下文或 IDE 联动。</li>
+          <li>CC Switch 当前配置是否启用。</li>
+          <li>环境变量是否在启动 Claude Code 的同一个终端里设置。</li>
+          <li><code>ANTHROPIC_BASE_URL</code> 是否为 <code>https://www.momoapi.shop</code>。</li>
         </ul>
+        <p>必要时检查用户目录下的 <code>.claude.json</code>，确保已经完成 onboarding 状态。</p>
+        <p>常见字段类似：</p>
+        <pre><code>{
+  "hasCompletedOnboarding": true
+}</code></pre>
 
-        <h2 id="helpful-commands">常用命令</h2>
-        <pre><code>/init
-/clear
-/compact
-@README.md
-!git status</code></pre>
+        <h2 id="config-idea">6. 推荐配置文件思路</h2>
+        <p>如果你习惯把环境变量写入 Claude Code 配置，重点是把 momoapi 地址和令牌写对：</p>
+        <pre><code>{
+  "env": {
+    "ANTHROPIC_AUTH_TOKEN": "sk-你的令牌",
+    "ANTHROPIC_BASE_URL": "https://www.momoapi.shop",
+    "DISABLE_TELEMETRY": "1",
+    "DISABLE_COST_WARNINGS": "1"
+  }
+}</code></pre>
+        <p>不要把令牌提交到 Git 仓库。共享截图、日志、配置文件前先打码。</p>
+
+        <h2 id="startup">7. 启动建议</h2>
+        <p>正常启动：</p>
+        <pre><code>claude</code></pre>
+        <p>可信目录下跳过权限确认：</p>
+        <pre><code>claude --dangerously-skip-permissions</code></pre>
+
+        <div class="callout callout--danger">
+          <strong>生产机器慎用</strong>
+          <p>跳过权限确认会让模型更容易直接执行命令。线上服务器、有密钥的目录、数据库机器上不要随便开启。</p>
+        </div>
+
+        <h2 id="fast-1m">8. fast 与百万上下文</h2>
+        <p>快速配置：</p>
+        <pre><code>/fast</code></pre>
+        <p>Claude fast 本质上还是请求层的 fast 状态。常见三种写法：</p>
+        <ul>
+          <li>在 Claude Code 里直接输入 <code>/fast</code>。</li>
+          <li>在客户端设置里开启 <code>fastMode</code>。</li>
+          <li>在网关 / 请求里走 <code>service_tier=fast</code>。</li>
+        </ul>
+        <p>Claude 百万上下文在claude终端执行/model，在里面选择模型时选择有[1m]后缀的</p>
+        <p>GPT 百万上下文超过 <code>272k</code> 的部分会额外计费。详细说明见 <a href="#/fast-context">fast 与百万上下文</a>。</p>
       </div>
     `,
   },
   "/fast-context": {
     title: "fast 与 1M 上下文",
     section: "客户端教程",
-    meta: "这一页只讲速度档位和长上下文，不讲基础配置。",
+    meta: "fast、service_tier、百万上下文与计费说明。",
     body: `
       <div class="doc">
-        <h1>fast 与 1M 上下文</h1>
-        <p class="lead">fast 路线和超长上下文通常不是默认免费能力，教程里必须明确说明成本和适用场景。</p>
+        <h1>fast 与百万上下文</h1>
 
-        <h2 id="when-fast">什么时候开 fast</h2>
+        <div class="quick-panel quick-panel--stacked">
+          <div class="quick-panel__group">
+            <strong>新人入口</strong>
+            <a class="chip-link chip-link--primary" href="https://www.momoapi.shop/" target="_blank" rel="noopener noreferrer">注册 / 登录</a>
+            <a class="chip-link" href="https://www.momoapi.shop/console/token" target="_blank" rel="noopener noreferrer">创建 API 令牌</a>
+          </div>
+          <div class="quick-panel__copy">
+            <strong>Base URL</strong>
+            <span class="copy-chip">https://www.momoapi.shop</span>
+            <button
+              class="copy-chip copy-chip--button"
+              type="button"
+              data-copy-text="https://www.momoapi.shop"
+              aria-label="复制 Base URL"
+            >
+              复制
+            </button>
+          </div>
+        </div>
+
+        <h2 id="summary">结论</h2>
         <ul>
-          <li>交互式开发，希望降低等待时间。</li>
-          <li>多轮短请求，用户对响应延迟敏感。</li>
-          <li>不适合默认所有脚本都走 fast，成本通常更高。</li>
+          <li>GPT / Codex 的 fast 本质是 <code>service_tier</code>。</li>
+          <li>Codex 里也可以用 <code>/fast</code> 启用 fast。</li>
+          <li>momoapi 会按请求动态计费。</li>
+          <li>GPT 百万上下文按长上下文计费，超过 <code>272k</code> 的部分额外计费。</li>
         </ul>
 
-        <h2 id="when-1m">什么时候用超长上下文</h2>
+        <h2 id="gpt-codex-fast">GPT / Codex fast</h2>
+        <p>基础配置：</p>
+        <pre><code>export OPENAI_API_KEY="sk-你的令牌"
+export OPENAI_BASE_URL="https://www.momoapi.shop/v1"</code></pre>
+        <p>Codex 内启用：</p>
+        <pre><code>/fast</code></pre>
+        <p>API / 客户端请求里的核心字段：</p>
+        <pre><code>{
+  "model": "gpt-5.5",
+  "service_tier": "fast"
+}</code></pre>
+        <p>如果客户端把 fast 做成按钮、速度档或配置项，本质也是设置 <code>service_tier=fast</code>。momoapi 会识别请求里的 fast / <code>service_tier</code> 并动态计费。</p>
+
+        <h2 id="claude-fast">Claude fast</h2>
+        <p>Claude Code 内启用：</p>
+        <pre><code>/fast</code></pre>
+        <p>也可以在 Claude Code 设置里写：</p>
+        <pre><code>{
+  "fastMode": true
+}</code></pre>
+        <p>禁用：</p>
+        <pre><code>export CLAUDE_CODE_DISABLE_FAST_MODE=1</code></pre>
+
+        <h2 id="cc-switch">CC Switch 设置</h2>
+        <p>基础项：</p>
+        <pre><code>Base URL: https://www.momoapi.shop
+Token: sk-你的令牌
+分组：普通可用分组</code></pre>
+        <p>Claude Code：</p>
+        <pre><code>Fast：开启</code></pre>
+        <p>如果 CC Switch 没有 fast 开关，启动 Claude Code 后输入：</p>
+        <pre><code>/fast</code></pre>
+        <p>GPT / Codex：</p>
+        <pre><code>service_tier：fast</code></pre>
+        <p>如果 CC Switch 没有 <code>service_tier</code> 字段，就在对应客户端里开启 fast，或使用支持 <code>service_tier</code> 的客户端配置。</p>
+
+        <h2 id="million-context">百万上下文</h2>
+        <h3 id="million-claude">Claude</h3>
+        <p>Claude 4.6 系列百万上下文通常原生支持，不需要额外 beta。</p>
+        
+        <h3 id="million-gpt">GPT / Codex</h3>
+        <p>GPT 百万上下文按长上下文计费。</p>
+        <p>规则：</p>
         <ul>
-          <li>真的要跨大量源码、日志、规范文档联动分析时再开。</li>
-          <li>不要把“支持 1M”理解成“每次都应该塞满 1M”。</li>
-          <li>先做文件裁剪和检索，再决定要不要上超长窗口。</li>
+          <li><code>272k</code> 以内按普通上下文计费。</li>
+          <li>超过 <code>272k</code> 的输入进入长上下文计费区间。</li>
+          <li>超过部分会额外计费，不要默认把百万上下文当普通价格。</li>
+        </ul>
+
+        <p>使用建议：</p>
+        <ul>
+          <li>日常编程不要默认塞满百万上下文。</li>
+          <li>大仓库先让模型读关键目录，不要一次性塞全仓。</li>
+          <li>长日志先裁剪，只保留关键报错和上下文。</li>
+          <li>需要长上下文时明确告知用户会增加费用。</li>
+        </ul>
+
+        <h2 id="recommended-patterns">推荐写法</h2>
+        <h3 id="normal-coding">普通编程</h3>
+        <pre><code>分组：普通可用分组
+fast：关闭
+上下文：控制在 272k 以内</code></pre>
+
+        <h3 id="low-latency">低延迟编程</h3>
+        <pre><code>分组：普通可用分组
+Codex：/fast
+GPT API：service_tier=fast
+计费：动态 fast 计费</code></pre>
+
+        <h3 id="long-context">超长上下文</h3>
+        <pre><code>分组：普通可用分组
+上下文：允许超过 272k
+计费：272k 以上额外计费</code></pre>
+
+        <h2 id="troubleshoot-fast">排错</h2>
+        <ul>
+          <li>fast 没生效：确认 Codex 是否执行 <code>/fast</code>，或请求是否带 <code>service_tier</code>。</li>
+          <li>价格异常高：检查是否同时启用了 fast 和超长上下文。</li>
+          <li>1M 不生效：确认模型是否支持百万上下文。</li>
         </ul>
       </div>
     `,
