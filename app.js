@@ -86,12 +86,12 @@ const pages = {
       <div class="quick-panel">
         <div class="quick-panel__group">
           <strong>新人入口</strong>
-          <a class="chip-link chip-link--primary" href="#/quick-start">注册 / 登录 / 加白</a>
+          <a class="chip-link chip-link--primary" href="#/quick-start">注册 / 登录</a>
           <a class="chip-link" href="#/account-token">创建 API 令牌</a>
         </div>
         <div class="quick-panel__copy">
           <strong>Base URL</strong>
-          <span class="copy-chip">hhttps://www.momoapi.shop</span>
+          <span class="copy-chip">https://www.momoapi.shop</span>
         </div>
       </div>
 
@@ -99,10 +99,6 @@ const pages = {
         <h2 id="overview">站点说明</h2>
         <p>这个版本不是直接照搬参考站源码，而是复刻它的使用方式：顶部主导航、左侧章节目录、中间正文、右侧本页目录、搜索框、翻页导航都保留；内容则重写成一套中转站通用教程。</p>
 
-        <div class="callout callout--danger">
-          <strong>先完成登录和 IP 加白</strong>
-          <p>大多数中转站如果启用了风控或 Cloudflare，未登录、未加白、IP 变化后未更新白名单，都会直接导致请求失败。</p>
-        </div>
 
         <h2 id="reading-order">推荐阅读顺序</h2>
         <ol>
@@ -125,22 +121,12 @@ const pages = {
             </thead>
             <tbody>
               <tr>
-                <td>登录 / 注册 / IP 加白</td>
-                <td><code>hhttps://www.momoapi.shop/whitelist</code></td>
-                <td>很多站点会把加白入口和控制台分开。</td>
-              </tr>
-              <tr>
-                <td>官网 / 控制台 / API</td>
-                <td><code>hhttps://www.momoapi.shop</code></td>
+                <td>登录 / 注册 / 官网 / 控制台 / API</td>
+                <td><code>https://www.momoapi.shop</code></td>
                 <td>给 OpenAI 兼容客户端时，通常再补 <code>/v1</code>。</td>
               </tr>
             </tbody>
           </table>
-        </div>
-
-        <div class="callout callout--tip">
-          <strong>提示</strong>
-          <p>教程里所有服务地址都用示例域名占位。你实际写教程时，把它们统一替换成你的中转站地址即可。</p>
         </div>
       </div>
     `,
@@ -148,63 +134,26 @@ const pages = {
   "/announcements": {
     title: "公告与服务说明",
     section: "开始使用",
-    meta: "这页放会影响配置行为的公告，不写营销介绍。",
+    meta: "公告信息",
     body: `
       <div class="doc">
         <h1>公告与服务说明</h1>
-        <p class="lead">把真正影响用户配置的事项放在最前面，比如入口地址变化、模型下线、白名单要求、上下文计费规则和拥挤时段说明。</p>
+        <p class="lead">我们站点是低倍率站点，比如当前gpt-5.5是0.1倍率，那就是在官方的基础上打1折。</p>
 
         <h2 id="important">当前使用规则</h2>
         <ul>
-          <li>登录入口、控制台入口、API 根地址如果不同，必须分开写清楚。</li>
-          <li>给 OpenAI 兼容客户端时，通常使用 <code>https://你的域名/v1</code>。</li>
-          <li>给 Anthropic 兼容客户端时，很多工具要求填写根地址，而不是自己拼接路径。</li>
-          <li>百万上下文或 fast 线路如果存在附加计费，必须单独写，不要藏在 FAQ。</li>
-          <li>如果某些旧模型已经停用，明确列出不可请求的模型名。</li>
+          <li>站点官网 <code>https://www.momoapi.shop</code>, 备用地址 <code>https://www.momo-api.cc.cd</code>。</li>
+          <li>给 OpenAI 兼容客户端时，通常使用 <code>https://www.momoapi.shop/v1</code>。</li>
+          <li>给 Anthropic 兼容客户端时，不需要 <code>/v1</code>。</li>
+          <li>fast 模式双倍计费</li>
+          <li>当前OpenAI把gpt-5.2和gpt-5.3模型下线了，所以这两个模型暂时不可用。</li>
         </ul>
-
-        <h2 id="status">建议公告格式</h2>
-        <div class="table-wrap">
-          <table>
-            <thead>
-              <tr>
-                <th>字段</th>
-                <th>内容</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>生效时间</td>
-                <td>写绝对日期，避免“今天起”“近期”这种模糊表述。</td>
-              </tr>
-              <tr>
-                <td>影响范围</td>
-                <td>影响哪些客户端、哪些模型、哪些分组。</td>
-              </tr>
-              <tr>
-                <td>用户动作</td>
-                <td>是否需要改 Base URL、重建令牌、重新加白 IP、切换模型。</td>
-              </tr>
-              <tr>
-                <td>临时方案</td>
-                <td>如果主线路不可用，给出备用线路或回退模型。</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
 
         <div class="callout callout--warning">
           <strong>不要把备用网址当主站</strong>
-          <p>备用网址只在主线路不可达时使用。文档中的默认配置仍应指向主站，避免用户把临时线路固化进脚本。</p>
+          <p>备用网址只在主线路不可达时使用。</p>
         </div>
 
-        <h2 id="what-users-care">用户最关心的四件事</h2>
-        <ol>
-          <li>我该登录哪个地址。</li>
-          <li>Base URL 究竟填根地址还是 <code>/v1</code>。</li>
-          <li>哪个模型现在可用，哪个分组有额外限制。</li>
-          <li>403、429、503 出现时该做什么。</li>
-        </ol>
       </div>
     `,
   },
@@ -220,12 +169,12 @@ const pages = {
         <div class="quick-panel">
           <div class="quick-panel__group">
             <strong>新手入口</strong>
-            <span class="chip-link chip-link--primary">注册 / 登录 / 加白</span>
+            <span class="chip-link chip-link--primary">注册 / 登录</span>
             <span class="chip-link">创建 API Token</span>
           </div>
           <div class="quick-panel__copy">
             <strong>Base URL</strong>
-            <span class="copy-chip">hhttps://www.momoapi.shop</span>
+            <span class="copy-chip">https://www.momoapi.shop</span>
           </div>
         </div>
 
@@ -235,19 +184,12 @@ const pages = {
           <li><strong>Base URL</strong>：默认填写站点根地址，OpenAI 兼容客户端再按需要补 <code>/v1</code>。</li>
         </ul>
 
-        <div class="callout callout--danger">
-          <strong>新用户先走加白入口</strong>
-          <p>不要上来就直接用 API 地址压测。先完成注册、登录、IP 加白，否则很多请求会在网关层直接被拒绝。</p>
-        </div>
-
-        <h2 id="whitelist">2. 注册、登录、IP 加白</h2>
-        <pre><code>hhttps://www.momoapi.shop/whitelist</code></pre>
+        <h2 id="whitelist">2. 注册、登录</h2>
+        <pre><code>https://www.momoapi.shop/register</code></pre>
         <ol>
           <li>注册账号。</li>
           <li>登录账号。</li>
-          <li>提交当前公网 IP 到白名单。</li>
         </ol>
-        <p>如果你用的是校园网、公司出口或者家庭宽带拨号，公网 IP 有机会变化。只要原来可用、后来突然 403，先怀疑 IP 变了。</p>
 
         <h2 id="token">3. 创建 API 令牌</h2>
         <ol>
@@ -255,7 +197,6 @@ const pages = {
           <li>新建令牌。</li>
           <li>复制保存。</li>
         </ol>
-        <pre><code>服务根地址: hhttps://www.momoapi.shop</code></pre>
 
         <h2 id="client-mapping">4. 常见客户端填写方式</h2>
         <div class="table-wrap">
@@ -270,17 +211,17 @@ const pages = {
             <tbody>
               <tr>
                 <td>Codex CLI</td>
-                <td><code>hhttps://www.momoapi.shop/v1</code></td>
+                <td><code>https://www.momoapi.shop/v1</code></td>
                 <td>OpenAI API Key</td>
               </tr>
               <tr>
                 <td>Claude Code</td>
-                <td><code>ANTHROPIC_BASE_URL=hhttps://www.momoapi.shop</code></td>
+                <td><code>ANTHROPIC_BASE_URL=https://www.momoapi.shop</code></td>
                 <td><code>ANTHROPIC_AUTH_TOKEN</code></td>
               </tr>
               <tr>
                 <td>Trae / Cursor / RooCode</td>
-                <td><code>hhttps://www.momoapi.shop/v1</code></td>
+                <td><code>https://www.momoapi.shop/v1</code></td>
                 <td>OpenAI Compatible API Key</td>
               </tr>
               <tr>
@@ -293,7 +234,7 @@ const pages = {
         </div>
 
         <h2 id="validate">5. 最小验证</h2>
-        <pre><code>curl hhttps://www.momoapi.shop/v1/models \\
+        <pre><code>curl https://www.momoapi.shop/v1/models \\
   -H "Authorization: Bearer sk-your-token"</code></pre>
         <p>能返回模型列表，说明地址和令牌基本没问题。再继续配 CLI 或 IDE。</p>
 
@@ -301,7 +242,7 @@ const pages = {
         <ul>
           <li><strong>401</strong>：令牌无效、过期、复制多了空格。</li>
           <li><strong>404</strong>：Base URL 填错，常见是少了或多了 <code>/v1</code>。</li>
-          <li><strong>403</strong>：当前 IP 未加白，或出口 IP 已变化。</li>
+          <li><strong>403</strong>：加群联系管理员，可能是被cf拦截了。</li>
         </ul>
       </div>
     `,
@@ -309,24 +250,17 @@ const pages = {
   "/account-token": {
     title: "账号与令牌",
     section: "开始使用",
-    meta: "把注册、登录、加白、令牌管理拆开写，用户更容易定位问题。",
+    meta: "账号与令牌。",
     body: `
       <div class="doc">
         <h1>账号与令牌</h1>
-        <p class="lead">这页只讲账号体系和令牌，不混入模型推荐和客户端配置。</p>
-
-        <h2 id="accounts">账号入口建议</h2>
-        <ul>
-          <li>登录入口和控制台入口不同的话，在文档里都列出来。</li>
-          <li>IP 加白如果依赖登录态，也要写清楚在哪里提交。</li>
-          <li>不要让用户去备用网址注册，再回主站生成令牌，这种流程最容易出问题。</li>
-        </ul>
 
         <h2 id="token-rules">令牌使用规则</h2>
         <ul>
           <li>每台机器不一定都要单独建令牌，但生产环境和个人开发环境建议分开。</li>
           <li>CLI、IDE、自动化脚本尽量使用不同令牌，方便撤销和审计。</li>
-          <li>令牌只在创建时显示一次，丢失就重新生成，不要指望后台可逆查看。</li>
+          <li>不要把令牌发给他人。</li>
+          <li>令牌泄露后立即删除并重新创建。</li>
         </ul>
 
         <h2 id="rotation">轮换建议</h2>
@@ -400,7 +334,7 @@ codex --version</code></pre>
 
         <h2 id="env">环境变量</h2>
         <pre><code>export OPENAI_API_KEY="sk-your-token"
-export OPENAI_BASE_URL="hhttps://www.momoapi.shop/v1"</code></pre>
+export OPENAI_BASE_URL="https://www.momoapi.shop/v1"</code></pre>
 
         <div class="callout callout--warning">
           <strong>地址格式要一致</strong>
@@ -443,7 +377,7 @@ claude --version</code></pre>
 
         <h2 id="anthropic-env">环境变量</h2>
         <pre><code>export ANTHROPIC_AUTH_TOKEN="sk-your-token"
-export ANTHROPIC_BASE_URL="hhttps://www.momoapi.shop"</code></pre>
+export ANTHROPIC_BASE_URL="https://www.momoapi.shop"</code></pre>
 
         <div class="callout callout--danger">
           <strong>不要默认补 /v1</strong>
@@ -534,7 +468,7 @@ export ANTHROPIC_BASE_URL="hhttps://www.momoapi.shop"</code></pre>
         <p class="lead">Trae、Cursor、RooCode、Continue、Kilo 这一类客户端，大多能按 OpenAI Compatible 方式配置。</p>
 
         <h2 id="fill-form">快速填写</h2>
-        <pre><code>Base URL: hhttps://www.momoapi.shop/v1
+        <pre><code>Base URL: https://www.momoapi.shop/v1
 API Key: sk-your-token
 Model: 你的目标模型名</code></pre>
 
@@ -620,7 +554,7 @@ Model: 你的目标模型名</code></pre>
 
         <h2 id="cherry-fill">填写方式</h2>
         <pre><code>Provider: Custom OpenAI
-Base URL: hhttps://www.momoapi.shop/v1
+Base URL: https://www.momoapi.shop/v1
 API Key: sk-your-token</code></pre>
       </div>
     `,
