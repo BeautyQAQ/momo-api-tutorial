@@ -46,14 +46,14 @@ const sidebar = [
 
 const pages = {
   "/": {
-    title: "RelayHub 中转站教程",
+    title: "momoapi 中转站教程",
     section: "开始使用",
     meta: "一套白底教程站，按客户端场景拆页，不把配置和排错混在一起。",
     hero: true,
     body: `
       <div class="hero">
         <div>
-          <div class="eyebrow">RelayHub 中转站教程</div>
+          <div class="eyebrow">momoapi 中转站教程</div>
           <h1>Codex / Claude Code / IDE 客户端接入指南</h1>
           <p class="lead">从注册、创建令牌、填写 Base URL，到模型选择、上下文、代理和错误排查，按文档站的方式重新整理。</p>
           <div class="hero-actions">
@@ -91,7 +91,7 @@ const pages = {
         </div>
         <div class="quick-panel__copy">
           <strong>Base URL</strong>
-          <span class="copy-chip">https://relayhub.example.com</span>
+          <span class="copy-chip">hhttps://www.momoapi.shop</span>
         </div>
       </div>
 
@@ -126,12 +126,12 @@ const pages = {
             <tbody>
               <tr>
                 <td>登录 / 注册 / IP 加白</td>
-                <td><code>https://relayhub.example.com/whitelist</code></td>
+                <td><code>hhttps://www.momoapi.shop/whitelist</code></td>
                 <td>很多站点会把加白入口和控制台分开。</td>
               </tr>
               <tr>
                 <td>官网 / 控制台 / API</td>
-                <td><code>https://relayhub.example.com</code></td>
+                <td><code>hhttps://www.momoapi.shop</code></td>
                 <td>给 OpenAI 兼容客户端时，通常再补 <code>/v1</code>。</td>
               </tr>
             </tbody>
@@ -225,7 +225,7 @@ const pages = {
           </div>
           <div class="quick-panel__copy">
             <strong>Base URL</strong>
-            <span class="copy-chip">https://relayhub.example.com</span>
+            <span class="copy-chip">hhttps://www.momoapi.shop</span>
           </div>
         </div>
 
@@ -241,7 +241,7 @@ const pages = {
         </div>
 
         <h2 id="whitelist">2. 注册、登录、IP 加白</h2>
-        <pre><code>https://relayhub.example.com/whitelist</code></pre>
+        <pre><code>hhttps://www.momoapi.shop/whitelist</code></pre>
         <ol>
           <li>注册账号。</li>
           <li>登录账号。</li>
@@ -255,7 +255,7 @@ const pages = {
           <li>新建令牌。</li>
           <li>复制保存。</li>
         </ol>
-        <pre><code>服务根地址: https://relayhub.example.com</code></pre>
+        <pre><code>服务根地址: hhttps://www.momoapi.shop</code></pre>
 
         <h2 id="client-mapping">4. 常见客户端填写方式</h2>
         <div class="table-wrap">
@@ -270,17 +270,17 @@ const pages = {
             <tbody>
               <tr>
                 <td>Codex CLI</td>
-                <td><code>https://relayhub.example.com/v1</code></td>
+                <td><code>hhttps://www.momoapi.shop/v1</code></td>
                 <td>OpenAI API Key</td>
               </tr>
               <tr>
                 <td>Claude Code</td>
-                <td><code>ANTHROPIC_BASE_URL=https://relayhub.example.com</code></td>
+                <td><code>ANTHROPIC_BASE_URL=hhttps://www.momoapi.shop</code></td>
                 <td><code>ANTHROPIC_AUTH_TOKEN</code></td>
               </tr>
               <tr>
                 <td>Trae / Cursor / RooCode</td>
-                <td><code>https://relayhub.example.com/v1</code></td>
+                <td><code>hhttps://www.momoapi.shop/v1</code></td>
                 <td>OpenAI Compatible API Key</td>
               </tr>
               <tr>
@@ -293,7 +293,7 @@ const pages = {
         </div>
 
         <h2 id="validate">5. 最小验证</h2>
-        <pre><code>curl https://relayhub.example.com/v1/models \\
+        <pre><code>curl hhttps://www.momoapi.shop/v1/models \\
   -H "Authorization: Bearer sk-your-token"</code></pre>
         <p>能返回模型列表，说明地址和令牌基本没问题。再继续配 CLI 或 IDE。</p>
 
@@ -400,7 +400,7 @@ codex --version</code></pre>
 
         <h2 id="env">环境变量</h2>
         <pre><code>export OPENAI_API_KEY="sk-your-token"
-export OPENAI_BASE_URL="https://relayhub.example.com/v1"</code></pre>
+export OPENAI_BASE_URL="hhttps://www.momoapi.shop/v1"</code></pre>
 
         <div class="callout callout--warning">
           <strong>地址格式要一致</strong>
@@ -443,7 +443,7 @@ claude --version</code></pre>
 
         <h2 id="anthropic-env">环境变量</h2>
         <pre><code>export ANTHROPIC_AUTH_TOKEN="sk-your-token"
-export ANTHROPIC_BASE_URL="https://relayhub.example.com"</code></pre>
+export ANTHROPIC_BASE_URL="hhttps://www.momoapi.shop"</code></pre>
 
         <div class="callout callout--danger">
           <strong>不要默认补 /v1</strong>
@@ -534,7 +534,7 @@ export ANTHROPIC_BASE_URL="https://relayhub.example.com"</code></pre>
         <p class="lead">Trae、Cursor、RooCode、Continue、Kilo 这一类客户端，大多能按 OpenAI Compatible 方式配置。</p>
 
         <h2 id="fill-form">快速填写</h2>
-        <pre><code>Base URL: https://relayhub.example.com/v1
+        <pre><code>Base URL: hhttps://www.momoapi.shop/v1
 API Key: sk-your-token
 Model: 你的目标模型名</code></pre>
 
@@ -620,7 +620,7 @@ Model: 你的目标模型名</code></pre>
 
         <h2 id="cherry-fill">填写方式</h2>
         <pre><code>Provider: Custom OpenAI
-Base URL: https://relayhub.example.com/v1
+Base URL: hhttps://www.momoapi.shop/v1
 API Key: sk-your-token</code></pre>
       </div>
     `,
@@ -880,7 +880,7 @@ function renderPage() {
 
   assignHeadingIds(contentEl);
   renderToc();
-  document.title = `${page.title} | RelayHub 中转站教程`;
+  document.title = `${page.title} | momoapi 中转站教程`;
   window.scrollTo({ top: 0, behavior: "instant" });
   sidebarEl.classList.remove("is-open");
 }

@@ -336,7 +336,7 @@ pre {
   border: 1px solid var(--line);
   border-radius: 16px;
   background:
-    url("./assets/relayhub-hero.png") center/cover no-repeat,
+    url("./assets/momoapi.png") center/cover no-repeat,
     linear-gradient(135deg, #eef4ff, #f8fbff);
   box-shadow: var(--shadow);
 }
