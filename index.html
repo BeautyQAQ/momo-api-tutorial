@@ -70,6 +70,14 @@
       </div>
     </div>
 
+    <div class="image-modal hidden" id="imageModal" aria-hidden="true">
+      <div class="image-modal__backdrop" data-close-image-modal="true"></div>
+      <div class="image-modal__panel" role="dialog" aria-modal="true" aria-label="图片预览">
+        <button class="icon-close image-modal__close" id="closeImageModal" aria-label="关闭图片预览">×</button>
+        <img id="imageModalImg" alt="" />
+      </div>
+    </div>
+
     <script src="./app.js"></script>
   </body>
 </html>

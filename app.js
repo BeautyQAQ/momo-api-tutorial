@@ -23,6 +23,7 @@ const sidebar = [
   {
     title: "客户端教程",
     items: [
+      { title: "CC Switch（推荐）", path: "/cc-switch" },
       { title: "Codex CLI", path: "/codex" },
       { title: "Claude Code", path: "/claude-code" },
       { title: "fast 与 1M 上下文", path: "/fast-context" },
@@ -30,7 +31,6 @@ const sidebar = [
       { title: "Trae 等 IDE 客户端", path: "/trae-ide-clients" },
       { title: "IDE 集成", path: "/ide" },
       { title: "其他 CLI 与插件", path: "/other-clients" },
-      { title: "CC Switch", path: "/cc-switch" },
       { title: "Cherry Studio", path: "/cherry-studio" },
     ],
   },
@@ -149,7 +149,7 @@ const pages = {
 
         <div class="callout callout--warning">
           <strong>按需充值</strong>
-          <p>旧指南里明确提到购买前要认真评估用量。尤其是 fast、长上下文和生图任务，费用波动会明显高于普通短请求。</p>
+          <p>购买前要认真评估用量。尤其是 fast、长上下文和生图任务，费用波动会明显高于普通短请求。</p>
         </div>
 
         <h2 id="announcements">公告速览</h2>
@@ -1000,7 +1000,7 @@ export OPENAI_BASE_URL="https://www.momoapi.shop/v1"</code></pre>
         <h2 id="claude-fast">Claude fast</h2>
         <p>Claude Code 内启用：</p>
         <pre><code>/fast</code></pre>
-        <p>也可以在 Claude Code 设置里写：</p>
+        <p>也可以在 Claude Code 配置里写：</p>
         <pre><code>{
   "fastMode": true
 }</code></pre>
@@ -1014,11 +1014,8 @@ Token: sk-你的令牌
 分组：普通可用分组</code></pre>
         <p>Claude Code：</p>
         <pre><code>Fast：开启</code></pre>
-        <p>如果 CC Switch 没有 fast 开关，启动 Claude Code 后输入：</p>
+        <p>如果 CC Switch 没有 fast 开关，启动 Claude Code / Codex后输入：</p>
         <pre><code>/fast</code></pre>
-        <p>GPT / Codex：</p>
-        <pre><code>service_tier：fast</code></pre>
-        <p>如果 CC Switch 没有 <code>service_tier</code> 字段，就在对应客户端里开启 fast，或使用支持 <code>service_tier</code> 的客户端配置。</p>
 
         <h2 id="million-context">百万上下文</h2>
         <h3 id="million-claude">Claude</h3>
@@ -1536,7 +1533,7 @@ gemini --version</code></pre>
     meta: "用 CC Switch 管理 Claude Code 的多套中转配置。",
     body: `
       <div class="doc">
-        <h1>CC Switch</h1>
+        <h1>CC Switch（推荐）</h1>
         ${renderEntryPanel(true)}
 
         <p class="lead">CC Switch 用来管理 Claude Code 的多套环境配置，比如官方、不同中转站、不同 Token。它适合不想手动改环境变量的用户。</p>
@@ -1581,7 +1578,7 @@ Base URL: https://www.momoapi.shop/v1
 Model: 目标模型名</code></pre>
             <figure class="doc-figure">
               <img src="./assets/guide/cc-switch/cc-switch-codex-form.png" alt="CC Switch 填写 Codex 表单截图" loading="lazy" />
-              <figcaption>OpenAI 兼容客户端通常要用带 <code>/v1</code> 的地址。</figcaption>
+              <figcaption>OpenAI 兼容客户端通常要用带 <code>/v1</code> 的地址。Claude Code则不需要加 <code>/v1</code></figcaption>
             </figure>
           </section>
         </div>
@@ -1593,8 +1590,7 @@ Token: sk-你的令牌</code></pre>
         <p>如果 CC Switch 里有分组或模型选择，优先选择控制台明确可用的普通分组和目标 Claude 模型。</p>
         <ul>
           <li>fast 按请求动态计费。</li>
-          <li>Claude Code 内可直接执行 <code>/fast</code>。</li>
-          <li>GPT / Codex API 层对应的是 <code>service_tier=fast</code>。</li>
+          <li>Claude Code / Codex 内可直接执行 <code>/fast</code>。</li>
         </ul>
         <p>GPT 超过 <code>272k</code> 的上下文部分会额外计费。完整说明见 <a href="#/fast-context">fast 与 1M 上下文</a>。</p>
 
@@ -1990,6 +1986,9 @@ const searchModalInput = document.getElementById("searchModalInput");
 const searchResults = document.getElementById("searchResults");
 const closeSearch = document.getElementById("closeSearch");
 const sidebarToggle = document.getElementById("sidebarToggle");
+const imageModal = document.getElementById("imageModal");
+const imageModalImg = document.getElementById("imageModalImg");
+const closeImageModal = document.getElementById("closeImageModal");
 
 function normalizeHash() {
   const hash = window.location.hash || "#/";
@@ -2193,6 +2192,21 @@ function closeSearchModal() {
   searchModal.setAttribute("aria-hidden", "true");
 }
 
+function openImageModal(src, alt = "") {
+  if (!src) return;
+  imageModalImg.src = src;
+  imageModalImg.alt = alt;
+  imageModal.classList.remove("hidden");
+  imageModal.setAttribute("aria-hidden", "false");
+}
+
+function closeImagePreview() {
+  imageModal.classList.add("hidden");
+  imageModal.setAttribute("aria-hidden", "true");
+  imageModalImg.removeAttribute("src");
+  imageModalImg.alt = "";
+}
+
 async function copyText(text) {
   if (navigator.clipboard?.writeText) {
     await navigator.clipboard.writeText(text);
@@ -2242,9 +2256,19 @@ document.addEventListener("click", (event) => {
     closeSearchModal();
   }
 
+  const closeImageTarget = event.target.closest("[data-close-image-modal='true']");
+  if (closeImageTarget) {
+    closeImagePreview();
+  }
+
   const copyButton = event.target.closest("[data-copy-text]");
   if (copyButton) {
     handleCopyButton(copyButton);
+  }
+
+  const figureImage = event.target.closest(".doc-figure img");
+  if (figureImage) {
+    openImageModal(figureImage.currentSrc || figureImage.src, figureImage.alt || "");
   }
 });
 
@@ -2256,6 +2280,7 @@ document.addEventListener("keydown", (event) => {
   }
   if (event.key === "Escape") {
     closeSearchModal();
+    closeImagePreview();
   }
 });
 
@@ -2277,6 +2302,7 @@ searchResults.addEventListener("click", (event) => {
 });
 
 closeSearch.addEventListener("click", closeSearchModal);
+closeImageModal.addEventListener("click", closeImagePreview);
 sidebarToggle.addEventListener("click", () => {
   sidebarEl.classList.toggle("is-open");
 });
