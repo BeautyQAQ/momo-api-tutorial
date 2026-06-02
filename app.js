@@ -54,8 +54,8 @@ const pages = {
       <div class="hero">
         <div>
           <div class="eyebrow">momoapi 中转站教程</div>
-          <h1>Codex / Claude Code / IDE 客户端接入指南</h1>
-          <p class="lead">从注册、创建令牌、填写 Base URL，到模型选择、上下文、代理和错误排查，按文档站的方式重新整理。</p>
+          <h1>Codex / Claude Code / 常见客户端快速配置</h1>
+          <p class="lead">从注册、创建令牌、配置 Base URL 到常见错误排查，一页一件事。</p>
           <div class="hero-actions">
             <a class="button button--primary" href="#/quick-start">立即开始</a>
             <a class="button" href="#/troubleshooting">常见问题</a>
@@ -67,47 +67,56 @@ const pages = {
       <div class="feature-grid">
         <section class="feature">
           <h3>快速配置</h3>
-          <p>先把账号、令牌、Base URL 和最小验证跑通，再切客户端。</p>
+          <p>按步骤完成注册、创建令牌、填写 Base URL，避免配置项遗漏。</p>
         </section>
         <section class="feature">
           <h3>多客户端覆盖</h3>
-          <p>Codex CLI、Claude Code、Trae、Cursor、Cherry Studio、CC Switch 都有独立页。</p>
-        </section>
-        <section class="feature">
-          <h3>白底文档风格</h3>
-          <p>保留顶部导航、左侧目录、右侧本页大纲，整体改成浅色阅读体验。</p>
+          <p>覆盖 Codex CLI、Claude Code、Trae、Cursor、RooCode、CC Switch、Cherry Studio 等常用场景。</p>
         </section>
         <section class="feature">
           <h3>排错优先</h3>
-          <p>401、403、404、429、503、超长上下文、代理问题都集中到排错页。</p>
+          <p>对 401、403、404、429、503、网络代理、上下文过大等问题给出直接处理方式。</p>
+        </section>
+        <section class="feature">
+          <h3>Claude Code 工作流</h3>
+          <p>整理 /init、@ 上下文、! 命令、/clear、/compact、IDE 集成和常用技巧。</p>
         </section>
       </div>
 
-      <div class="quick-panel">
-        <div class="quick-panel__group">
-          <strong>新人入口</strong>
-          <a class="chip-link chip-link--primary" href="#/quick-start">注册 / 登录</a>
-          <a class="chip-link" href="#/account-token">创建 API 令牌</a>
-        </div>
+        <div class="quick-panel">
+          <div class="quick-panel__group">
+            <strong>新人入口</strong>
+          <a class="chip-link chip-link--primary" href="https://www.momoapi.shop/" target="_blank" rel="noopener noreferrer">注册 / 登录</a>
+          <a class="chip-link" href="https://www.momoapi.shop/console/token" target="_blank" rel="noopener noreferrer">创建 API 令牌</a>
+          </div>
         <div class="quick-panel__copy">
           <strong>Base URL</strong>
           <span class="copy-chip">https://www.momoapi.shop</span>
+          <button
+            class="copy-chip copy-chip--button"
+            type="button"
+            data-copy-text="https://www.momoapi.shop"
+            aria-label="复制 Base URL"
+          >
+            复制
+          </button>
         </div>
       </div>
 
       <div class="doc">
-        <h2 id="overview">站点说明</h2>
-        <p>这个版本不是直接照搬参考站源码，而是复刻它的使用方式：顶部主导航、左侧章节目录、中间正文、右侧本页目录、搜索框、翻页导航都保留；内容则重写成一套中转站通用教程。</p>
+        <h2 id="announcements">公告速览</h2>
+        <ul>
+          <li>主站：正常使用 <code>https://www.momoapi.shop</code>，备用网址 <code>https://www.momo-api.cc.cd</code> 仅在主线路不可达时使用。</li>
+          <li>OpenAI 兼容客户端：通常使用 <code>https://www.momoapi.shop/v1</code>。</li>
+          <li>Anthropic 兼容客户端：直接使用 <code>https://www.momoapi.shop</code>，不需要补 <code>/v1</code>。</li>
+          <li>fast：当前 fast 模式双倍计费，具体以公告和控制台展示为准。</li>
+          <li>百万上下文：GPT 超过 272k 的部分会额外计费；不要默认塞满百万上下文。</li>
+          <li>生图：gpt-image-2 生图可用，但是不保证稳定性。</li>
+          <li>模型：当前 OpenAI 已下线 <code>gpt-5.2</code> 和 <code>gpt-5.3</code>，这两个模型暂时不可用。</li>
+          <li>拥挤：出现 <code>selected model is at capacity</code> 时，通常是上游算力紧张，稍后重试即可。</li>
+        </ul>
 
-
-        <h2 id="reading-order">推荐阅读顺序</h2>
-        <ol>
-          <li>先看快速开始，把令牌、Base URL 和最小验证弄通。</li>
-          <li>使用 Codex 的用户看 Codex CLI 页面。</li>
-          <li>使用 Claude Code 的用户看 Claude Code 页面。</li>
-          <li>使用 Trae、Cursor、RooCode 的用户看 Trae / IDE 页面。</li>
-          <li>遇到网络、代理、错误码问题时，直接跳到排错页。</li>
-        </ol>
+        <p>更多说明见 <a href="#/announcements">公告与服务说明</a>。</p>
 
         <h2 id="entry-points">必看入口</h2>
         <div class="table-wrap">
@@ -121,13 +130,36 @@ const pages = {
             </thead>
             <tbody>
               <tr>
-                <td>登录 / 注册 / 官网 / 控制台 / API</td>
+                <td>登录 / 注册</td>
+                <td><code>https://www.momoapi.shop</code></td>
+                <td>新用户注册，已有账号直接登录。</td>
+              </tr>
+              <tr>
+                <td>官网 / 控制台 / API</td>
                 <td><code>https://www.momoapi.shop</code></td>
                 <td>给 OpenAI 兼容客户端时，通常再补 <code>/v1</code>。</td>
               </tr>
             </tbody>
           </table>
         </div>
+
+        <h2 id="reading-order">推荐阅读顺序</h2>
+        <ol>
+          <li>先看快速开始，确认令牌和请求地址。</li>
+          <li>使用 Codex 的用户看 Codex CLI。</li>
+          <li>使用 Claude Code 的用户看 Claude Code。</li>
+          <li>日常开发技巧看 Claude Code 实用命令。</li>
+          <li>使用 Trae、Cursor、RooCode 看 Trae 等 IDE 客户端。</li>
+          <li>使用 Gemini CLI 等看其他 CLI 与插件。</li>
+          <li>遇到报错时直接查常见问题排查。</li>
+        </ol>
+
+        <div class="callout callout--tip">
+          <strong>提示</strong>
+          <p>文档中的 <code>Base URL</code> 默认使用 <code>https://www.momoapi.shop</code>。如果公告给出备用线路，以公告为准。</p>
+        </div>
+
+        <p>momoapi 文档仅用于帮助用户正确配置客户端。</p>
       </div>
     `,
   },
@@ -164,7 +196,7 @@ const pages = {
     body: `
       <div class="doc">
         <h1>快速开始</h1>
-        <p class="lead">任何客户端接入前，都先确认三件事：令牌已创建、Base URL 填对、当前公网 IP 已通过白名单或风控检查。</p>
+        <p class="lead">任何客户端接入前，都先确认两件事：令牌已创建、Base URL 填对。</p>
 
         <div class="quick-panel">
           <div class="quick-panel__group">
@@ -184,7 +216,7 @@ const pages = {
           <li><strong>Base URL</strong>：默认填写站点根地址，OpenAI 兼容客户端再按需要补 <code>/v1</code>。</li>
         </ul>
 
-        <h2 id="whitelist">2. 注册、登录</h2>
+        <h2 id="register-login">2. 注册、登录</h2>
         <pre><code>https://www.momoapi.shop/register</code></pre>
         <ol>
           <li>注册账号。</li>
@@ -593,7 +625,7 @@ API Key: sk-your-token</code></pre>
         <h2 id="starter-flow">新项目接入流</h2>
         <ol>
           <li>创建账号和令牌。</li>
-          <li>完成 IP 加白。</li>
+          <li>确认 Base URL 和模型名。</li>
           <li>用 <code>curl /models</code> 做最小验证。</li>
           <li>再去配置 CLI 或 IDE。</li>
         </ol>
@@ -610,24 +642,25 @@ API Key: sk-your-token</code></pre>
   "/network-proxy": {
     title: "网络与代理",
     section: "进阶",
-    meta: "把代理和加白分开讲，避免互相混淆。",
+    meta: "把代理、DNS、客户端配置分开讲，避免互相混淆。",
     body: `
       <div class="doc">
         <h1>网络与代理</h1>
-        <p class="lead">网络问题经常被误判成账号问题。把代理、出口 IP、DNS 和白名单分开看，排查会快很多。</p>
+        <p class="lead">网络问题经常被误判成账号问题。把代理、出口 IP、DNS 和客户端配置分开看，排查会快很多。</p>
 
         <h2 id="proxy-choice">什么时候需要代理</h2>
         <ul>
           <li>客户端本身无法直连你的中转站。</li>
           <li>公司网络限制了出站访问。</li>
-          <li>你需要固定出口 IP 便于白名单管理。</li>
+          <li>当前网络对目标域名解析异常或连接不稳定。</li>
         </ul>
 
-        <h2 id="ip-whitelist">什么时候是白名单问题</h2>
+        <h2 id="network-diagnosis">先看哪几项</h2>
         <ul>
           <li>网页控制台可用，但本机 CLI 403。</li>
           <li>换网络后才开始失败。</li>
           <li>同一令牌在不同设备上表现不一致。</li>
+          <li>命令行能通，但 IDE 内置终端或插件请求失败。</li>
         </ul>
       </div>
     `,
@@ -650,9 +683,9 @@ API Key: sk-your-token</code></pre>
 
         <h2 id="error-403">403 Forbidden</h2>
         <ul>
-          <li>当前公网 IP 未加白。</li>
-          <li>出口 IP 刚变化，白名单还是旧值。</li>
           <li>风控策略拦截了当前网络。</li>
+          <li>代理出口质量差，或当前 IP 被上游误判为异常。</li>
+          <li>请求头、模型权限或账户状态不符合当前接口要求。</li>
         </ul>
 
         <h2 id="error-404">404 Not Found</h2>
@@ -820,9 +853,11 @@ function renderToc() {
 function renderPage() {
   const currentPath = normalizeHash();
   const page = pages[currentPath] || pages["/"];
+  const isHomePage = currentPath === "/";
 
   renderTopNav(currentPath);
   renderSidebar(currentPath);
+  document.body.classList.toggle("page-home", isHomePage);
 
   contentEl.innerHTML = `
     <article class="doc-shell">

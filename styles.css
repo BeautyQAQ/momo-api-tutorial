@@ -226,6 +226,18 @@ pre {
   padding: 32px 40px 64px;
 }
 
+body.page-home .layout {
+  grid-template-columns: var(--sidebar) minmax(0, 1fr);
+}
+
+body.page-home .toc {
+  display: none;
+}
+
+body.page-home .content__inner {
+  max-width: 1120px;
+}
+
 .sidebar-section + .sidebar-section {
   margin-top: 28px;
 }
