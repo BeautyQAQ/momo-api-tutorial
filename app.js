@@ -396,14 +396,32 @@ gemini --version</code></pre>
   "/account-token": {
     title: "账号与令牌",
     section: "开始使用",
-    meta: "账号与令牌。",
+    meta: "注册、登录、令牌格式与余额用量说明。",
     body: `
       <div class="doc">
         <h1>账号与令牌</h1>
-        <p class="lead">先把令牌创建、保存和填写格式弄清楚，再去配 CLI、IDE 或自动化脚本。</p>
+        <h2 id="register-login">注册与登录</h2>
+        <p>新用户直接从主站开始即可：</p>
+        <pre><code>https://www.momoapi.shop/</code></pre>
+        <p>在这里完成：</p>
+        <ol>
+          <li>注册。</li>
+          <li>登录。</li>
+        </ol>
+        <p>如果注册需要邮箱验证码，等待验证码邮件送达后再继续操作。默认主站不可达时，再临时切到 <code>https://www.momo-api.cc.cd</code>。</p>
+
+        <h2 id="create-token">创建令牌</h2>
+        <p>令牌是客户端访问 API 的凭证。建议：</p>
+        <ul>
+          <li>每个客户端单独创建一个令牌，方便定位问题。</li>
+          <li>不要把令牌发给他人。</li>
+          <li>令牌泄露后立即删除并重新创建。</li>
+        </ul>
+        <p>创建路径通常在控制台的令牌 / API Key 页面：</p>
+        <pre><code>https://www.momoapi.shop/console/token</code></pre>
 
         <h2 id="token-format">令牌格式</h2>
-        <p>客户端通常要求填写 <code>API Key</code>、<code>Token</code> 或 <code>Authorization Bearer Token</code>。这些场景填同一个 API 令牌即可。</p>
+        <p>客户端通常要求填写 <code>API Key</code>、<code>Token</code> 或 <code>Authorization Bearer Token</code>。这些场景填同一个 momoapi 令牌即可。</p>
 
         <div class="copy-block">
           <div class="copy-block__meta">
@@ -425,10 +443,17 @@ gemini --version</code></pre>
 
         <h2 id="token-rules">令牌使用规则</h2>
         <ul>
-          <li>每台机器不一定都要单独建令牌，但生产环境和个人开发环境建议分开。</li>
-          <li>CLI、IDE、自动化脚本尽量使用不同令牌，方便撤销和审计。</li>
-          <li>不要把令牌发给他人。</li>
-          <li>令牌泄露后立即删除并重新创建。</li>
+          <li>个人开发机、CI、服务器建议拆分不同令牌。</li>
+          <li>CLI、IDE、自动化脚本尽量不要共用一个长期令牌。</li>
+          <li>令牌复制后立即保存，避免后续只剩旧配置却找不到原值。</li>
+        </ul>
+
+        <h2 id="balance-usage">余额与用量</h2>
+        <p>控制台可查看余额、消费记录、模型、渠道或分组相关信息。请求失败时，先确认：</p>
+        <ul>
+          <li>账号余额是否充足。</li>
+          <li>当前令牌是否启用。</li>
+          <li>当前分组是否允许所选模型。</li>
         </ul>
 
         <h2 id="rotation">轮换建议</h2>
@@ -447,7 +472,7 @@ gemini --version</code></pre>
               </tr>
               <tr>
                 <td>CI / 服务器</td>
-                <td>专门令牌，保存在密钥管理系统里。</td>
+                <td>专门令牌，保存在密钥管理系统或环境变量平台里。</td>
               </tr>
               <tr>
                 <td>团队共享</td>
@@ -462,27 +487,92 @@ gemini --version</code></pre>
   "/models-groups": {
     title: "模型与分组",
     section: "开始使用",
-    meta: "模型名、分组名、上下文、计费说明要分清。",
+    meta: "分组、fast、模型范围与不可用时的处理方式。",
     body: `
       <div class="doc">
         <h1>模型与分组</h1>
-        <p class="lead">很多问题不是客户端坏了，而是模型名、分组名或上下文上限理解错了。</p>
-
-        <h2 id="naming">模型命名</h2>
+        <h2 id="what-is-group">分组是什么</h2>
+        <p>分组决定当前请求会进入哪一类账号池，以及该池支持哪些模型、倍率和能力。</p>
+        <p>常见分组可能包含：</p>
         <ul>
-          <li>文档里优先写用户实际要填的模型名。</li>
-          <li>如果站点后台有“分组”概念，说明它和模型是否强绑定。</li>
-          <li>旧模型停用时，把旧名字直接列出来，避免用户靠猜。</li>
+          <li><code>default</code></li>
+          <li><code>gpt-plus</code></li>
+          <li><code>gpt-pro</code></li>
+          <li><code>claude-kiro</code></li>
+        </ul>
+        <p>具体名称以控制台展示为准。</p>
+
+        <h2 id="fast-tier">fast / service_tier 的理解</h2>
+        <ul>
+          <li><strong>fast</strong>：表示更快的速度档或官方 fast mode，当前按请求动态计费，不再要求单独 fast 分组。</li>
+          <li><strong>service_tier=fast</strong>：GPT / Codex fast 对应的 API 参数。</li>
+        </ul>
+        <p>如果客户端模型名或配置里包含 <code>fast</code>，系统会按请求实际 fast 状态动态计费。用户无需专门切换到 <code>*-fast</code> 分组。</p>
+
+        <h2 id="billing-notes">当前公告里的计费说明</h2>
+        <ul>
+          <li>fast 不再依赖单独的 fast 分组。</li>
+          <li>如果出现fast不可用请联系管理员。</li>
+          <li>请求启用 fast 时，系统按动态计费识别倍率。</li>
+          <li><code>gpt-5.5 fast</code> 可能有更高倍率，但不需要用户切换到单独分组。</li>
+          <li>GPT / Codex fast 通过 <code>service_tier</code>、客户端 fast 开关或 <code>/fast</code> 启用。</li>
+          <li>Claude Code fast 通过 <code>/fast</code> 启用。</li>
+        </ul>
+        <p>体感速度只作为参考：</p>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>类型</th>
+                <th>简单请求体感</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>默认</td>
+                <td>约 7 秒</td>
+              </tr>
+              <tr>
+                <td>fast</td>
+                <td>约 4-5 秒</td>
+              </tr>
+              <tr>
+                <td>spark</td>
+                <td>约 3 秒</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h2 id="codex-model-range">Codex 模型范围</h2>
+        <p>当前仓库里已经明确记录：<code>gpt-5.2-codex</code> 以及任何低于 <code>5.3</code> 的模型已下架，不能请求。当前主线可用范围大致是：</p>
+        <ul>
+          <li><code>gpt-5.4</code></li>
+          <li><code>gpt-5.5</code></li>
+        </ul>
+        <p><code>pro</code> 分组的可用模型可能不同，以控制台模型列表为准。</p>
+
+        <h2 id="image-models">生图模型</h2>
+        <p>当前公告提到：</p>
+        <ul>
+          <li><code>gpt-image-2</code> 通过 API 可用。</li>
+          <li>Codex 内部调用 skill 生图可用。</li>
+          <li>Codex 内生图和直接调用 API 生图均支持。</li>
+          <li>慢图、大图、高分辨率图建议使用流式请求和 partial images。</li>
         </ul>
 
-        <h2 id="context-limit">上下文规则</h2>
-        <p>如果站点宣传支持大上下文，必须同时告诉用户默认可用窗口、超额部分是否加价、是否需要开启特定分组。否则用户会把单次请求塞到上限，然后把所有报错都理解成客户端问题。</p>
-
-        <h2 id="fallback">推荐回退策略</h2>
+        <h2 id="model-unavailable">模型不可用时怎么办</h2>
+        <p>如果看到下面这类报错：</p>
+        <pre><code>{
+  "error": {
+    "message": "model price not configured"
+  }
+}</code></pre>
+        <p>说明当前模型没有配置价格，或者不在当前分组白名单里。处理方式：</p>
         <ol>
-          <li>先换同系列但更稳定的模型。</li>
-          <li>再缩小上下文、关闭大文件输入。</li>
-          <li>最后再判断是不是代理或风控问题。</li>
+          <li>换控制台明确列出的模型。</li>
+          <li>检查令牌所属分组。</li>
+          <li>等管理员同步模型和价格配置。</li>
         </ol>
       </div>
     `,
