@@ -472,6 +472,77 @@ pre {
   line-height: 1.7;
 }
 
+.copy-block {
+  margin: 18px 0 28px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: #fbfcfe;
+}
+
+.copy-block__meta {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+  padding: 14px 16px 0;
+}
+
+.copy-block__type {
+  color: var(--text-faint);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.copy-block__button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 88px;
+  height: 40px;
+  padding: 0 12px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: #fff;
+  color: var(--text);
+  font-size: 13px;
+  cursor: pointer;
+  transition:
+    border-color 0.2s ease,
+    color 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.copy-block__button:hover {
+  border-color: var(--line-strong);
+  background: var(--bg-soft);
+}
+
+.copy-block__button svg {
+  width: 16px;
+  height: 16px;
+  fill: currentColor;
+  flex: 0 0 auto;
+}
+
+.copy-block__button.is-copied {
+  border-color: #b7e5d3;
+  color: var(--success);
+  background: #f4fffa;
+}
+
+.copy-block__button.is-copy-error {
+  border-color: #f0b4b4;
+  color: var(--danger);
+  background: #fff6f6;
+}
+
+.copy-block__body {
+  margin: 0;
+  padding-top: 10px;
+  border: 0;
+  background: transparent;
+}
+
 .doc :not(pre) > code {
   padding: 2px 7px;
   border-radius: 8px;

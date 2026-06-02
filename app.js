@@ -254,6 +254,28 @@ const pages = {
     body: `
       <div class="doc">
         <h1>账号与令牌</h1>
+        <p class="lead">先把令牌创建、保存和填写格式弄清楚，再去配 CLI、IDE 或自动化脚本。</p>
+
+        <h2 id="token-format">令牌格式</h2>
+        <p>客户端通常要求填写 <code>API Key</code>、<code>Token</code> 或 <code>Authorization Bearer Token</code>。这些场景填同一个 API 令牌即可。</p>
+
+        <div class="copy-block">
+          <div class="copy-block__meta">
+            <span class="copy-block__type">text 文本/文字</span>
+            <button
+              class="copy-block__button"
+              type="button"
+              data-copy-text="Authorization: Bearer sk-xxxxxxxx"
+              aria-label="复制令牌格式"
+            >
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M9 9.75A2.75 2.75 0 0 1 11.75 7h6.5A2.75 2.75 0 0 1 21 9.75v8.5A2.75 2.75 0 0 1 18.25 21h-6.5A2.75 2.75 0 0 1 9 18.25zM4.5 14.25v-8.5A2.75 2.75 0 0 1 7.25 3h6.5A2.75 2.75 0 0 1 16.5 5.75v.75h-4.75A4.75 4.75 0 0 0 7 11.25V16H7.25A2.75 2.75 0 0 1 4.5 13.25z"></path>
+              </svg>
+              <span>复制</span>
+            </button>
+          </div>
+          <pre class="copy-block__body"><code>Authorization: Bearer sk-xxxxxxxx</code></pre>
+        </div>
 
         <h2 id="token-rules">令牌使用规则</h2>
         <ul>
@@ -872,12 +894,58 @@ function closeSearchModal() {
   searchModal.setAttribute("aria-hidden", "true");
 }
 
+async function copyText(text) {
+  if (navigator.clipboard?.writeText) {
+    await navigator.clipboard.writeText(text);
+    return true;
+  }
+
+  const input = document.createElement("textarea");
+  input.value = text;
+  input.setAttribute("readonly", "true");
+  input.style.position = "absolute";
+  input.style.left = "-9999px";
+  document.body.appendChild(input);
+  input.select();
+  const copied = document.execCommand("copy");
+  document.body.removeChild(input);
+  return copied;
+}
+
+async function handleCopyButton(button) {
+  const text = button.dataset.copyText;
+  if (!text) return;
+
+  const label = button.querySelector("span");
+  const original = label ? label.textContent : "";
+
+  try {
+    const copied = await copyText(text);
+    if (!copied) throw new Error("copy failed");
+    button.classList.add("is-copied");
+    if (label) label.textContent = "已复制";
+  } catch (error) {
+    button.classList.add("is-copy-error");
+    if (label) label.textContent = "复制失败";
+  }
+
+  window.setTimeout(() => {
+    button.classList.remove("is-copied", "is-copy-error");
+    if (label) label.textContent = original || "复制";
+  }, 1600);
+}
+
 window.addEventListener("hashchange", renderPage);
 
 document.addEventListener("click", (event) => {
   const closeTarget = event.target.closest("[data-close-modal='true']");
   if (closeTarget) {
     closeSearchModal();
+  }
+
+  const copyButton = event.target.closest("[data-copy-text]");
+  if (copyButton) {
+    handleCopyButton(copyButton);
   }
 });
 
