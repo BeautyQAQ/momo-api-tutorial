@@ -1352,17 +1352,78 @@ Models: gpt-5.5,gpt-5.4,gpt-5.3-codex</code></pre>
   "/other-clients": {
     title: "其他 CLI 与插件",
     section: "客户端教程",
-    meta: "给无法单开大页的客户端一个收纳页。",
+    meta: "补充 Gemini CLI 和其他轻量插件的使用提醒。",
     body: `
       <div class="doc">
         <h1>其他 CLI 与插件</h1>
-        <p class="lead">没有必要给每一个边缘客户端都单独建一套完整教程，这一页用来收纳轻量说明。</p>
+        <div class="quick-panel quick-panel--stacked">
+          <div class="quick-panel__group">
+            <strong>新人入口</strong>
+            <a class="chip-link chip-link--primary" href="https://www.momoapi.shop/" target="_blank" rel="noopener noreferrer">注册 / 登录</a>
+            <a class="chip-link" href="https://www.momoapi.shop/console/token" target="_blank" rel="noopener noreferrer">创建 API 令牌</a>
+          </div>
+          <div class="quick-panel__copy">
+            <strong>Base URL</strong>
+            <span class="copy-chip">https://www.momoapi.shop</span>
+            <button
+              class="copy-chip copy-chip--button"
+              type="button"
+              data-copy-text="https://www.momoapi.shop"
+              aria-label="复制 Base URL"
+            >
+              复制
+            </button>
+          </div>
+        </div>
 
-        <h2 id="common-pattern">共同模式</h2>
+        <p class="lead">Trae、Cursor、RooCode、Kilo Code、Continue 这类 OpenAI 兼容 IDE 客户端已经整理到 <a href="#/trae-ide-clients">Trae 等 IDE 客户端配置</a>。本页只保留 Gemini CLI 和其他轻量插件的说明。</p>
+
+        <h2 id="gemini-cli">Gemini CLI</h2>
+        <p>安装或更新 Gemini CLI：</p>
+        <pre><code>npm install -g @google/gemini-cli@latest
+gemini --version</code></pre>
+        <p>如果你只是想先确认本机命令行环境是否正常，这一步比直接排查复杂插件更省事。</p>
+
+        <div class="callout callout--tip">
+          <strong>Gemini CLI 卡住时先看客户端状态</strong>
+          <p>Gemini CLI 使用一段时间后如果明显卡住、长时间无响应，先不要直接判断成站点故障。更常见的是客户端会话状态、上下文过大，或者本机网络环境有问题。</p>
+        </div>
+
+        <ol>
+          <li>先重开一个新会话。</li>
+          <li>缩小上下文，不要一次塞太多文件和日志。</li>
+          <li>检查代理、网络和终端连接状态。</li>
+          <li>必要时先改用 IDE 插件或其他客户端继续工作。</li>
+        </ol>
+
+        <h2 id="roocode-kilo">RooCode / Kilo</h2>
+        <p>RooCode、Kilo Code 这类 IDE 插件通常带有更长的系统提示词，也更容易自动读取工作区上下文。实际表现一般是：</p>
         <ul>
-          <li>OpenAI 兼容客户端：通常填 <code>API Key + Base URL(/v1)</code>。</li>
-          <li>Anthropic 兼容客户端：通常填 <code>Auth Token + 根地址</code>。</li>
-          <li>如果插件支持自定义 headers，再单独补充组织 ID、路由头或版本头。</li>
+          <li>Token 消耗比纯命令行工具更高。</li>
+          <li>相同任务下费用更难预测。</li>
+          <li>大项目更容易触发上下文过大。</li>
+        </ul>
+        <p>使用这类插件时，建议优先控制上下文规模，而不是默认让插件读取整个仓库。</p>
+        <ol>
+          <li>只打开当前任务相关目录。</li>
+          <li>明确要求插件不要读取无关文件。</li>
+          <li>把大任务拆成多个小任务。</li>
+          <li>定期新开会话或清理上下文。</li>
+        </ol>
+
+        <h2 id="model-experience">模型体验差异</h2>
+        <p>不同客户端、不同模型适合的工作并不一样：</p>
+        <ul>
+          <li>轻量问答、前端小改动：优先考虑响应更快的模型。</li>
+          <li>复杂代码修改：优先选代码能力更强、上下文更稳定的模型。</li>
+          <li>长时间连续迭代：重点看上下文压缩、费用和限流表现。</li>
+        </ul>
+        <p>如果感觉模型突然变慢或不稳定，不要只判断模型本身，也同时检查下面几项：</p>
+        <ul>
+          <li>当前分组是否拥挤。</li>
+          <li>是否触发限流。</li>
+          <li>网络是否断流或代理不稳定。</li>
+          <li>客户端是否携带了过多上下文。</li>
         </ul>
       </div>
     `,
@@ -1370,136 +1431,438 @@ Models: gpt-5.5,gpt-5.4,gpt-5.3-codex</code></pre>
   "/cc-switch": {
     title: "CC Switch",
     section: "客户端教程",
-    meta: "给多配置切换器的独立说明页。",
+    meta: "用 CC Switch 管理 Claude Code 的多套中转配置。",
     body: `
       <div class="doc">
         <h1>CC Switch</h1>
-        <p class="lead">这类配置切换器的核心价值是让你在不同中转站、不同模型组之间快速切换，而不是每次手工改环境变量。</p>
+        <div class="quick-panel quick-panel--stacked">
+          <div class="quick-panel__group">
+            <strong>新人入口</strong>
+            <a class="chip-link chip-link--primary" href="https://www.momoapi.shop/" target="_blank" rel="noopener noreferrer">注册 / 登录</a>
+            <a class="chip-link" href="https://www.momoapi.shop/console/token" target="_blank" rel="noopener noreferrer">创建 API 令牌</a>
+          </div>
+          <div class="quick-panel__copy">
+            <strong>Base URL</strong>
+            <span class="copy-chip">https://www.momoapi.shop</span>
+            <button
+              class="copy-chip copy-chip--button"
+              type="button"
+              data-copy-text="https://www.momoapi.shop"
+              aria-label="复制 Base URL"
+            >
+              复制
+            </button>
+          </div>
+        </div>
 
-        <h2 id="profile-fields">常用字段</h2>
+        <p class="lead">CC Switch 用来管理 Claude Code 的多套环境配置，比如官方、不同中转站、不同 Token。它适合不想手动改环境变量的用户。</p>
+
+        <h2 id="purpose">作用</h2>
+        <p>如果你经常在不同配置之间切换，CC Switch 比直接改 shell 环境变量更稳定，也更容易排错。</p>
+
+        <h2 id="basic-steps">基本步骤</h2>
+        <ol>
+          <li>下载并安装 CC Switch。</li>
+          <li>新建配置。</li>
+          <li>填写 Token 和 Base URL。</li>
+          <li>保存并切换到该配置。</li>
+          <li>完全退出后重新打开 Claude Code。</li>
+        </ol>
+
+        <h2 id="momoapi-config">momoapi 配置</h2>
+        <pre><code>Token: sk-你的令牌
+Base URL: https://www.momoapi.shop</code></pre>
+        <p>如果配置项区分 Anthropic / OpenAI，Claude Code 选择 Anthropic 相关配置；Codex 或其他 OpenAI 兼容客户端选择 OpenAI 兼容配置，并按客户端要求决定是否补 <code>/v1</code>。</p>
+
+        <h2 id="fast-context">fast 与百万上下文</h2>
+        <p>先保证基础项正确：</p>
+        <pre><code>Base URL: https://www.momoapi.shop
+Token: sk-你的令牌</code></pre>
+        <p>如果 CC Switch 里有分组或模型选择，优先选择控制台明确可用的普通分组和目标 Claude 模型。</p>
         <ul>
-          <li>配置名称</li>
-          <li>Base URL</li>
-          <li>Auth Token</li>
-          <li>默认模型</li>
+          <li>fast 按请求动态计费。</li>
+          <li>Claude Code 内可直接执行 <code>/fast</code>。</li>
+          <li>GPT / Codex API 层对应的是 <code>service_tier=fast</code>。</li>
         </ul>
+        <p>GPT 超过 <code>272k</code> 的上下文部分会额外计费。完整说明见 <a href="#/fast-context">fast 与 1M 上下文</a>。</p>
+
+        <h2 id="quick-setup">懒人版快速配置</h2>
+        <p>最少只需要确认两项：</p>
+        <pre><code>请求地址：https://www.momoapi.shop
+API Key：sk-你的令牌</code></pre>
+        <p>保存后切换到该配置，并完全退出再重新打开 Claude Code。</p>
+
+        <h2 id="switch-not-effective">切换后没生效</h2>
+        <ol>
+          <li>确认已经切换到正确配置。</li>
+          <li>确认 Claude Code 已经完全重启。</li>
+          <li>检查 Token 是否复制完整。</li>
+          <li>检查 Base URL 是否多了路径、空格或换行。</li>
+          <li>检查是否仍然有旧环境变量覆盖了 CC Switch 配置。</li>
+        </ol>
+
+        <h2 id="env-relation">与环境变量的关系</h2>
+        <p>如果系统环境变量里已经设置了 <code>ANTHROPIC_BASE_URL</code> 或 <code>ANTHROPIC_AUTH_TOKEN</code>，可能会覆盖或干扰 CC Switch。排错时建议只保留一种配置方式。</p>
       </div>
     `,
   },
   "/cherry-studio": {
     title: "Cherry Studio",
     section: "客户端教程",
-    meta: "桌面聚合客户端通常按 OpenAI 兼容提供商接入。",
+    meta: "Cherry Studio 作为 OpenAI 兼容提供商接入 momoapi。",
     body: `
       <div class="doc">
         <h1>Cherry Studio</h1>
+        <div class="quick-panel quick-panel--stacked">
+          <div class="quick-panel__group">
+            <strong>新人入口</strong>
+            <a class="chip-link chip-link--primary" href="https://www.momoapi.shop/" target="_blank" rel="noopener noreferrer">注册 / 登录</a>
+            <a class="chip-link" href="https://www.momoapi.shop/console/token" target="_blank" rel="noopener noreferrer">创建 API 令牌</a>
+          </div>
+          <div class="quick-panel__copy">
+            <strong>Base URL</strong>
+            <span class="copy-chip">https://www.momoapi.shop</span>
+            <button
+              class="copy-chip copy-chip--button"
+              type="button"
+              data-copy-text="https://www.momoapi.shop"
+              aria-label="复制 Base URL"
+            >
+              复制
+            </button>
+          </div>
+        </div>
+
         <p class="lead">Cherry Studio 这类桌面聚合客户端，一般把中转站配置成自定义 OpenAI 提供商即可。</p>
 
-        <h2 id="cherry-fill">填写方式</h2>
-        <pre><code>Provider: Custom OpenAI
-Base URL: https://www.momoapi.shop/v1
-API Key: sk-your-token</code></pre>
+        <h2 id="openai-provider">新建 OpenAI 兼容提供商</h2>
+        <p>在 Cherry Studio 中添加自定义 OpenAI 提供商：</p>
+        <pre><code>API Key: sk-你的令牌
+Base URL: https://www.momoapi.shop/v1</code></pre>
+        <p>如果这里直接报 <code>failed to fetch</code>，优先按 Cherry Studio 客户端自身问题处理，先升级到最新版再试。这个报错通常不是 momoapi 服务端能力问题。</p>
+
+        <h2 id="model-list">模型列表</h2>
+        <p>如果客户端支持拉取模型列表，可以先刷新模型；如果刷新失败，手动填写控制台支持的模型名即可。</p>
+
+        <h2 id="test-advice">测试建议</h2>
+        <p>先用轻量模型发一句最小请求：</p>
+        <pre><code>你好，请只回复 OK</code></pre>
+        <p>如果成功，再切换到目标模型正式使用。</p>
       </div>
     `,
   },
   "/workflows": {
     title: "常用命令与工作流",
     section: "进阶",
-    meta: "文档不只是命令列表，还要告诉用户什么时候用。",
+    meta: "把初始化、上下文控制和安全改动流程写清楚。",
     body: `
       <div class="doc">
         <h1>常用命令与工作流</h1>
-        <p class="lead">教程最有价值的部分不是命令本身，而是让用户知道在什么阶段该用什么组合。</p>
+        <p class="lead">教程真正有价值的部分，不只是命令本身，而是让用户知道在什么阶段该用什么组合。</p>
 
-        <h2 id="starter-flow">新项目接入流</h2>
-        <ol>
-          <li>创建账号和令牌。</li>
-          <li>确认 Base URL 和模型名。</li>
-          <li>用 <code>curl /models</code> 做最小验证。</li>
-          <li>再去配置 CLI 或 IDE。</li>
-        </ol>
+        <h2 id="init-project">开始项目前先初始化</h2>
+        <p>不要一上来就让 AI 写大量代码。建议先让它理解项目：</p>
+        <pre><code>请阅读项目结构，生成一份简短的项目说明和开发约束。</code></pre>
+        <p>Claude Code 可以直接使用：</p>
+        <pre><code>/init</code></pre>
+        <p>这类初始化文档通常应该包含：</p>
+        <ul>
+          <li>项目目标。</li>
+          <li>目录结构。</li>
+          <li>构建和测试命令。</li>
+          <li>代码风格。</li>
+          <li>禁止事项。</li>
+        </ul>
 
-        <h2 id="incident-flow">故障排查流</h2>
-        <ol>
-          <li>先看错误码。</li>
-          <li>再查 Base URL 和模型名。</li>
-          <li>然后查 IP、代理、配额。</li>
-        </ol>
+        <h2 id="use-context">用 @ 指定上下文</h2>
+        <p>当你已经知道问题和某些文件相关，直接引用文件或目录：</p>
+        <pre><code>请重点检查 @src/api 和 @src/components/Login.vue</code></pre>
+        <p>这比让模型全局猜更稳定，也更省 token。</p>
+
+        <h2 id="complex-task">分步骤处理复杂任务</h2>
+        <p>推荐提示词结构：</p>
+        <pre><code>先分析原因，不要修改代码。
+确认方案后，只改最小范围。
+改完后运行相关测试，并总结风险。</code></pre>
+
+        <h2 id="clean-long-chat">长会话及时清理</h2>
+        <p>上下文太大时，新开会话或清理上下文。不要把无关日志、完整构建输出、超长文件一次性塞进去。</p>
+
+        <h2 id="claude-commands">常用 Claude Code 命令</h2>
+        <p>更完整的命令说明见 <a href="#/claude-usage">Claude Code 实用命令</a>。</p>
+        <pre><code>/clear
+/compact
+/context
+/model
+/status
+/doctor
+/cost
+/export
+/add-dir
+/mcp</code></pre>
+
+        <h2 id="safe-edit-example">示例：安全地让 AI 改代码</h2>
+        <pre><code>请先阅读相关代码并说明调用链，不要修改。
+确认问题后，只做最小改动。
+改完后运行最相关的测试。
+最后总结改动文件、验证结果和潜在风险。</code></pre>
+
+        <h2 id="incident-analysis-example">示例：排查线上报错</h2>
+        <pre><code>这是用户看到的报错：...
+请根据日志判断是客户端配置、网关、调度还是上游问题。
+先给结论和证据，不要直接改代码。</code></pre>
       </div>
     `,
   },
   "/network-proxy": {
-    title: "网络与代理",
+    title: "网络问题",
     section: "进阶",
-    meta: "把代理、DNS、客户端配置分开讲，避免互相混淆。",
+    meta: "把命令行代理、Git 和 npm 排查拆开讲。",
     body: `
       <div class="doc">
-        <h1>网络与代理</h1>
-        <p class="lead">网络问题经常被误判成账号问题。把代理、出口 IP、DNS 和客户端配置分开看，排查会快很多。</p>
+        <h1>网络问题</h1>
+        <p class="lead">网络问题经常被误判成账号问题。把代理、Git、npm 和客户端配置分开看，排查会快很多。</p>
 
-        <h2 id="proxy-choice">什么时候需要代理</h2>
-        <ul>
-          <li>客户端本身无法直连你的中转站。</li>
-          <li>公司网络限制了出站访问。</li>
-          <li>当前网络对目标域名解析异常或连接不稳定。</li>
-        </ul>
+        <h2 id="npm-mirror">npm 镜像</h2>
+        <p>如果 npm 下载慢，可临时改用镜像源：</p>
+        <pre><code>npm config set registry https://registry.npmmirror.com</code></pre>
+        <p>恢复官方源：</p>
+        <pre><code>npm config set registry https://registry.npmjs.org</code></pre>
 
-        <h2 id="network-diagnosis">先看哪几项</h2>
-        <ul>
-          <li>网页控制台可用，但本机 CLI 403。</li>
-          <li>换网络后才开始失败。</li>
-          <li>同一令牌在不同设备上表现不一致。</li>
-          <li>命令行能通，但 IDE 内置终端或插件请求失败。</li>
-        </ul>
+        <h2 id="install-fail-order">安装国外包失败的排查顺序</h2>
+        <ol>
+          <li>浏览器能否访问目标站。</li>
+          <li>命令行 <code>curl</code> 是否能访问目标站。</li>
+          <li>npm / git 是否单独配置了错误代理。</li>
+          <li>公司网络或系统代理是否覆盖了终端代理。</li>
+          <li>换网络后是否恢复。</li>
+        </ol>
       </div>
     `,
   },
   "/troubleshooting": {
     title: "常见问题排查",
     section: "进阶",
-    meta: "按错误码和现象组织，而不是按客户端组织。",
+    meta: "按错误码和典型症状组织的排错页。",
     body: `
       <div class="doc">
         <h1>常见问题排查</h1>
+        <div class="quick-panel quick-panel--stacked">
+          <div class="quick-panel__group">
+            <strong>新人入口</strong>
+            <a class="chip-link chip-link--primary" href="https://www.momoapi.shop/" target="_blank" rel="noopener noreferrer">注册 / 登录</a>
+            <a class="chip-link" href="https://www.momoapi.shop/console/token" target="_blank" rel="noopener noreferrer">创建 API 令牌</a>
+          </div>
+          <div class="quick-panel__copy">
+            <strong>Base URL</strong>
+            <span class="copy-chip">https://www.momoapi.shop</span>
+            <button
+              class="copy-chip copy-chip--button"
+              type="button"
+              data-copy-text="https://www.momoapi.shop"
+              aria-label="复制 Base URL"
+            >
+              复制
+            </button>
+          </div>
+        </div>
+
         <p class="lead">排错页应该是用户最容易跳转到的一页，所以要按错误码和现象组织，而不是按产品分类。</p>
 
         <h2 id="error-401">401 Unauthorized</h2>
+        <p>常见原因：</p>
         <ul>
-          <li>令牌输错。</li>
-          <li>令牌被删除或轮换后仍在用旧值。</li>
-          <li>环境变量里夹了空格或换行。</li>
+          <li>Token 填错。</li>
+          <li>Token 被删除或禁用。</li>
+          <li>复制时多了空格、换行。</li>
+          <li>客户端没有按 <code>Bearer</code> 方式发送。</li>
         </ul>
+        <p>处理：重新创建令牌，并完整复制。</p>
+
+        <h2 id="invalid-token">令牌无效</h2>
+        <p>如果客户端提示令牌无效，先确认不是环境变量残留或配置位置错误。</p>
+        <p>Windows PowerShell 检查：</p>
+        <pre><code>$Env:ANTHROPIC_AUTH_TOKEN
+$Env:ANTHROPIC_BASE_URL
+$Env:OPENAI_API_KEY
+$Env:OPENAI_BASE_URL</code></pre>
+        <p>macOS / Linux 检查：</p>
+        <pre><code>echo "$ANTHROPIC_AUTH_TOKEN"
+echo "$ANTHROPIC_BASE_URL"
+echo "$OPENAI_API_KEY"
+echo "$OPENAI_BASE_URL"</code></pre>
+        <p>如果显示旧地址或旧 token，先清理后重新打开终端。</p>
 
         <h2 id="error-403">403 Forbidden</h2>
+        <p>常见原因：</p>
         <ul>
-          <li>风控策略拦截了当前网络。</li>
-          <li>代理出口质量差，或当前 IP 被上游误判为异常。</li>
+          <li>访问 IP 被 Cloudflare 或安全规则拦截。</li>
+          <li>代理 IP 风险较高。</li>
+          <li>当前路径或接口不允许访问。</li>
           <li>请求头、模型权限或账户状态不符合当前接口要求。</li>
         </ul>
+        <p>处理：</p>
+        <ol>
+          <li>先确认账号已注册、已登录、令牌可用。</li>
+          <li>重新检查当前客户端填写的 Base URL 和模型。</li>
+          <li>换当前网络、代理出口或节点后重试。</li>
+          <li>先访问 <code>https://www.momoapi.shop</code> 确认主站本身是否可达。</li>
+          <li>不要用脚本高频重试 403 请求，这只会提高拦截概率。</li>
+        </ol>
 
         <h2 id="error-404">404 Not Found</h2>
+        <p>通常是 Base URL 填错。</p>
+        <p>OpenAI 兼容客户端一般填：</p>
+        <pre><code>https://www.momoapi.shop/v1</code></pre>
+        <p>Claude Code 类 Anthropic 配置一般填：</p>
+        <pre><code>https://www.momoapi.shop</code></pre>
+        <p>不要把完整接口路径当 Base URL，例如不要填：</p>
+        <pre><code>https://www.momoapi.shop/v1/responses</code></pre>
+
+        <h2 id="error-400">400 Bad Request</h2>
+        <p>常见原因：</p>
         <ul>
-          <li>OpenAI 兼容客户端少了 <code>/v1</code>。</li>
-          <li>Anthropic 兼容客户端误加了 <code>/v1</code>。</li>
-          <li>Base URL 里多拼了一层具体接口路径。</li>
+          <li>客户端会话状态异常。</li>
+          <li>请求参数不符合模型要求。</li>
+          <li>上下文里引用了已失效的历史 item。</li>
+          <li>输入文本超出接口限制。</li>
         </ul>
+        <p>处理：</p>
+        <ol>
+          <li>先 <code>/clear</code> 新开会话。</li>
+          <li>如果仍然失败，减少输入长度。</li>
+          <li>检查是否使用了模型不支持的参数。</li>
+          <li>把服务端返回的 <code>message</code> 和 <code>param</code> 一起看，不要只看状态码。</li>
+        </ol>
+        <p>如果需要恢复旧会话内容，可以让 Claude Code 读取本地 <code>.claude</code> 目录中的历史文件，但不要在异常会话里继续堆上下文。</p>
 
         <h2 id="error-429">429 Too Many Requests</h2>
+        <p>表示当前账号池或上游账号触发限流。处理：</p>
         <ul>
-          <li>请求过快。</li>
-          <li>站点限流。</li>
-          <li>账户余额或配额不足。</li>
+          <li>等待限流恢复。</li>
+          <li>换模型或分组。</li>
+          <li>降低并发。</li>
+          <li>不要用脚本密集重试。</li>
         </ul>
 
-        <h2 id="error-503">503 Service Unavailable</h2>
+        <h2 id="error-503">503 Service temporarily unavailable</h2>
+        <p>表示当前请求没有可用上游，可能是模型、分组、账号池临时不可用，也可能是客户端选了错误分组，导致请求进入了不支持该模型的账号池。</p>
+        <p>处理：</p>
+        <ol>
+          <li>确认模型是否在控制台可用。</li>
+          <li>确认当前令牌或客户端选择的分组是否支持该模型，不确定时先换普通可用分组测试。</li>
+          <li>换一个同系列模型。</li>
+          <li>如果大量出现，等待服务端账号池恢复。</li>
+        </ol>
+
+        <h2 id="capacity">selected model is at capacity</h2>
+        <p>这是官方模型算力不足或上游拥挤导致的提示，通常不是 token 或 Base URL 配错。</p>
+        <ol>
+          <li>直接继续或稍后重试。</li>
+          <li>换同系列模型。</li>
+          <li>降低并发。</li>
+          <li>如果只在某个分组复现，换分组测试。</li>
+        </ol>
+
+        <h2 id="stream-disconnect">decode response body error / stream disconnected</h2>
+        <p>常见于流式请求中途被 CDN、客户端或网络断开。处理：</p>
         <ul>
-          <li>上游模型拥挤。</li>
-          <li>当前分组临时不可用。</li>
-          <li>模型和调用能力不匹配。</li>
+          <li>换网络或线路。</li>
+          <li>降低单次请求上下文大小。</li>
+          <li>尽量使用支持 SSE 的客户端。</li>
+          <li>如果是生图长请求，等待服务端保活逻辑完成后再重试。</li>
         </ul>
 
-        <h2 id="oversized-context">上下文太大</h2>
-        <p>先缩小输入文件、只保留必要日志，再判断是否真的需要长上下文。很多“模型崩了”的反馈，本质只是把过量内容一次性塞给了服务。</p>
+        <h2 id="request-timeout">request timed out / Request Timed Out</h2>
+        <p>请求超时通常和网络、代理、长任务或上游响应慢有关。处理：</p>
+        <ol>
+          <li>先用小请求测试同一令牌和同一模型。</li>
+          <li>降低上下文长度或减少图片数量。</li>
+          <li>换网络或备用线路。</li>
+          <li>如果只有生图长任务超时，等待服务端流式保活或稍后重试。</li>
+        </ol>
+
+        <h2 id="image-timeout">生图超时</h2>
+        <p>可能超时的图片、过大分辨率图片、多图请求，不建议走普通非流式等待。</p>
+        <p>建议：</p>
+        <ul>
+          <li>使用支持流式请求的客户端。</li>
+          <li>开启 partial images。</li>
+          <li>减少单次图片数量或降低分辨率。</li>
+          <li>不要在客户端超时后立即高频重试。</li>
+        </ul>
+
+        <h2 id="oversized-context">context too large</h2>
+        <p>上下文超过模型限制。处理：</p>
+        <ul>
+          <li>新开会话。</li>
+          <li>减少附加文件。</li>
+          <li>让 AI 只读取关键文件。</li>
+          <li>把大日志裁剪成关键片段。</li>
+        </ul>
+        <p>Claude Code 里可以用：</p>
+        <pre><code>/clear
+/compact
+/context</code></pre>
+
+        <h2 id="api-connect-error">API connect Error</h2>
+        <p>连接类错误一般不是模型能力问题，而是网络或地址问题。检查：</p>
+        <ul>
+          <li>Base URL 是否正确。</li>
+          <li>本地代理是否可用。</li>
+          <li>DNS 是否能解析。</li>
+          <li>公司网络、防火墙、杀毒软件是否拦截。</li>
+          <li>Cloudflare 是否返回 403、522、526 等错误。</li>
+        </ul>
+
+        <h2 id="gemini-stuck">Gemini CLI 卡住或 400</h2>
+        <p>如果 Gemini CLI 使用一段时间后卡住、停止响应或报 400：</p>
+        <ul>
+          <li>先重开会话。</li>
+          <li>检查网络代理。</li>
+          <li>降低上下文大小。</li>
+          <li>如果持续复现，换用 IDE 插件或其他客户端完成当前任务。</li>
+        </ul>
+
+        <h2 id="roo-kilo-cost">Kilo / Roo Token 消耗过快</h2>
+        <p>RooCode、Kilo 等插件经常内置较长提示词，并会自动读取较多上下文。这通常属于客户端设计问题，不一定是 momoapi 配置错误。</p>
+        <p>处理：</p>
+        <ol>
+          <li>限制工作区范围。</li>
+          <li>明确要求只读取相关文件。</li>
+          <li>减少自动索引目录。</li>
+          <li>复杂任务拆开做。</li>
+        </ol>
+
+        <h2 id="npm-git-fail">npm / git 安装失败</h2>
+        <p>参考 <a href="#/network-proxy">网络与代理</a>，先确认命令行能访问目标站点，再安装依赖。</p>
+
+        <h2 id="fallback-official">跳转官方，没有走 momoapi</h2>
+        <p>Claude Code 出现官方登录或官方扣费倾向时，通常是配置没生效。</p>
+        <p>处理顺序：</p>
+        <ol>
+          <li>优先用 CC Switch 重新切换配置。</li>
+          <li>检查 <code>.claude.json</code> 是否完成 onboarding。</li>
+          <li>检查 <code>ANTHROPIC_BASE_URL</code> 是否为 <code>https://www.momoapi.shop</code>。</li>
+          <li>完全退出 Claude Code 后重启。</li>
+        </ol>
+
+        <h2 id="safety-block">敏感词或安全拦截</h2>
+        <p>如果请求被安全系统拦截，说明内容触发了平台或上游安全规则。处理方式是改写为合规需求，不要尝试绕过安全限制。</p>
+
+        <h2 id="claude-version">Claude Code 版本异常</h2>
+        <p>如果新版本表现异常，可以先检查版本：</p>
+        <pre><code>claude --version</code></pre>
+        <p>必要时重新安装：</p>
+        <pre><code>npm uninstall -g @anthropic-ai/claude-code
+npm install -g @anthropic-ai/claude-code@latest</code></pre>
+        <p>如果某个具体版本出现会话割裂、输出异常等问题，可以临时回退到上一个稳定版本：</p>
+        <pre><code>npm install -g @anthropic-ai/claude-code@版本号</code></pre>
+
+        <h2 id="disable-autoupdate">关闭 Claude Code 自动更新</h2>
+        <p>如果需要固定版本，可在环境变量或 Claude Code 配置里加入：</p>
+        <pre><code>DISABLE_AUTOUPDATER=1</code></pre>
+        <p>固定版本适合排查问题，但长期使用仍建议关注官方更新和安全修复。</p>
       </div>
     `,
   },
