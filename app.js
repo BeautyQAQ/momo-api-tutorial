@@ -961,62 +961,372 @@ GPT API：service_tier=fast
   "/claude-usage": {
     title: "Claude Code 实用命令",
     section: "客户端教程",
-    meta: "按真实开发动作整理，而不是简单罗列命令帮助。",
+    meta: "按实际工作流整理 Claude Code 常用命令和输入方式。",
     body: `
       <div class="doc">
         <h1>Claude Code 实用命令</h1>
-        <p class="lead">把常用命令按用途整理，用户更容易建立工作流。</p>
+        
+        <div class="quick-panel quick-panel--stacked">
+          <div class="quick-panel__group">
+            <strong>新人入口</strong>
+            <a class="chip-link chip-link--primary" href="https://www.momoapi.shop/" target="_blank" rel="noopener noreferrer">注册 / 登录</a>
+            <a class="chip-link" href="https://www.momoapi.shop/console/token" target="_blank" rel="noopener noreferrer">创建 API 令牌</a>
+          </div>
+          <div class="quick-panel__copy">
+            <strong>Base URL</strong>
+            <span class="copy-chip">https://www.momoapi.shop</span>
+            <button
+              class="copy-chip copy-chip--button"
+              type="button"
+              data-copy-text="https://www.momoapi.shop"
+              aria-label="复制 Base URL"
+            >
+              复制
+            </button>
+          </div>
+        </div>
 
-        <h2 id="session">会话控制</h2>
-        <pre><code>/init
-/clear
-/compact</code></pre>
+        <p>这页整理 Claude Code 日常使用中最常见的命令、输入方式和上下文管理方法。核心原则是：先给足上下文，再让模型分步骤执行。</p>
 
-        <h2 id="context">上下文注入</h2>
-        <pre><code>@package.json
-@src/index.ts
-@docs/api.md</code></pre>
-
-        <h2 id="shell">终端辅助</h2>
-        <pre><code>!git status
-!npm test
-!rg "TODO" src</code></pre>
-
-        <h2 id="usage-tips">使用建议</h2>
+        <h2 id="init-project">初始化项目</h2>
+        <p>进入项目目录后，先执行：</p>
+        <pre><code>/init</code></pre>
+        <p>Claude Code 会根据当前项目生成 <code>CLAUDE.md</code>。建议让它记录：</p>
         <ul>
-          <li>每轮对话尽量限制目标，避免把多个大任务塞在一条指令里。</li>
-          <li>上下文太大时，先清理无关文件。</li>
-          <li>卡住时先 <code>/compact</code>，再继续当前任务。</li>
+          <li>项目目标和主要目录。</li>
+          <li>构建、测试、启动命令。</li>
+          <li>代码风格和禁止事项。</li>
+          <li>部署、数据库、外部服务等注意点。</li>
         </ul>
+        <p>如果项目已有类似文档，可以让 Claude Code 先阅读再补充，不要重复生成互相冲突的说明。</p>
+
+        <h2 id="context-at">用 @ 提供上下文</h2>
+        <p>当问题和具体文件有关，直接引用路径：</p>
+        <pre><code>请检查 @src/api/auth.ts 和 @src/components/Login.vue，找出登录失败原因。</code></pre>
+        <p>也可以引用目录：</p>
+        <pre><code>请只阅读 @src/server/ 下面和支付回调相关的文件，先总结调用链，不要改代码。</code></pre>
+        <p>这样比让模型全局猜更稳定，也能减少无关 token 消耗。</p>
+
+        <h2 id="shell-bang">用 ! 运行 Bash 命令</h2>
+        <p>在 Claude Code 交互里可以让它运行命令，例如：</p>
+        <pre><code>!git status</code></pre>
+        <p>常用检查命令：</p>
+        <pre><code>git status
+npm test
+npm run build
+rg "关键字" .</code></pre>
+
+        <div class="callout callout--warning">
+          <strong>权限提醒</strong>
+          <p>让模型运行命令前，确认当前目录可信。涉及删除、重启、数据库写入、部署的命令要格外谨慎。</p>
+        </div>
+
+        <h2 id="clear-compact">清理和压缩上下文</h2>
+        <p>长会话会让上下文变大，模型可能开始遗漏细节。常用命令：</p>
+        <pre><code>/clear</code></pre>
+        <p>清空当前上下文，适合开始全新任务。</p>
+        <pre><code>/compact</code></pre>
+        <p>压缩已有上下文，适合长任务中途保留摘要继续做。</p>
+        <pre><code>/context</code></pre>
+        <p>查看当前上下文使用情况。</p>
+
+        <h2 id="slash-commands">常用斜杠命令</h2>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>命令</th>
+                <th>用途</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td><code>/help</code></td><td>查看帮助和可用命令</td></tr>
+              <tr><td><code>/init</code></td><td>初始化项目说明文件</td></tr>
+              <tr><td><code>/clear</code></td><td>清空上下文，开启新任务</td></tr>
+              <tr><td><code>/compact</code></td><td>压缩上下文并继续当前任务</td></tr>
+              <tr><td><code>/context</code></td><td>查看上下文使用情况</td></tr>
+              <tr><td><code>/model</code></td><td>切换模型</td></tr>
+              <tr><td><code>/status</code></td><td>查看账户、模型、版本和连接状态</td></tr>
+              <tr><td><code>/doctor</code></td><td>诊断本地 Claude Code 安装</td></tr>
+              <tr><td><code>/cost</code></td><td>查看当前会话费用和时长</td></tr>
+              <tr><td><code>/export</code></td><td>导出当前会话，便于复盘</td></tr>
+              <tr><td><code>/add-dir</code></td><td>添加新的工作目录</td></tr>
+              <tr><td><code>/mcp</code></td><td>管理 MCP 服务</td></tr>
+              <tr><td><code>/permissions</code></td><td>管理工具访问权限</td></tr>
+              <tr><td><code>/review</code></td><td>审查当前分支或 PR</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>不同版本的 Claude Code 命令可能略有差异，以 <code>/help</code> 显示为准。</p>
+
+        <h2 id="basic-interaction">基本交互方式</h2>
+        <h3 id="analyze-first">先分析再修改</h3>
+        <p>推荐这样提需求：</p>
+        <pre><code>先分析原因，不要修改代码。确认方案后，只改最小范围，并说明需要验证的命令。</code></pre>
+        <p>这样可以避免模型直接大范围改动。</p>
+
+        <h3 id="limit-scope">限定范围</h3>
+        <pre><code>只允许修改 src/api 目录，不要改 UI 和数据库迁移。</code></pre>
+        <p>范围明确后，模型更容易保持改动聚焦。</p>
+
+        <h3 id="split-work">分批处理</h3>
+        <p>复杂任务不要一次塞满所有要求。推荐拆成：</p>
+        <ol>
+          <li>复现或定位问题。</li>
+          <li>给出改动方案。</li>
+          <li>实施最小修复。</li>
+          <li>运行相关测试。</li>
+          <li>总结风险和回滚方式。</li>
+        </ol>
+
+        <h2 id="directory-ops">文件夹操作</h2>
+        <p>如果要处理某个新目录，先进入目录再启动：</p>
+        <pre><code>cd /path/to/project
+claude</code></pre>
+        <p>或者在 Claude Code 里使用：</p>
+        <pre><code>/add-dir</code></pre>
+        <p>只把必要目录加入上下文，不要把无关大目录、依赖目录或日志目录全部加入。</p>
+
+        <h2 id="drag-paste">拖拽文件和粘贴</h2>
+        <p>多数终端支持把文件拖进窗口，自动插入路径。对截图、日志、报错：</p>
+        <ul>
+          <li>能复制文本就复制文本。</li>
+          <li>长日志只保留关键上下文。</li>
+          <li>不要一次粘贴超大构建输出。</li>
+        </ul>
+
+        <h2 id="multiline">换行输入</h2>
+        <p>不同终端换行方式不同：</p>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>终端</th>
+                <th>常见换行方式</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>PowerShell</td><td><code>Alt + Enter</code></td></tr>
+              <tr><td>CMD</td><td><code>Alt + Enter</code></td></tr>
+              <tr><td>WSL / Bash</td><td><code>Ctrl + Enter</code> 或终端自带多行输入</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>如果不确定，先用短文本测试。</p>
+
+        <h2 id="danger-mode">危险模式</h2>
+        <p>Claude Code 支持跳过权限确认：</p>
+        <pre><code>claude --dangerously-skip-permissions</code></pre>
+        <p>只建议在可信仓库、可信机器上使用。生产服务器、含密钥目录、数据库机器不要随便使用危险模式。</p>
+
+        <h2 id="deep-thinking">深度思考模式</h2>
+        <p>部分版本可以用 <code>Shift + Tab</code> 切换思考模式。复杂任务可以要求：</p>
+        <pre><code>这个问题涉及线上风险，请先详细分析边界条件，再给出最小改动方案。</code></pre>
+
+        <h2 id="shortcuts">快捷键建议</h2>
+        <ul>
+          <li>需要开始新任务：用 <code>/clear</code>。</li>
+          <li>上下文变大但任务未结束：用 <code>/compact</code>。</li>
+          <li>发现模型开始忘细节：补充关键事实，不要只说“继续”。</li>
+          <li>做线上操作前：要求模型先列出将执行的命令。</li>
+        </ul>
+
+        <h2 id="example-task">示例任务</h2>
+        <pre><code>把当前文件夹里所有不规范的文件名改成英文短横线命名。
+要求：
+1. 先列出计划改名列表。
+2. 不改文件内容。
+3. 保留原编号。
+4. 确认后再执行。</code></pre>
       </div>
     `,
   },
   "/trae-ide-clients": {
     title: "Trae 等 IDE 客户端",
     section: "客户端教程",
-    meta: "统一按 OpenAI Compatible 思路填写。",
+    meta: "适用于 OpenAI Compatible IDE 和插件的统一配置说明。",
     body: `
       <div class="doc">
-        <h1>Trae 等 IDE 客户端</h1>
-        <p class="lead">Trae、Cursor、RooCode、Continue、Kilo 这一类客户端，大多能按 OpenAI Compatible 方式配置。</p>
+        <h1>Trae 等 IDE 客户端配置</h1>
 
-        <h2 id="fill-form">快速填写</h2>
-        <pre><code>Base URL: https://www.momoapi.shop/v1
-API Key: sk-your-token
-Model: 你的目标模型名</code></pre>
+        <div class="quick-panel quick-panel--stacked">
+          <div class="quick-panel__group">
+            <strong>新人入口</strong>
+            <a class="chip-link chip-link--primary" href="https://www.momoapi.shop/" target="_blank" rel="noopener noreferrer">注册 / 登录</a>
+            <a class="chip-link" href="https://www.momoapi.shop/console/token" target="_blank" rel="noopener noreferrer">创建 API 令牌</a>
+          </div>
+          <div class="quick-panel__copy">
+            <strong>Base URL</strong>
+            <span class="copy-chip">https://www.momoapi.shop</span>
+            <button
+              class="copy-chip copy-chip--button"
+              type="button"
+              data-copy-text="https://www.momoapi.shop"
+              aria-label="复制 Base URL"
+            >
+              复制
+            </button>
+          </div>
+        </div>
 
-        <h2 id="provider-choice">提供商类型</h2>
+        <h2 id="scope">适用范围</h2>
+        <p>本页适用于需要填写 OpenAI 兼容接口的 IDE 客户端，例如：</p>
         <ul>
-          <li>优先选 <code>OpenAI Compatible</code>、<code>Custom OpenAI</code> 这类入口。</li>
-          <li>如果客户端要求 Endpoint，填到 <code>/v1</code> 即可，不要再补聊天路径。</li>
-          <li>如果支持测试连接，先点测试连接，再开自动补全或 Agent。</li>
+          <li>Trae</li>
+          <li>Cursor / Windsurf 这类支持自定义 OpenAI Base URL 的 IDE</li>
+          <li>Cline / RooCode / Kilo Code 等 VS Code 插件</li>
+          <li>Continue、Aider、Open WebUI 等 OpenAI 兼容客户端</li>
+        </ul>
+        <p>如果客户端明确写的是 Anthropic / Claude Code 配置，请看 <a href="#/claude-code">Claude Code 配置</a>。如果客户端写的是 OpenAI Compatible、Custom OpenAI、OpenAI API Base URL，一般按本页填写。</p>
+
+        <h2 id="trae-config">Trae 配置</h2>
+        <p>在 Trae 里添加自定义模型服务或 OpenAI 兼容服务，核心只填三项：</p>
+        <pre><code>Provider / 类型：OpenAI Compatible / 自定义 OpenAI
+API Key：sk-你的令牌
+Base URL：https://www.momoapi.shop/v1</code></pre>
+        <p>模型名填写控制台支持的模型，例如：</p>
+        <pre><code>gpt-5.5
+gpt-5.4</code></pre>
+        <p>如果 Trae 的配置项叫法不同，按这个对应关系理解：</p>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Trae 配置项</th>
+                <th>填写内容</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>API Key / Token</td><td><code>sk-你的令牌</code></td></tr>
+              <tr><td>Base URL / API Base</td><td><code>https://www.momoapi.shop/v1</code></td></tr>
+              <tr><td>Model / Model ID</td><td>控制台支持的模型名</td></tr>
+              <tr><td>Provider</td><td>OpenAI Compatible / Custom OpenAI</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="callout callout--warning">
+          <strong>Base URL 不要填错</strong>
+          <p>OpenAI 兼容客户端一般填 <code>https://www.momoapi.shop/v1</code>。不要填成 <code>https://www.momoapi.shop</code>，也不要填成 <code>https://www.momoapi.shop/v1/responses</code>。</p>
+        </div>
+
+        <h2 id="cursor-windsurf">Cursor / Windsurf</h2>
+        <p>在自定义 OpenAI 地址里填写：</p>
+        <pre><code>API Key: sk-你的令牌
+OpenAI Base URL: https://www.momoapi.shop/v1
+Model: gpt-5.5</code></pre>
+        <p>如果客户端支持多个模型，建议先添加一个稳定模型测试，再逐步添加其他模型。不要一次性填大量不存在或未配置价格的模型。</p>
+
+        <h2 id="cline-roocode-kilo">Cline / RooCode / Kilo Code</h2>
+        <p>这些 VS Code 插件一般在 Provider 里选择 OpenAI Compatible：</p>
+        <pre><code>Provider: OpenAI Compatible
+Base URL: https://www.momoapi.shop/v1
+API Key: sk-你的令牌
+Model: gpt-5.5</code></pre>
+        <p>注意事项：</p>
+        <ul>
+          <li>插件会自动读取项目上下文，Token 消耗通常比 CLI 更高。</li>
+          <li>大项目建议只打开当前任务目录。</li>
+          <li>不要让插件自动索引无关大目录、日志目录、构建产物和依赖目录。</li>
+          <li>出现上下文过大时，先新开任务或减少引用文件。</li>
         </ul>
 
-        <h2 id="ide-errors">高频问题</h2>
+        <h2 id="continue">Continue</h2>
+        <p>Continue 的 OpenAI 兼容配置可按这个思路填写：</p>
+        <pre><code>{
+  "models": [
+    {
+      "title": "momoapi gpt-5.5",
+      "provider": "openai",
+      "model": "gpt-5.5",
+      "apiBase": "https://www.momoapi.shop/v1",
+      "apiKey": "sk-你的令牌"
+    }
+  ]
+}</code></pre>
+        <p>不同 Continue 版本字段可能略有差异。如果界面里有 OpenAI Compatible 选项，优先用界面填写，不要把 token 写进会提交到仓库的配置文件。</p>
+
+        <h2 id="aider">Aider</h2>
+        <p>Aider 可以通过环境变量指定 OpenAI 兼容接口。</p>
+        <p>macOS / Linux：</p>
+        <pre><code>export OPENAI_API_KEY="sk-你的令牌"
+export OPENAI_API_BASE="https://www.momoapi.shop/v1"
+aider --model openai/gpt-5.5</code></pre>
+        <p>Windows PowerShell：</p>
+        <pre><code>$env:OPENAI_API_KEY="sk-你的令牌"
+$env:OPENAI_API_BASE="https://www.momoapi.shop/v1"
+aider --model openai/gpt-5.5</code></pre>
+        <p>如果你的 Aider 版本使用 <code>OPENAI_BASE_URL</code>，则改为：</p>
+        <pre><code>export OPENAI_BASE_URL="https://www.momoapi.shop/v1"</code></pre>
+
+        <h2 id="webui-librechat">Open WebUI / LibreChat / 其他面板</h2>
+        <p>这类面板通常添加 OpenAI 连接：</p>
+        <pre><code>API Base URL: https://www.momoapi.shop/v1
+API Key: sk-你的令牌
+Models: gpt-5.5,gpt-5.4,gpt-5.3-codex</code></pre>
+        <p>如果面板会定时拉取模型列表，先用一个令牌小流量测试。多人共用面板时，建议给面板单独创建令牌，方便统计和停用。</p>
+
+        <h2 id="fast-1m">fast 与百万上下文</h2>
+        <p>GPT / Codex fast 对应请求参数：</p>
+        <pre><code>{
+  "service_tier": "fast"
+}</code></pre>
+        <p>在 Codex CLI 中也可以用：</p>
+        <pre><code>/fast</code></pre>
+        <p>GPT 百万上下文超过 <code>272k</code> 的部分会额外计费。IDE 客户端很容易自动塞入大量文件，上下文越大费用越高，建议：</p>
+        <ol>
+          <li>只打开当前任务相关目录。</li>
+          <li>明确指定要读取的文件。</li>
+          <li>大日志先裁剪后再发。</li>
+          <li>长会话及时新开或压缩。</li>
+        </ol>
+        <p>更多说明见 <a href="#/fast-context">fast 与百万上下文</a>。</p>
+
+        <h2 id="image-support">生图支持</h2>
+        <p>如果客户端支持 OpenAI Responses 的 <code>image_generation</code> 工具或 OpenAI 图片接口，可使用控制台支持的生图模型。常见注意点：</p>
         <ul>
-          <li>保存后没有生效：很多客户端需要重新打开工作区。</li>
-          <li>补全可用但 Agent 不可用：通常是模型能力不匹配，或者工具调用未开启。</li>
-          <li>列表能拉到但对话失败：多半是聊天路径和模型路径兼容不完整。</li>
+          <li><code>gpt-image-2</code> API 可用，但不保证稳定性。</li>
+          <li>Codex 内部 skill 生图可用。</li>
+          <li>慢图、大图、多图建议使用流式和 partial images。</li>
+          <li>非流式长时间生图可能被客户端或 CDN 超时中断。</li>
+        </ul>
+
+        <h2 id="minimal-test">最小测试</h2>
+        <p>配置后先发一个小请求：</p>
+        <pre><code>你好，请只回复 OK</code></pre>
+        <p>如果客户端支持模型列表，也可以先测试：</p>
+        <pre><code>curl https://www.momoapi.shop/v1/models \\
+  -H "Authorization: Bearer sk-你的令牌"</code></pre>
+
+        <h2 id="common-errors">常见错误</h2>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>错误</th>
+                <th>常见原因</th>
+                <th>处理</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>401 Unauthorized</td><td>Token 错误、复制多空格、令牌被删</td><td>重新创建令牌并完整复制</td></tr>
+              <tr><td>403 Forbidden</td><td>当前网络环境或出口 IP 被拦截</td><td>更换网络、代理或出口 IP 后重试</td></tr>
+              <tr><td>404 Not Found</td><td>Base URL 填错</td><td>OpenAI 兼容客户端填 <code>https://www.momoapi.shop/v1</code></td></tr>
+              <tr><td>429 Too Many Requests</td><td>上游限流或并发过高</td><td>降低并发，等待恢复，换模型或分组</td></tr>
+              <tr><td>503 Service temporarily unavailable</td><td>当前模型/分组/账号池暂不可用</td><td>换同系列模型或稍后重试</td></tr>
+              <tr><td>context too large</td><td>IDE 自动塞入过多文件</td><td>减少上下文、新开任务、只引用关键文件</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h2 id="checklist">配置检查清单</h2>
+        <p>正式使用前确认：</p>
+        <ul>
+          <li>Base URL 是 <code>https://www.momoapi.shop/v1</code>。</li>
+          <li>Token 是 <code>sk-</code> 开头的 momoapi 令牌。</li>
+          <li>模型名在控制台可用。</li>
+          <li>没有把 token 写入会提交到 Git 的文件。</li>
+          <li>已用小请求验证成功。</li>
         </ul>
       </div>
     `,
