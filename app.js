@@ -118,31 +118,6 @@ const pages = {
 
         <p>更多说明见 <a href="#/announcements">公告与服务说明</a>。</p>
 
-        <h2 id="entry-points">必看入口</h2>
-        <div class="table-wrap">
-          <table>
-            <thead>
-              <tr>
-                <th>用途</th>
-                <th>地址示例</th>
-                <th>说明</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>登录 / 注册</td>
-                <td><code>https://www.momoapi.shop</code></td>
-                <td>新用户注册，已有账号直接登录。</td>
-              </tr>
-              <tr>
-                <td>官网 / 控制台 / API</td>
-                <td><code>https://www.momoapi.shop</code></td>
-                <td>给 OpenAI 兼容客户端时，通常再补 <code>/v1</code>。</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-
         <h2 id="reading-order">推荐阅读顺序</h2>
         <ol>
           <li>先看快速开始，确认令牌和请求地址。</li>
@@ -166,26 +141,114 @@ const pages = {
   "/announcements": {
     title: "公告与服务说明",
     section: "开始使用",
-    meta: "公告信息",
+    meta: "整理后的站点公告、线路说明与高频服务提示。",
     body: `
       <div class="doc">
         <h1>公告与服务说明</h1>
-        <p class="lead">我们站点是低倍率站点，比如当前gpt-5.5是0.1倍率，那就是在官方的基础上打1折。</p>
-
-        <h2 id="important">当前使用规则</h2>
-        <ul>
-          <li>站点官网 <code>https://www.momoapi.shop</code>, 备用地址 <code>https://www.momo-api.cc.cd</code>。</li>
-          <li>给 OpenAI 兼容客户端时，通常使用 <code>https://www.momoapi.shop/v1</code>。</li>
-          <li>给 Anthropic 兼容客户端时，不需要 <code>/v1</code>。</li>
-          <li>fast 模式双倍计费</li>
-          <li>当前OpenAI把gpt-5.2和gpt-5.3模型下线了，所以这两个模型暂时不可用。</li>
-        </ul>
-
-        <div class="callout callout--warning">
-          <strong>不要把备用网址当主站</strong>
-          <p>备用网址只在主线路不可达时使用。</p>
+        <div class="quick-panel quick-panel--stacked">
+          <div class="quick-panel__group">
+            <strong>新人入口</strong>
+            <a class="chip-link chip-link--primary" href="https://www.momoapi.shop/" target="_blank" rel="noopener noreferrer">注册 / 登录</a>
+            <a class="chip-link" href="https://www.momoapi.shop/console/token" target="_blank" rel="noopener noreferrer">创建 API 令牌</a>
+          </div>
+          <div class="quick-panel__copy">
+            <strong>Base URL</strong>
+            <span class="copy-chip">https://www.momoapi.shop</span>
+            <button
+              class="copy-chip copy-chip--button"
+              type="button"
+              data-copy-text="https://www.momoapi.shop"
+              aria-label="复制 Base URL"
+            >
+              复制
+            </button>
+          </div>
         </div>
 
+        <p>本页把当前站点常用公告整理成更适合查阅的版本。控制台和站内公告如有更新，以实际展示为准。</p>
+
+        <h2 id="entry-routing">入口与线路</h2>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>用途</th>
+                <th>地址</th>
+                <th>说明</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>官网 / 控制台 / API</td>
+                <td><code>https://www.momoapi.shop</code></td>
+                <td>默认主站，优先使用这个地址。</td>
+              </tr>
+              <tr>
+                <td>备用线路</td>
+                <td><code>https://www.momo-api.cc.cd</code></td>
+                <td>只在主线路不可达时临时使用。</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p>OpenAI 兼容客户端通常填写 <code>https://www.momoapi.shop/v1</code>。Anthropic 兼容客户端通常直接填写 <code>https://www.momoapi.shop</code>，不要默认补 <code>/v1</code>。</p>
+
+        <div class="callout callout--warning">
+          <strong>备用网址不要当主站</strong>
+          <p>备用线路更适合故障切换。日常使用优先主站，避免把临时入口固化到长期配置里。</p>
+        </div>
+
+        <h2 id="image-generation">生图能力</h2>
+        <ul>
+          <li><code>gpt-image-2</code> 可用，但不保证一直稳定。</li>
+          <li>大图、慢图、高分辨率图建议使用支持流式返回的客户端，避免长请求超时。</li>
+          <li>如果客户端支持 partial images 或流式图像响应，优先开启。</li>
+        </ul>
+
+        <div class="callout callout--tip">
+          <strong>长时间生图要预期超时</strong>
+          <p>非流式生图请求容易超过 CDN 或客户端等待时间。请求超时不一定是令牌问题，也可能只是图像生成链路太慢。</p>
+        </div>
+
+        <h2 id="models-groups">模型与分组</h2>
+        <p>站点是低倍率站点，具体倍率以控制台实时展示为准。当前仓库内已明确记录的公告包括：</p>
+        <ul>
+          <li>例如 <code>gpt-5.5</code> 曾按低倍率提供，实际价格请以站内面板为准。</li>
+          <li>OpenAI 已下线 <code>gpt-5.2</code> 和 <code>gpt-5.3</code>，这两个模型当前不可用。</li>
+          <li>如果控制台模型列表与旧文档不一致，以控制台最新列表为准。</li>
+        </ul>
+
+        <h2 id="fast-billing">fast 与计费</h2>
+        <ul>
+          <li>当前 fast 模式按双倍计费理解即可，实际账单以控制台展示为准。</li>
+          <li>GPT 超过 <code>272k</code> 的上下文部分会额外计费，不要把“支持 1M”理解成每次都应该塞满。</li>
+          <li>fast 更适合交互式开发；批量脚本和大上下文任务先评估成本。</li>
+        </ul>
+
+        <h2 id="service-notes">常见服务提示</h2>
+        <h3 id="capacity">selected model is at capacity</h3>
+        <p>这通常是上游模型拥挤或算力不足，不代表你的 token 一定有问题。</p>
+        <ol>
+          <li>稍后重试。</li>
+          <li>换同系列更稳定的模型。</li>
+          <li>降低并发，不要短时间密集重试。</li>
+        </ol>
+
+        <h3 id="delays">创建令牌、充值、消费记录延迟</h3>
+        <p>创建 API 令牌、充值记录、消费记录等操作可能存在延迟。</p>
+        <ol>
+          <li>刚操作完先等待一会再刷新。</li>
+          <li>不要连续重复提交同一个动作。</li>
+          <li>长时间异常再检查控制台记录。</li>
+        </ol>
+
+        <h3 id="api-503">API Error 503</h3>
+        <p>通常是当前模型、分组或上游账号池临时不可用。</p>
+        <ol>
+          <li>先换模型或换分组。</li>
+          <li>不要脚本化密集重试。</li>
+          <li>如果多个模型都异常，再排查线路或等待恢复。</li>
+        </ol>
       </div>
     `,
   },
@@ -196,54 +259,73 @@ const pages = {
     body: `
       <div class="doc">
         <h1>快速开始</h1>
-        <p class="lead">任何客户端接入前，都先确认两件事：令牌已创建、Base URL 填对。</p>
-
-        <div class="quick-panel">
+        <div class="quick-panel quick-panel--stacked">
           <div class="quick-panel__group">
-            <strong>新手入口</strong>
-            <span class="chip-link chip-link--primary">注册 / 登录</span>
-            <span class="chip-link">创建 API Token</span>
+            <strong>新人入口</strong>
+            <a class="chip-link chip-link--primary" href="https://www.momoapi.shop/" target="_blank" rel="noopener noreferrer">注册 / 登录</a>
+            <a class="chip-link" href="https://www.momoapi.shop/console/token" target="_blank" rel="noopener noreferrer">创建 API 令牌</a>
           </div>
           <div class="quick-panel__copy">
             <strong>Base URL</strong>
             <span class="copy-chip">https://www.momoapi.shop</span>
+            <button
+              class="copy-chip copy-chip--button"
+              type="button"
+              data-copy-text="https://www.momoapi.shop"
+              aria-label="复制 Base URL"
+            >
+              复制
+            </button>
           </div>
         </div>
 
         <h2 id="prepare">1. 准备两项</h2>
+        <p>使用任何客户端前，先准备好下面两项：</p>
         <ul>
-          <li><strong>API Key / Token</strong>：在控制台创建，复制后立刻保存。</li>
-          <li><strong>Base URL</strong>：默认填写站点根地址，OpenAI 兼容客户端再按需要补 <code>/v1</code>。</li>
+          <li><strong>API Key / Token</strong>：在控制台创建。</li>
+          <li><strong>Base URL</strong>：默认使用 <code>https://www.momoapi.shop</code>。</li>
+          <li><strong>可用客户端</strong>：Codex CLI、Claude Code、CC Switch、Cherry Studio、Trae / Cursor / RooCode 等。</li>
         </ul>
 
+        <div class="callout callout--warning">
+          <strong>不要混用地址</strong>
+          <p>配置里先填根地址 <code>https://www.momoapi.shop</code>。只有客户端明确要求 OpenAI 兼容地址时，再补成 <code>/v1</code>。</p>
+        </div>
+
         <h2 id="register-login">2. 注册、登录</h2>
-        <pre><code>https://www.momoapi.shop/register</code></pre>
+        <p>先打开站点入口：</p>
+        <pre><code>https://www.momoapi.shop/</code></pre>
         <ol>
           <li>注册账号。</li>
           <li>登录账号。</li>
         </ol>
+        <p>默认主站是 <code>https://www.momoapi.shop</code>。如果主线路不可达，再临时切到备用地址 <code>https://www.momo-api.cc.cd</code>。</p>
 
         <h2 id="token">3. 创建 API 令牌</h2>
         <ol>
-          <li>进入控制台的令牌页面。</li>
+          <li>登录控制台。</li>
+          <li>进入令牌 / API Key 页面。</li>
           <li>新建令牌。</li>
-          <li>复制保存。</li>
+          <li>复制并保存令牌。令牌丢失后重新创建即可。</li>
         </ol>
+        <p>服务根地址仍然是：</p>
+        <pre><code>https://www.momoapi.shop</code></pre>
 
-        <h2 id="client-mapping">4. 常见客户端填写方式</h2>
+        <h2 id="client-mapping">4. 选择客户端</h2>
+        <p>常用客户端配置规则如下：</p>
         <div class="table-wrap">
           <table>
             <thead>
               <tr>
                 <th>客户端</th>
                 <th>Base URL</th>
-                <th>Token 位置</th>
+                <th>Token 填写位置</th>
               </tr>
             </thead>
             <tbody>
               <tr>
                 <td>Codex CLI</td>
-                <td><code>https://www.momoapi.shop/v1</code></td>
+                <td><code>https://www.momoapi.shop/v1</code> 或客户端要求的 OpenAI Base URL</td>
                 <td>OpenAI API Key</td>
               </tr>
               <tr>
@@ -252,29 +334,61 @@ const pages = {
                 <td><code>ANTHROPIC_AUTH_TOKEN</code></td>
               </tr>
               <tr>
-                <td>Trae / Cursor / RooCode</td>
-                <td><code>https://www.momoapi.shop/v1</code></td>
-                <td>OpenAI Compatible API Key</td>
+                <td>CC Switch</td>
+                <td>新建配置里的 Base URL</td>
+                <td>配置里的 Token</td>
               </tr>
               <tr>
                 <td>Cherry Studio</td>
-                <td>自定义 OpenAI 提供商地址</td>
+                <td>OpenAI 兼容提供商 Base URL</td>
                 <td>API Key</td>
+              </tr>
+              <tr>
+                <td>Trae / Cursor / RooCode</td>
+                <td><code>https://www.momoapi.shop/v1</code></td>
+                <td>OpenAI Compatible API Key</td>
               </tr>
             </tbody>
           </table>
         </div>
 
-        <h2 id="validate">5. 最小验证</h2>
+        <h2 id="persist">5. 临时试跑和长期固化</h2>
+        <p>临时试跑可以直接在当前终端里设置环境变量。如果只是验证一次，这样够用；真正长期使用时，不要只依赖临时变量。</p>
+        <ul>
+          <li>Claude Code：优先用长期配置，或者写进 shell profile、PowerShell profile、systemd、启动器。</li>
+          <li>Codex CLI：优先用长期配置和本地鉴权缓存，或者写进 profile、systemd、启动器。</li>
+          <li>IDE 客户端：直接保存在客户端设置里，不要每次重开终端再敲一次。</li>
+          <li>只做一次性测试时，当前终端里的临时导出最省事。</li>
+        </ul>
+        <p>对应细节见 <a href="#/claude-code">Claude Code 配置</a> 和 <a href="#/codex">Codex CLI 配置</a>。</p>
+
+        <h2 id="ide-fast-fill">6. Trae / Cursor / RooCode 快速填写</h2>
+        <p>这类 IDE 客户端一般选择 <code>OpenAI Compatible</code> 或 <code>Custom OpenAI</code>：</p>
+        <pre><code>Base URL: https://www.momoapi.shop/v1
+API Key: sk-你的令牌
+Model: 你的目标模型名</code></pre>
+        <p>完整说明见 <a href="#/trae-ide-clients">Trae 等 IDE 客户端配置</a>。</p>
+
+        <h2 id="cli-install">7. 安装常用 CLI</h2>
+        <p>如果你要同时使用 Claude Code、Codex、Gemini CLI，可以一次安装：</p>
+        <pre><code>npm install -g @anthropic-ai/claude-code@latest @openai/codex@latest @google/gemini-cli@latest</code></pre>
+        <p>检查版本：</p>
+        <pre><code>claude --version
+codex --version
+gemini --version</code></pre>
+
+        <h2 id="validate">8. 最小验证</h2>
+        <p>配置完成后，先用最小请求测试：</p>
         <pre><code>curl https://www.momoapi.shop/v1/models \\
-  -H "Authorization: Bearer sk-your-token"</code></pre>
+  -H "Authorization: Bearer sk-你的令牌"</code></pre>
         <p>能返回模型列表，说明地址和令牌基本没问题。再继续配 CLI 或 IDE。</p>
 
-        <h2 id="first-errors">6. 出错先看这三项</h2>
+        <h2 id="first-errors">9. 出错先看这几项</h2>
         <ul>
-          <li><strong>401</strong>：令牌无效、过期、复制多了空格。</li>
-          <li><strong>404</strong>：Base URL 填错，常见是少了或多了 <code>/v1</code>。</li>
-          <li><strong>403</strong>：加群联系管理员，可能是被cf拦截了。</li>
+          <li><strong>401</strong>：令牌错误、令牌被删、复制时多了空格。</li>
+          <li><strong>404</strong>：Base URL 填错，常见是漏了 <code>/v1</code> 或多填了路径。</li>
+          <li><strong>403</strong>：可能是当前网络环境被拦截，先更换网络、代理或出口 IP，再重新测试。</li>
+          <li><strong>503</strong>：当前分组 / 模型 / 上游账号暂时不可用，也可能是选错分组导致模型不兼容；先换普通可用分组或同系列模型测试。</li>
         </ul>
       </div>
     `,

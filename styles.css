@@ -398,6 +398,10 @@ body.page-home .content__inner {
   margin-top: 24px;
 }
 
+.quick-panel--stacked {
+  margin-bottom: 24px;
+}
+
 .quick-panel__group,
 .quick-panel__copy {
   display: flex;
@@ -422,6 +426,10 @@ body.page-home .content__inner {
   background: var(--bg-soft);
   color: var(--text);
   font-size: 13px;
+}
+
+.copy-chip--button {
+  cursor: pointer;
 }
 
 .chip-link--primary {
