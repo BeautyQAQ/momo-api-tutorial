@@ -44,6 +44,37 @@ const sidebar = [
   },
 ];
 
+function renderEntryPanel(stacked = false) {
+  return `
+    <div class="quick-panel${stacked ? " quick-panel--stacked" : ""}">
+      <div class="quick-panel__group">
+        <strong>新人入口</strong>
+        <a class="chip-link chip-link--primary" href="https://www.momoapi.shop/" target="_blank" rel="noopener noreferrer">注册 / 登录</a>
+        <a class="chip-link" href="https://pay.ldxp.cn/shop/QJD3AMYP" target="_blank" rel="noopener noreferrer">充值 / 购买额度</a>
+        <a class="chip-link" href="https://www.momoapi.shop/console/topup" target="_blank" rel="noopener noreferrer">兑换额度</a>
+        <a class="chip-link" href="https://www.momoapi.shop/console/token" target="_blank" rel="noopener noreferrer">创建 API 令牌</a>
+      </div>
+      <div class="quick-panel__copy">
+        <strong>Base URL</strong>
+        <span class="copy-chip">https://www.momoapi.shop</span>
+        <button
+          class="copy-chip copy-chip--button"
+          type="button"
+          data-copy-text="https://www.momoapi.shop"
+          aria-label="复制 Base URL"
+        >
+          复制
+        </button>
+      </div>
+      <p class="quick-panel__note">充值方式支持直接充值或兑换码入账；购买后拿到兑换码时，到充值页完成兑换。</p>
+      <div class="quick-panel__alert">
+        <strong>大额充值提示</strong>
+        <span>大额充值可进群联系管理员，通常有赠送额度。QQ群：1102891423</span>
+      </div>
+    </div>
+  `;
+}
+
 const pages = {
   "/": {
     title: "momoapi 中转站教程",
@@ -83,32 +114,51 @@ const pages = {
         </section>
       </div>
 
-        <div class="quick-panel">
-          <div class="quick-panel__group">
-            <strong>新人入口</strong>
-          <a class="chip-link chip-link--primary" href="https://www.momoapi.shop/" target="_blank" rel="noopener noreferrer">注册 / 登录</a>
-          <a class="chip-link" href="https://www.momoapi.shop/console/token" target="_blank" rel="noopener noreferrer">创建 API 令牌</a>
-          </div>
-        <div class="quick-panel__copy">
-          <strong>Base URL</strong>
-          <span class="copy-chip">https://www.momoapi.shop</span>
-          <button
-            class="copy-chip copy-chip--button"
-            type="button"
-            data-copy-text="https://www.momoapi.shop"
-            aria-label="复制 Base URL"
-          >
-            复制
-          </button>
-        </div>
-      </div>
+      ${renderEntryPanel()}
 
       <div class="doc">
+        <h2 id="billing-overview">充值与计费</h2>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>项目</th>
+                <th>说明</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>计费方式</td>
+                <td>当前以按量付费为主，直接充值，用多少扣多少。</td>
+              </tr>
+              <tr>
+                <td>充值入口</td>
+                <td>可直接购买额度，也可以拿兑换码到控制台充值页兑换。</td>
+              </tr>
+              <tr>
+                <td>购买建议</td>
+                <td>购买前先评估自己的模型和上下文用量，按需充值。</td>
+              </tr>
+              <tr>
+                <td>大额充值</td>
+                <td>大额充值建议先进群联系管理员，通常会有额外赠送额度。</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="callout callout--warning">
+          <strong>按需充值</strong>
+          <p>旧指南里明确提到购买前要认真评估用量。尤其是 fast、长上下文和生图任务，费用波动会明显高于普通短请求。</p>
+        </div>
+
         <h2 id="announcements">公告速览</h2>
         <ul>
           <li>主站：正常使用 <code>https://www.momoapi.shop</code>，备用网址 <code>https://www.momo-api.cc.cd</code> 仅在主线路不可达时使用。</li>
           <li>OpenAI 兼容客户端：通常使用 <code>https://www.momoapi.shop/v1</code>。</li>
           <li>Anthropic 兼容客户端：直接使用 <code>https://www.momoapi.shop</code>，不需要补 <code>/v1</code>。</li>
+          <li>付费方式：当前主要是按量付费，直接充值，用多少扣多少。</li>
+          <li>大额充值：先进 QQ 群 <code>1102891423</code> 联系管理员，通常会有赠送额度。</li>
           <li>fast：当前 fast 模式双倍计费，具体以公告和控制台展示为准。</li>
           <li>百万上下文：GPT 超过 272k 的部分会额外计费；不要默认塞满百万上下文。</li>
           <li>生图：gpt-image-2 生图可用，但是不保证稳定性。</li>
@@ -134,6 +184,11 @@ const pages = {
           <p>文档中的 <code>Base URL</code> 默认使用 <code>https://www.momoapi.shop</code>。如果公告给出备用线路，以公告为准。</p>
         </div>
 
+        <div class="callout callout--tip">
+          <strong>联系渠道</strong>
+          <p>使用过程中有疑问或遇到线路波动，优先在 QQ 群 <code>1102891423</code> 找管理员确认。大额充值也建议先进群沟通。</p>
+        </div>
+
         <p>momoapi 文档仅用于帮助用户正确配置客户端。</p>
       </div>
     `,
@@ -145,27 +200,18 @@ const pages = {
     body: `
       <div class="doc">
         <h1>公告与服务说明</h1>
-        <div class="quick-panel quick-panel--stacked">
-          <div class="quick-panel__group">
-            <strong>新人入口</strong>
-            <a class="chip-link chip-link--primary" href="https://www.momoapi.shop/" target="_blank" rel="noopener noreferrer">注册 / 登录</a>
-            <a class="chip-link" href="https://www.momoapi.shop/console/token" target="_blank" rel="noopener noreferrer">创建 API 令牌</a>
-          </div>
-          <div class="quick-panel__copy">
-            <strong>Base URL</strong>
-            <span class="copy-chip">https://www.momoapi.shop</span>
-            <button
-              class="copy-chip copy-chip--button"
-              type="button"
-              data-copy-text="https://www.momoapi.shop"
-              aria-label="复制 Base URL"
-            >
-              复制
-            </button>
-          </div>
-        </div>
+        ${renderEntryPanel(true)}
 
         <p>本页把当前站点常用公告整理成更适合查阅的版本。控制台和站内公告如有更新，以实际展示为准。</p>
+
+        <h2 id="billing-support">充值、计费与联系</h2>
+        <ul>
+          <li>当前主要是按量付费，直接充值，用多少扣多少。</li>
+          <li>购买前先评估大致用量，按需充值，避免把 fast、长上下文、生图的费用当成普通短请求来估算。</li>
+          <li>如果拿到的是兑换码，到 <code>https://www.momoapi.shop/console/topup</code> 兑换额度。</li>
+          <li>大额充值建议先进 QQ 群 <code>1102891423</code> 联系管理员，通常会有赠送额度。</li>
+          <li>使用过程中遇到充值记录、消费记录、令牌创建延迟，先等待一会再刷新。</li>
+        </ul>
 
         <h2 id="entry-routing">入口与线路</h2>
         <div class="table-wrap">
@@ -259,25 +305,7 @@ const pages = {
     body: `
       <div class="doc">
         <h1>快速开始</h1>
-        <div class="quick-panel quick-panel--stacked">
-          <div class="quick-panel__group">
-            <strong>新人入口</strong>
-            <a class="chip-link chip-link--primary" href="https://www.momoapi.shop/" target="_blank" rel="noopener noreferrer">注册 / 登录</a>
-            <a class="chip-link" href="https://www.momoapi.shop/console/token" target="_blank" rel="noopener noreferrer">创建 API 令牌</a>
-          </div>
-          <div class="quick-panel__copy">
-            <strong>Base URL</strong>
-            <span class="copy-chip">https://www.momoapi.shop</span>
-            <button
-              class="copy-chip copy-chip--button"
-              type="button"
-              data-copy-text="https://www.momoapi.shop"
-              aria-label="复制 Base URL"
-            >
-              复制
-            </button>
-          </div>
-        </div>
+        ${renderEntryPanel(true)}
 
         <h2 id="prepare">1. 准备两项</h2>
         <p>使用任何客户端前，先准备好下面两项：</p>
@@ -301,7 +329,22 @@ const pages = {
         </ol>
         <p>默认主站是 <code>https://www.momoapi.shop</code>。如果主线路不可达，再临时切到备用地址 <code>https://www.momo-api.cc.cd</code>。</p>
 
-        <h2 id="token">3. 创建 API 令牌</h2>
+        <h2 id="recharge">3. 充值与兑换</h2>
+        <p>如果你使用的是按量模式，先确认自己是直接充值还是通过兑换码入账。购买前先评估大致用量，避免一次充得太多。</p>
+        <div class="step-list">
+          <section class="step-item">
+            <div class="step-item__eyebrow">步骤 1</div>
+            <h3>进入充值页兑换额度</h3>
+            <p>购买后如果拿到的是兑换码，就去充值页兑换。充值页和充值记录偶尔会有短暂延迟，提交后先等待一会再刷新。</p>
+            <pre><code>https://www.momoapi.shop/console/topup</code></pre>
+            <figure class="doc-figure">
+              <img src="./assets/guide/quick-start/topup-redeem.png" alt="充值页兑换额度界面截图" loading="lazy" />
+              <figcaption>在充值页输入兑换码后提交，等待余额刷新。</figcaption>
+            </figure>
+          </section>
+        </div>
+
+        <h2 id="token">4. 创建 API 令牌</h2>
         <ol>
           <li>登录控制台。</li>
           <li>进入令牌 / API Key 页面。</li>
@@ -311,7 +354,7 @@ const pages = {
         <p>服务根地址仍然是：</p>
         <pre><code>https://www.momoapi.shop</code></pre>
 
-        <h2 id="client-mapping">4. 选择客户端</h2>
+        <h2 id="client-mapping">5. 选择客户端</h2>
         <p>常用客户端配置规则如下：</p>
         <div class="table-wrap">
           <table>
@@ -352,7 +395,7 @@ const pages = {
           </table>
         </div>
 
-        <h2 id="persist">5. 临时试跑和长期固化</h2>
+        <h2 id="persist">6. 临时试跑和长期固化</h2>
         <p>临时试跑可以直接在当前终端里设置环境变量。如果只是验证一次，这样够用；真正长期使用时，不要只依赖临时变量。</p>
         <ul>
           <li>Claude Code：优先用长期配置，或者写进 shell profile、PowerShell profile、systemd、启动器。</li>
@@ -362,14 +405,14 @@ const pages = {
         </ul>
         <p>对应细节见 <a href="#/claude-code">Claude Code 配置</a> 和 <a href="#/codex">Codex CLI 配置</a>。</p>
 
-        <h2 id="ide-fast-fill">6. Trae / Cursor / RooCode 快速填写</h2>
+        <h2 id="ide-fast-fill">7. Trae / Cursor / RooCode 快速填写</h2>
         <p>这类 IDE 客户端一般选择 <code>OpenAI Compatible</code> 或 <code>Custom OpenAI</code>：</p>
         <pre><code>Base URL: https://www.momoapi.shop/v1
 API Key: sk-你的令牌
 Model: 你的目标模型名</code></pre>
         <p>完整说明见 <a href="#/trae-ide-clients">Trae 等 IDE 客户端配置</a>。</p>
 
-        <h2 id="cli-install">7. 安装常用 CLI</h2>
+        <h2 id="cli-install">8. 安装常用 CLI</h2>
         <p>如果你要同时使用 Claude Code、Codex、Gemini CLI，可以一次安装：</p>
         <pre><code>npm install -g @anthropic-ai/claude-code@latest @openai/codex@latest @google/gemini-cli@latest</code></pre>
         <p>检查版本：</p>
@@ -377,13 +420,13 @@ Model: 你的目标模型名</code></pre>
 codex --version
 gemini --version</code></pre>
 
-        <h2 id="validate">8. 最小验证</h2>
+        <h2 id="validate">9. 最小验证</h2>
         <p>配置完成后，先用最小请求测试：</p>
         <pre><code>curl https://www.momoapi.shop/v1/models \\
   -H "Authorization: Bearer sk-你的令牌"</code></pre>
         <p>能返回模型列表，说明地址和令牌基本没问题。再继续配 CLI 或 IDE。</p>
 
-        <h2 id="first-errors">9. 出错先看这几项</h2>
+        <h2 id="first-errors">10. 出错先看这几项</h2>
         <ul>
           <li><strong>401</strong>：令牌错误、令牌被删、复制时多了空格。</li>
           <li><strong>404</strong>：Base URL 填错，常见是漏了 <code>/v1</code> 或多填了路径。</li>
@@ -419,6 +462,38 @@ gemini --version</code></pre>
         </ul>
         <p>创建路径通常在控制台的令牌 / API Key 页面：</p>
         <pre><code>https://www.momoapi.shop/console/token</code></pre>
+
+        <h2 id="token-walkthrough">图文流程</h2>
+        <div class="step-list">
+          <section class="step-item">
+            <div class="step-item__eyebrow">步骤 1</div>
+            <h3>进入令牌管理页</h3>
+            <p>登录控制台后，先进入令牌管理页面。这里可以看到已有令牌，也可以直接新建新的 API Key。</p>
+            <figure class="doc-figure">
+              <img src="./assets/guide/account-token/token-list.png" alt="令牌管理列表截图" loading="lazy" />
+              <figcaption>令牌管理列表页，点击新建即可继续。</figcaption>
+            </figure>
+          </section>
+          <section class="step-item">
+            <div class="step-item__eyebrow">步骤 2</div>
+            <h3>填写令牌名称和分组</h3>
+            <p>令牌名称可以按设备或用途命名，例如“macbook-codex”“prod-ci”。这样后续排错和轮换会更容易。</p>
+            <p>如果你要接入 <code>gpt-5.5</code>、<code>gpt-5.4</code> 或常见 Codex 相关模型，旧指南里默认建议先选 <code>default</code> 分组；如果控制台当前展示的分组规则不同，以控制台模型广场和分组说明为准。</p>
+            <figure class="doc-figure">
+              <img src="./assets/guide/account-token/token-form.png" alt="新建令牌表单截图" loading="lazy" />
+              <figcaption>名称按用途填写，分组优先看当前控制台可用范围。</figcaption>
+            </figure>
+          </section>
+          <section class="step-item">
+            <div class="step-item__eyebrow">步骤 3</div>
+            <h3>提交后立即复制 API Key</h3>
+            <p>很多控制台只在创建成功当下展示完整密钥。复制后就地保存，不要等到后面配置客户端时再回来找。</p>
+            <figure class="doc-figure">
+              <img src="./assets/guide/account-token/token-copy.png" alt="复制 API Key 截图" loading="lazy" />
+              <figcaption>创建成功后立刻复制并保存密钥原文。</figcaption>
+            </figure>
+          </section>
+        </div>
 
         <h2 id="token-format">令牌格式</h2>
         <p>客户端通常要求填写 <code>API Key</code>、<code>Token</code> 或 <code>Authorization Bearer Token</code>。这些场景填同一个 momoapi 令牌即可。</p>
@@ -585,25 +660,7 @@ gemini --version</code></pre>
       <div class="doc">
         <h1>Codex CLI 配置</h1>
 
-        <div class="quick-panel quick-panel--stacked">
-          <div class="quick-panel__group">
-            <strong>新人入口</strong>
-            <a class="chip-link chip-link--primary" href="https://www.momoapi.shop/" target="_blank" rel="noopener noreferrer">注册 / 登录</a>
-            <a class="chip-link" href="https://www.momoapi.shop/console/token" target="_blank" rel="noopener noreferrer">创建 API 令牌</a>
-          </div>
-          <div class="quick-panel__copy">
-            <strong>Base URL</strong>
-            <span class="copy-chip">https://www.momoapi.shop</span>
-            <button
-              class="copy-chip copy-chip--button"
-              type="button"
-              data-copy-text="https://www.momoapi.shop"
-              aria-label="复制 Base URL"
-            >
-              复制
-            </button>
-          </div>
-        </div>
+        ${renderEntryPanel(true)}
 
         <h2 id="install">1. 安装 Codex</h2>
         <p>确保已安装 Node.js，然后安装或更新 Codex CLI：</p>
@@ -638,11 +695,99 @@ $env:OPENAI_BASE_URL="https://www.momoapi.shop/v1"</code></pre>
           <p>Codex 走 OpenAI 兼容路径时，通常需要的是带 <code>/v1</code> 的根地址。少了这一段，模型列表和聊天接口往往都会 404。</p>
         </div>
 
-        <h2 id="auth-cache">3. 本地鉴权缓存</h2>
-        <p>Codex 还会在本地保存 <code>~/.codex/auth.json</code> 作为鉴权缓存，由客户端自动创建和更新。不要手动编辑；如果清掉它，就需要重新登录。</p>
+        <h2 id="windows-walkthrough">3. Windows 图文配置</h2>
+        <p>如果你主要在 Windows 上使用 Codex，直接按下面这套图文步骤做最省事。它本质上是在本地准备好 <code>auth.json</code> 和 <code>config.toml</code>。</p>
+
+        <div class="step-list">
+          <section class="step-item">
+            <div class="step-item__eyebrow">步骤 1</div>
+            <h3>先安装 Codex 客户端</h3>
+            <p>如果你不是用 npm 安装，而是直接走 Windows 图形化入口，可以先从开始菜单或应用商店搜索 Codex 并安装。网络慢时建议先解决代理或出口问题。</p>
+            <div class="guide-gallery">
+              <figure class="doc-figure">
+                <img src="./assets/guide/codex/windows-start-menu.png" alt="Windows 打开开始菜单截图" loading="lazy" />
+                <figcaption>从开始菜单或应用商店入口进入。</figcaption>
+              </figure>
+              <figure class="doc-figure">
+                <img src="./assets/guide/codex/windows-search-codex.png" alt="Windows 搜索 Codex 截图" loading="lazy" />
+                <figcaption>搜索 Codex，通常第一个就是目标客户端。</figcaption>
+              </figure>
+              <figure class="doc-figure">
+                <img src="./assets/guide/codex/windows-install-codex.png" alt="Windows 安装 Codex 截图" loading="lazy" />
+                <figcaption>点击安装，装好后先不用急着打开。</figcaption>
+              </figure>
+            </div>
+          </section>
+
+          <section class="step-item">
+            <div class="step-item__eyebrow">步骤 2</div>
+            <h3>打开 <code>.codex</code> 配置目录</h3>
+            <p>把下面这个路径直接粘到文件资源管理器地址栏：</p>
+            <pre><code>%HOMEDRIVE%%HOMEPATH%\\.codex</code></pre>
+            <figure class="doc-figure">
+              <img src="./assets/guide/codex/open-codex-folder.png" alt="打开 .codex 目录截图" loading="lazy" />
+              <figcaption>进入用户目录下的 <code>.codex</code> 文件夹。</figcaption>
+            </figure>
+          </section>
+
+          <section class="step-item">
+            <div class="step-item__eyebrow">步骤 3</div>
+            <h3>显示扩展名并准备两个配置文件</h3>
+            <p>先在资源管理器里打开文件扩展名显示，然后确认目录中有 <code>auth.json</code> 和 <code>config.toml</code>。如果没有，就新建空白文本文件再改名。</p>
+            <div class="guide-gallery">
+              <figure class="doc-figure">
+                <img src="./assets/guide/codex/show-file-extensions.png" alt="Windows 显示文件扩展名截图" loading="lazy" />
+                <figcaption>先打开扩展名显示，避免把文件误建成 <code>.txt</code>。</figcaption>
+              </figure>
+              <figure class="doc-figure">
+                <img src="./assets/guide/codex/create-config-files.png" alt="创建 auth.json 和 config.toml 截图" loading="lazy" />
+                <figcaption>目录里准备好 <code>auth.json</code> 和 <code>config.toml</code>。</figcaption>
+              </figure>
+            </div>
+          </section>
+
+          <section class="step-item">
+            <div class="step-item__eyebrow">步骤 4</div>
+            <h3>编辑 <code>auth.json</code></h3>
+            <p>右键用记事本打开 <code>auth.json</code>，填入你的 API Key。这里写的是 OpenAI 兼容鉴权值，不是网页登录账号。</p>
+            <div class="guide-gallery">
+              <figure class="doc-figure">
+                <img src="./assets/guide/codex/edit-auth-json.png" alt="编辑 auth.json 截图" loading="lazy" />
+                <figcaption>用记事本或其他纯文本编辑器打开。</figcaption>
+              </figure>
+              <figure class="doc-figure">
+                <img src="./assets/guide/codex/auth-json-content.png" alt="auth.json 内容截图" loading="lazy" />
+                <figcaption>保存后确认 JSON 格式没有多余逗号或引号。</figcaption>
+              </figure>
+            </div>
+          </section>
+        </div>
 
         <h2 id="model-selection">4. 模型选择</h2>
         <p>进入 Codex 后，通过客户端的模型设置选择可用模型。若提示模型元数据缺失，一般不影响基础请求，但可能影响 token 估算或使用体验。</p>
+
+        <div class="guide-gallery">
+          <figure class="doc-figure">
+            <img src="./assets/guide/codex/pin-codex.png" alt="固定 Codex 到任务栏截图" loading="lazy" />
+            <figcaption>第一次配置好后，可以固定到任务栏或桌面，减少后续重复查找。</figcaption>
+          </figure>
+          <figure class="doc-figure">
+            <img src="./assets/guide/codex/open-folder.png" alt="Codex 打开工作目录截图" loading="lazy" />
+            <figcaption>进入客户端后用 File 或 Open Folder 打开你的工作目录。</figcaption>
+          </figure>
+          <figure class="doc-figure">
+            <img src="./assets/guide/codex/network-example.png" alt="Codex 联网能力示例截图" loading="lazy" />
+            <figcaption>Codex 本身支持联网工具，适合需要检索或读项目的场景。</figcaption>
+          </figure>
+          <figure class="doc-figure">
+            <img src="./assets/guide/codex/skip-startup-options.png" alt="Codex 启动引导截图" loading="lazy" />
+            <figcaption>首次启动里的一些引导选项可以先跳过，优先确认配置是否生效。</figcaption>
+          </figure>
+          <figure class="doc-figure">
+            <img src="./assets/guide/codex/continue-current-model.png" alt="继续使用当前模型截图" loading="lazy" />
+            <figcaption>模型可用时直接继续使用当前模型即可开始工作。</figcaption>
+          </figure>
+        </div>
 
         <h2 id="fast-context">5. fast 和百万上下文</h2>
         <p>Codex fast 可以在 Codex 里执行：</p>
@@ -712,25 +857,7 @@ sandbox = "elevated"</code></pre>
       <div class="doc">
         <h1>Claude Code 配置</h1>
 
-        <div class="quick-panel quick-panel--stacked">
-          <div class="quick-panel__group">
-            <strong>新人入口</strong>
-            <a class="chip-link chip-link--primary" href="https://www.momoapi.shop/" target="_blank" rel="noopener noreferrer">注册 / 登录</a>
-            <a class="chip-link" href="https://www.momoapi.shop/console/token" target="_blank" rel="noopener noreferrer">创建 API 令牌</a>
-          </div>
-          <div class="quick-panel__copy">
-            <strong>Base URL</strong>
-            <span class="copy-chip">https://www.momoapi.shop</span>
-            <button
-              class="copy-chip copy-chip--button"
-              type="button"
-              data-copy-text="https://www.momoapi.shop"
-              aria-label="复制 Base URL"
-            >
-              复制
-            </button>
-          </div>
-        </div>
+        ${renderEntryPanel(true)}
 
         <h2 id="install-deps">1. 安装依赖</h2>
         <p>建议先安装：</p>
@@ -847,25 +974,7 @@ claude</code></pre>
       <div class="doc">
         <h1>fast 与百万上下文</h1>
 
-        <div class="quick-panel quick-panel--stacked">
-          <div class="quick-panel__group">
-            <strong>新人入口</strong>
-            <a class="chip-link chip-link--primary" href="https://www.momoapi.shop/" target="_blank" rel="noopener noreferrer">注册 / 登录</a>
-            <a class="chip-link" href="https://www.momoapi.shop/console/token" target="_blank" rel="noopener noreferrer">创建 API 令牌</a>
-          </div>
-          <div class="quick-panel__copy">
-            <strong>Base URL</strong>
-            <span class="copy-chip">https://www.momoapi.shop</span>
-            <button
-              class="copy-chip copy-chip--button"
-              type="button"
-              data-copy-text="https://www.momoapi.shop"
-              aria-label="复制 Base URL"
-            >
-              复制
-            </button>
-          </div>
-        </div>
+        ${renderEntryPanel(true)}
 
         <h2 id="summary">结论</h2>
         <ul>
@@ -966,25 +1075,7 @@ GPT API：service_tier=fast
       <div class="doc">
         <h1>Claude Code 实用命令</h1>
         
-        <div class="quick-panel quick-panel--stacked">
-          <div class="quick-panel__group">
-            <strong>新人入口</strong>
-            <a class="chip-link chip-link--primary" href="https://www.momoapi.shop/" target="_blank" rel="noopener noreferrer">注册 / 登录</a>
-            <a class="chip-link" href="https://www.momoapi.shop/console/token" target="_blank" rel="noopener noreferrer">创建 API 令牌</a>
-          </div>
-          <div class="quick-panel__copy">
-            <strong>Base URL</strong>
-            <span class="copy-chip">https://www.momoapi.shop</span>
-            <button
-              class="copy-chip copy-chip--button"
-              type="button"
-              data-copy-text="https://www.momoapi.shop"
-              aria-label="复制 Base URL"
-            >
-              复制
-            </button>
-          </div>
-        </div>
+        ${renderEntryPanel(true)}
 
         <p>这页整理 Claude Code 日常使用中最常见的命令、输入方式和上下文管理方法。核心原则是：先给足上下文，再让模型分步骤执行。</p>
 
@@ -1149,25 +1240,7 @@ claude</code></pre>
       <div class="doc">
         <h1>Trae 等 IDE 客户端配置</h1>
 
-        <div class="quick-panel quick-panel--stacked">
-          <div class="quick-panel__group">
-            <strong>新人入口</strong>
-            <a class="chip-link chip-link--primary" href="https://www.momoapi.shop/" target="_blank" rel="noopener noreferrer">注册 / 登录</a>
-            <a class="chip-link" href="https://www.momoapi.shop/console/token" target="_blank" rel="noopener noreferrer">创建 API 令牌</a>
-          </div>
-          <div class="quick-panel__copy">
-            <strong>Base URL</strong>
-            <span class="copy-chip">https://www.momoapi.shop</span>
-            <button
-              class="copy-chip copy-chip--button"
-              type="button"
-              data-copy-text="https://www.momoapi.shop"
-              aria-label="复制 Base URL"
-            >
-              复制
-            </button>
-          </div>
-        </div>
+        ${renderEntryPanel(true)}
 
         <h2 id="scope">适用范围</h2>
         <p>本页适用于需要填写 OpenAI 兼容接口的 IDE 客户端，例如：</p>
@@ -1334,18 +1407,65 @@ Models: gpt-5.5,gpt-5.4,gpt-5.3-codex</code></pre>
   "/ide": {
     title: "IDE 集成",
     section: "客户端教程",
-    meta: "IDE 集成写法应该聚焦组织策略。",
+    meta: "在 Cursor、VS Code 等 IDE 终端里配合 Claude Code 使用 momoapi。",
     body: `
       <div class="doc">
         <h1>IDE 集成</h1>
-        <p class="lead">如果你同时维护 CLI 和 IDE 文档，这一页用来讲配置组织和团队统一规范。</p>
+        ${renderEntryPanel(true)}
 
-        <h2 id="workspace-policy">工作区策略</h2>
+        <p class="lead">在 Cursor、VS Code 这类 IDE 里，最常见的用法不是单独装一个特殊插件，而是在 IDE 内置终端里直接启动 Claude Code，让它在当前项目目录工作。</p>
+
+        <h2 id="cursor-vscode-claude-code">Cursor / VS Code 中使用 Claude Code</h2>
+        <p>常见方式是在 IDE 终端里进入项目目录后直接启动 Claude Code：</p>
+        <pre><code>cd /path/to/project
+claude</code></pre>
+        <p>这样 Claude Code 的工作目录就是当前项目目录，能直接读取和修改项目文件。</p>
+
+        <div class="callout callout--tip">
+          <strong>先确认账号配置</strong>
+          <p>如果你用的是 momoapi 提供的 Claude 兼容接口，先确认令牌有效，并且客户端里填写的是 <code>https://www.momoapi.shop</code>，不要默认补成 <code>/v1</code>。</p>
+        </div>
+
+        <h2 id="recommended-flow">推荐流程</h2>
+        <ol>
+          <li>先用 IDE 打开项目。</li>
+          <li>在 IDE 内置终端确认当前目录：</li>
+        </ol>
+        <pre><code>pwd
+git status</code></pre>
+        <ol start="3">
+          <li>启动 Claude Code：</li>
+        </ol>
+        <pre><code>claude</code></pre>
+        <ol start="4">
+          <li>第一次进入项目先运行：</li>
+        </ol>
+        <pre><code>/init</code></pre>
+        <ol start="5">
+          <li>让 Claude Code 先阅读关键目录，再开始修改代码。</li>
+        </ol>
+
+        <h2 id="ide-collaboration-notes">和 IDE 配合的注意点</h2>
         <ul>
-          <li>个人开发环境和团队共享模板分开。</li>
-          <li>不要把真实令牌提交到工作区配置。</li>
-          <li>能用环境变量注入的，就不要写死在项目文件里。</li>
+          <li>让模型改完后，用 IDE 的 diff 视图审查变更。</li>
+          <li>涉及批量重命名、格式化、迁移文件时，先要求模型列出计划。</li>
+          <li>不要把 IDE 自动生成的大文件、构建产物、依赖目录加入上下文。</li>
+          <li>如果模型改动不符合预期，先让它解释 diff，再决定是否回退。</li>
         </ul>
+
+        <h2 id="common-issues">常见问题</h2>
+
+        <h3 id="command-not-found">IDE 里命令找不到</h3>
+        <p>通常说明 Node.js、npm 或 Claude Code 没装到当前终端的 PATH。先检查：</p>
+        <pre><code>node -v
+npm -v
+claude --version</code></pre>
+
+        <h3 id="wrong-working-directory">工作目录不对</h3>
+        <p>Claude Code 默认只会操作启动时所在目录。先 <code>cd</code> 到项目目录，再启动 Claude Code。</p>
+
+        <h3 id="too-many-permission-prompts">权限弹窗太多</h3>
+        <p>按需批准具体命令即可，不要为了省事在陌生项目里直接开启危险模式。</p>
       </div>
     `,
   },
@@ -1356,25 +1476,7 @@ Models: gpt-5.5,gpt-5.4,gpt-5.3-codex</code></pre>
     body: `
       <div class="doc">
         <h1>其他 CLI 与插件</h1>
-        <div class="quick-panel quick-panel--stacked">
-          <div class="quick-panel__group">
-            <strong>新人入口</strong>
-            <a class="chip-link chip-link--primary" href="https://www.momoapi.shop/" target="_blank" rel="noopener noreferrer">注册 / 登录</a>
-            <a class="chip-link" href="https://www.momoapi.shop/console/token" target="_blank" rel="noopener noreferrer">创建 API 令牌</a>
-          </div>
-          <div class="quick-panel__copy">
-            <strong>Base URL</strong>
-            <span class="copy-chip">https://www.momoapi.shop</span>
-            <button
-              class="copy-chip copy-chip--button"
-              type="button"
-              data-copy-text="https://www.momoapi.shop"
-              aria-label="复制 Base URL"
-            >
-              复制
-            </button>
-          </div>
-        </div>
+        ${renderEntryPanel(true)}
 
         <p class="lead">Trae、Cursor、RooCode、Kilo Code、Continue 这类 OpenAI 兼容 IDE 客户端已经整理到 <a href="#/trae-ide-clients">Trae 等 IDE 客户端配置</a>。本页只保留 Gemini CLI 和其他轻量插件的说明。</p>
 
@@ -1435,25 +1537,7 @@ gemini --version</code></pre>
     body: `
       <div class="doc">
         <h1>CC Switch</h1>
-        <div class="quick-panel quick-panel--stacked">
-          <div class="quick-panel__group">
-            <strong>新人入口</strong>
-            <a class="chip-link chip-link--primary" href="https://www.momoapi.shop/" target="_blank" rel="noopener noreferrer">注册 / 登录</a>
-            <a class="chip-link" href="https://www.momoapi.shop/console/token" target="_blank" rel="noopener noreferrer">创建 API 令牌</a>
-          </div>
-          <div class="quick-panel__copy">
-            <strong>Base URL</strong>
-            <span class="copy-chip">https://www.momoapi.shop</span>
-            <button
-              class="copy-chip copy-chip--button"
-              type="button"
-              data-copy-text="https://www.momoapi.shop"
-              aria-label="复制 Base URL"
-            >
-              复制
-            </button>
-          </div>
-        </div>
+        ${renderEntryPanel(true)}
 
         <p class="lead">CC Switch 用来管理 Claude Code 的多套环境配置，比如官方、不同中转站、不同 Token。它适合不想手动改环境变量的用户。</p>
 
@@ -1473,6 +1557,34 @@ gemini --version</code></pre>
         <pre><code>Token: sk-你的令牌
 Base URL: https://www.momoapi.shop</code></pre>
         <p>如果配置项区分 Anthropic / OpenAI，Claude Code 选择 Anthropic 相关配置；Codex 或其他 OpenAI 兼容客户端选择 OpenAI 兼容配置，并按客户端要求决定是否补 <code>/v1</code>。</p>
+
+        <h2 id="codex-provider">Codex / OpenAI 兼容提供商图文配置</h2>
+        <p>如果你是用 CC Switch 管 Codex 或其他 OpenAI 兼容客户端，核心字段就是提供商名称、官网链接、API Key、请求地址和模型名。</p>
+        <div class="step-list">
+          <section class="step-item">
+            <div class="step-item__eyebrow">步骤 1</div>
+            <h3>新建提供商</h3>
+            <p>在 CC Switch 里创建一套新的 OpenAI 兼容配置，避免和 Claude 配置混用。</p>
+            <figure class="doc-figure">
+              <img src="./assets/guide/cc-switch/cc-switch-codex-provider.png" alt="CC Switch 新建 Codex 提供商截图" loading="lazy" />
+              <figcaption>新建一个单独的 Codex 或 OpenAI Compatible 提供商配置。</figcaption>
+            </figure>
+          </section>
+          <section class="step-item">
+            <div class="step-item__eyebrow">步骤 2</div>
+            <h3>填写最少必要字段</h3>
+            <p>旧指南里给出的关键字段就是这几项：</p>
+            <pre><code>Provider Name: 自定义名称
+Website: https://www.momoapi.shop
+API Key: sk-你的令牌
+Base URL: https://www.momoapi.shop/v1
+Model: 目标模型名</code></pre>
+            <figure class="doc-figure">
+              <img src="./assets/guide/cc-switch/cc-switch-codex-form.png" alt="CC Switch 填写 Codex 表单截图" loading="lazy" />
+              <figcaption>OpenAI 兼容客户端通常要用带 <code>/v1</code> 的地址。</figcaption>
+            </figure>
+          </section>
+        </div>
 
         <h2 id="fast-context">fast 与百万上下文</h2>
         <p>先保证基础项正确：</p>
