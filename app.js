@@ -1,21 +1,16 @@
 const navItems = [
-  { title: "公告", path: "/announcements" },
-  { title: "快速开始", path: "/quick-start" },
-  { title: "Codex", path: "/codex" },
-  { title: "Claude Code", path: "/claude-code" },
-  { title: "Trae/IDE", path: "/trae-ide-clients" },
-  { title: "fast/1M", path: "/fast-context" },
-  { title: "实用命令", path: "/claude-usage" },
-  { title: "排错", path: "/troubleshooting" },
+  { title: "模型价格", href: "https://www.momoapi.shop/pricing" },
+  { title: "购买额度", href: "https://pay.ldxp.cn/shop/QJD3AMYP", primary: true },
+  { title: "兑换额度", href: "https://www.momoapi.shop/console/topup" },
+  { title: "创建令牌", href: "https://www.momoapi.shop/console/token" },
 ];
 
 const sidebar = [
   {
     title: "开始使用",
     items: [
-      { title: "首页", path: "/" },
-      { title: "公告与服务说明", path: "/announcements" },
       { title: "快速开始", path: "/quick-start" },
+      { title: "公告与服务说明", path: "/announcements" },
       { title: "账号与令牌", path: "/account-token" },
       { title: "模型与分组", path: "/models-groups" },
     ],
@@ -46,153 +41,52 @@ const sidebar = [
 
 function renderEntryPanel(stacked = false) {
   return `
-    <div class="quick-panel${stacked ? " quick-panel--stacked" : ""}">
-      <div class="quick-panel__group">
-        <strong>新人入口</strong>
-        <a class="chip-link chip-link--primary" href="https://www.momoapi.shop/" target="_blank" rel="noopener noreferrer">注册 / 登录</a>
-        <a class="chip-link" href="https://pay.ldxp.cn/shop/QJD3AMYP" target="_blank" rel="noopener noreferrer">充值 / 购买额度</a>
-        <a class="chip-link" href="https://www.momoapi.shop/console/topup" target="_blank" rel="noopener noreferrer">兑换额度</a>
-        <a class="chip-link" href="https://www.momoapi.shop/console/token" target="_blank" rel="noopener noreferrer">创建 API 令牌</a>
+    <div class="entry-panel${stacked ? " entry-panel--stacked" : ""}">
+      <div class="quick-panel">
+        <div class="quick-panel__main">
+          <div class="quick-panel__intro">
+            <strong>常用操作入口</strong>
+          </div>
+          <div class="quick-panel__actions" aria-label="新人操作入口">
+            <a class="chip-link chip-link--primary" href="https://www.momoapi.shop/" target="_blank" rel="noopener noreferrer">
+              <span>注册 / 登录</span>
+            </a>
+            <a class="chip-link" href="https://pay.ldxp.cn/shop/QJD3AMYP" target="_blank" rel="noopener noreferrer">
+              <span>购买额度</span>
+            </a>
+            <a class="chip-link" href="https://www.momoapi.shop/console/topup" target="_blank" rel="noopener noreferrer">
+              <span>兑换额度</span>
+            </a>
+            <a class="chip-link" href="https://www.momoapi.shop/console/token" target="_blank" rel="noopener noreferrer">
+              <span>创建 API 令牌</span>
+            </a>
+          </div>
+        </div>
+        <p class="quick-panel__note">建议顺序：先注册登录，再购买或兑换额度，最后创建 API 令牌。</p>
+        <div class="service-facts" aria-label="服务关键信息">
+          <div class="service-fact">
+            <strong>额度比例</strong>
+            <span>当前 <code>1 元人民币 ≈ 1 美元额度</code>，以控制台为准。</span>
+          </div>
+          <div class="service-fact">
+            <strong>支持客户端</strong>
+            <span>Codex CLI、Claude Code、CC Switch、Cherry Studio、Trae / Cursor / RooCode 等。</span>
+          </div>
+          <div class="service-fact">
+            <strong>联系支持</strong>
+            <span>QQ群 <code>1102891423</code></span>
+          </div>
+        </div>
       </div>
-      <div class="quick-panel__copy">
-        <strong>Base URL</strong>
-        <span class="copy-chip">https://www.momoapi.shop</span>
-        <button
-          class="copy-chip copy-chip--button"
-          type="button"
-          data-copy-text="https://www.momoapi.shop"
-          aria-label="复制 Base URL"
-        >
-          复制
-        </button>
-      </div>
-      <p class="quick-panel__note">充值方式支持直接充值或兑换码入账；购买后拿到兑换码时，到充值页完成兑换。</p>
-      <div class="quick-panel__alert">
-        <strong>大额充值提示</strong>
-        <span>大额充值可进群联系管理员，通常有赠送额度。QQ群：1102891423</span>
+      <div class="entry-support-note">
+        <strong>需要人工处理</strong>
+        <span>大额充值、额度异常或线路波动，可进 QQ 群 <code>1102891423</code> 联系管理员。</span>
       </div>
     </div>
   `;
 }
 
 const pages = {
-  "/": {
-    title: "momoapi 中转站教程",
-    section: "开始使用",
-    meta: "一套白底教程站，按客户端场景拆页，不把配置和排错混在一起。",
-    hero: true,
-    body: `
-      <div class="hero">
-        <div>
-          <div class="eyebrow">momoapi 中转站教程</div>
-          <h1>Codex / Claude Code / 常见客户端快速配置</h1>
-          <p class="lead">从注册、创建令牌、配置 Base URL 到常见错误排查，一页一件事。</p>
-          <div class="hero-actions">
-            <a class="button button--primary" href="#/quick-start">立即开始</a>
-            <a class="button" href="#/troubleshooting">常见问题</a>
-          </div>
-        </div>
-        <div class="hero-visual" role="img" aria-label="中转站教程首页视觉"></div>
-      </div>
-
-      <div class="feature-grid">
-        <section class="feature">
-          <h3>快速配置</h3>
-          <p>按步骤完成注册、创建令牌、填写 Base URL，避免配置项遗漏。</p>
-        </section>
-        <section class="feature">
-          <h3>多客户端覆盖</h3>
-          <p>覆盖 Codex CLI、Claude Code、Trae、Cursor、RooCode、CC Switch、Cherry Studio 等常用场景。</p>
-        </section>
-        <section class="feature">
-          <h3>排错优先</h3>
-          <p>对 401、403、404、429、503、网络代理、上下文过大等问题给出直接处理方式。</p>
-        </section>
-        <section class="feature">
-          <h3>Claude Code 工作流</h3>
-          <p>整理 /init、@ 上下文、! 命令、/clear、/compact、IDE 集成和常用技巧。</p>
-        </section>
-      </div>
-
-      ${renderEntryPanel()}
-
-      <div class="doc">
-        <h2 id="billing-overview">充值与计费</h2>
-        <div class="table-wrap">
-          <table>
-            <thead>
-              <tr>
-                <th>项目</th>
-                <th>说明</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>计费方式</td>
-                <td>当前以按量付费为主，直接充值，用多少扣多少。</td>
-              </tr>
-              <tr>
-                <td>充值入口</td>
-                <td>可直接购买额度，也可以拿兑换码到控制台充值页兑换。</td>
-              </tr>
-              <tr>
-                <td>购买建议</td>
-                <td>购买前先评估自己的模型和上下文用量，按需充值。</td>
-              </tr>
-              <tr>
-                <td>大额充值</td>
-                <td>大额充值建议先进群联系管理员，通常会有额外赠送额度。</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-
-        <div class="callout callout--warning">
-          <strong>按需充值</strong>
-          <p>购买前要认真评估用量。尤其是 fast、长上下文和生图任务，费用波动会明显高于普通短请求。</p>
-        </div>
-
-        <h2 id="announcements">公告速览</h2>
-        <ul>
-          <li>主站：正常使用 <code>https://www.momoapi.shop</code>，备用网址 <code>https://www.momo-api.cc.cd</code> 仅在主线路不可达时使用。</li>
-          <li>OpenAI 兼容客户端：通常使用 <code>https://www.momoapi.shop/v1</code>。</li>
-          <li>Anthropic 兼容客户端：直接使用 <code>https://www.momoapi.shop</code>，不需要补 <code>/v1</code>。</li>
-          <li>付费方式：当前主要是按量付费，直接充值，用多少扣多少。</li>
-          <li>大额充值：先进 QQ 群 <code>1102891423</code> 联系管理员，通常会有赠送额度。</li>
-          <li>fast：当前 fast 模式双倍计费，具体以公告和控制台展示为准。</li>
-          <li>百万上下文：GPT 超过 272k 的部分会额外计费；不要默认塞满百万上下文。</li>
-          <li>生图：gpt-image-2 生图可用，但是不保证稳定性。</li>
-          <li>模型：当前 OpenAI 已下线 <code>gpt-5.2</code> 和 <code>gpt-5.3</code>，这两个模型暂时不可用。</li>
-          <li>拥挤：出现 <code>selected model is at capacity</code> 时，通常是上游算力紧张，稍后重试即可。</li>
-        </ul>
-
-        <p>更多说明见 <a href="#/announcements">公告与服务说明</a>。</p>
-
-        <h2 id="reading-order">推荐阅读顺序</h2>
-        <ol>
-          <li>先看快速开始，确认令牌和请求地址。</li>
-          <li>使用 Codex 的用户看 Codex CLI。</li>
-          <li>使用 Claude Code 的用户看 Claude Code。</li>
-          <li>日常开发技巧看 Claude Code 实用命令。</li>
-          <li>使用 Trae、Cursor、RooCode 看 Trae 等 IDE 客户端。</li>
-          <li>使用 Gemini CLI 等看其他 CLI 与插件。</li>
-          <li>遇到报错时直接查常见问题排查。</li>
-        </ol>
-
-        <div class="callout callout--tip">
-          <strong>提示</strong>
-          <p>文档中的 <code>Base URL</code> 默认使用 <code>https://www.momoapi.shop</code>。如果公告给出备用线路，以公告为准。</p>
-        </div>
-
-        <div class="callout callout--tip">
-          <strong>联系渠道</strong>
-          <p>使用过程中有疑问或遇到线路波动，优先在 QQ 群 <code>1102891423</code> 找管理员确认。大额充值也建议先进群沟通。</p>
-        </div>
-
-        <p>momoapi 文档仅用于帮助用户正确配置客户端。</p>
-      </div>
-    `,
-  },
   "/announcements": {
     title: "公告与服务说明",
     section: "开始使用",
@@ -202,7 +96,13 @@ const pages = {
         <h1>公告与服务说明</h1>
         ${renderEntryPanel(true)}
 
-        <p>本页把当前站点常用公告整理成更适合查阅的版本。控制台和站内公告如有更新，以实际展示为准。</p>
+        <p>本页只整理服务入口、计费、线路和联系说明。具体客户端配置、模型选择和报错处理，请跳到对应教程页查看。</p>
+
+        <h2 id="current-notes">当前要点</h2>
+        <div class="callout callout--tip">
+          <strong>先看这里</strong>
+          <p>日常使用优先主站；购买前先估算用量；遇到 401、403、404、429、503 等错误时，优先看 <a href="#/troubleshooting">常见问题排查</a>。</p>
+        </div>
 
         <h2 id="billing-support">充值、计费与联系</h2>
         <ul>
@@ -210,10 +110,9 @@ const pages = {
           <li>购买前先评估大致用量，按需充值，避免把 fast、长上下文、生图的费用当成普通短请求来估算。</li>
           <li>如果拿到的是兑换码，到 <code>https://www.momoapi.shop/console/topup</code> 兑换额度。</li>
           <li>大额充值建议先进 QQ 群 <code>1102891423</code> 联系管理员，通常会有赠送额度。</li>
-          <li>使用过程中遇到充值记录、消费记录、令牌创建延迟，先等待一会再刷新。</li>
         </ul>
 
-        <h2 id="entry-routing">入口与线路</h2>
+        <h2 id="entry-routing">入口与备用线路</h2>
         <div class="table-wrap">
           <table>
             <thead>
@@ -237,64 +136,52 @@ const pages = {
             </tbody>
           </table>
         </div>
-        <p>OpenAI 兼容客户端通常填写 <code>https://www.momoapi.shop/v1</code>。Anthropic 兼容客户端通常直接填写 <code>https://www.momoapi.shop</code>，不要默认补 <code>/v1</code>。</p>
-
         <div class="callout callout--warning">
           <strong>备用网址不要当主站</strong>
-          <p>备用线路更适合故障切换。日常使用优先主站，避免把临时入口固化到长期配置里。</p>
+          <p>备用线路更适合故障切换。日常使用优先主站，避免把临时入口固化到长期配置里。Base URL 细节见 <a href="#/quick-start">快速开始</a>。</p>
         </div>
 
-        <h2 id="image-generation">生图能力</h2>
+        <h2 id="delays">额度、令牌和记录延迟</h2>
         <ul>
-          <li><code>gpt-image-2</code> 可用，但不保证一直稳定。</li>
-          <li>大图、慢图、高分辨率图建议使用支持流式返回的客户端，避免长请求超时。</li>
-          <li>如果客户端支持 partial images 或流式图像响应，优先开启。</li>
+          <li>充值记录、消费记录、令牌创建等操作可能存在短暂延迟。</li>
+          <li>刚操作完先等待一会再刷新，不要连续重复提交同一个动作。</li>
+          <li>长时间异常时，再进 QQ 群 <code>1102891423</code> 联系管理员。</li>
         </ul>
 
-        <div class="callout callout--tip">
-          <strong>长时间生图要预期超时</strong>
-          <p>非流式生图请求容易超过 CDN 或客户端等待时间。请求超时不一定是令牌问题，也可能只是图像生成链路太慢。</p>
+        <h2 id="related-guides">相关说明入口</h2>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>想了解</th>
+                <th>去哪里看</th>
+                <th>说明</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Base URL、Token、最小验证</td>
+                <td><a href="#/quick-start">快速开始</a></td>
+                <td>先把最小调用跑通。</td>
+              </tr>
+              <tr>
+                <td>模型、分组、生图能力</td>
+                <td><a href="#/models-groups">模型与分组</a></td>
+                <td>以控制台实时展示为准。</td>
+              </tr>
+              <tr>
+                <td>fast、1M 上下文、额外计费</td>
+                <td><a href="#/fast-context">fast 与 1M 上下文</a></td>
+                <td>大上下文和 fast 使用前先估算成本。</td>
+              </tr>
+              <tr>
+                <td>401、403、404、429、503、模型拥挤</td>
+                <td><a href="#/troubleshooting">常见问题排查</a></td>
+                <td>按错误类型逐项处理。</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
-
-        <h2 id="models-groups">模型与分组</h2>
-        <p>站点是低倍率站点，具体倍率以控制台实时展示为准。当前仓库内已明确记录的公告包括：</p>
-        <ul>
-          <li>例如 <code>gpt-5.5</code> 曾按低倍率提供，实际价格请以站内面板为准。</li>
-          <li>OpenAI 已下线 <code>gpt-5.2</code> 和 <code>gpt-5.3</code>，这两个模型当前不可用。</li>
-          <li>如果控制台模型列表与旧文档不一致，以控制台最新列表为准。</li>
-        </ul>
-
-        <h2 id="fast-billing">fast 与计费</h2>
-        <ul>
-          <li>当前 fast 模式按双倍计费理解即可，实际账单以控制台展示为准。</li>
-          <li>GPT 超过 <code>272k</code> 的上下文部分会额外计费，不要把“支持 1M”理解成每次都应该塞满。</li>
-          <li>fast 更适合交互式开发；批量脚本和大上下文任务先评估成本。</li>
-        </ul>
-
-        <h2 id="service-notes">常见服务提示</h2>
-        <h3 id="capacity">selected model is at capacity</h3>
-        <p>这通常是上游模型拥挤或算力不足，不代表你的 token 一定有问题。</p>
-        <ol>
-          <li>稍后重试。</li>
-          <li>换同系列更稳定的模型。</li>
-          <li>降低并发，不要短时间密集重试。</li>
-        </ol>
-
-        <h3 id="delays">创建令牌、充值、消费记录延迟</h3>
-        <p>创建 API 令牌、充值记录、消费记录等操作可能存在延迟。</p>
-        <ol>
-          <li>刚操作完先等待一会再刷新。</li>
-          <li>不要连续重复提交同一个动作。</li>
-          <li>长时间异常再检查控制台记录。</li>
-        </ol>
-
-        <h3 id="api-503">API Error 503</h3>
-        <p>通常是当前模型、分组或上游账号池临时不可用。</p>
-        <ol>
-          <li>先换模型或换分组。</li>
-          <li>不要脚本化密集重试。</li>
-          <li>如果多个模型都异常，再排查线路或等待恢复。</li>
-        </ol>
       </div>
     `,
   },
@@ -2018,11 +1905,11 @@ function slugify(text) {
     .replace(/^-+|-+$/g, "");
 }
 
-function renderTopNav(currentPath) {
+function renderTopNav() {
   topNavEl.innerHTML = navItems
     .map((item) => {
-      const active = currentPath === item.path ? "active" : "";
-      return `<a class="${active}" href="#${item.path}">${item.title}</a>`;
+      const className = item.primary ? "topbar__action topbar__action--primary" : "topbar__action";
+      return `<a class="${className}" href="${item.href}" target="_blank" rel="noopener noreferrer">${item.title}</a>`;
     })
     .join("");
 }
@@ -2080,7 +1967,7 @@ function assignHeadingIds(container) {
 }
 
 function renderToc() {
-  const headings = [...contentEl.querySelectorAll(".doc h2, .doc h3")];
+  const headings = [...contentEl.querySelectorAll(".doc h2")];
   if (!headings.length) {
     tocEl.innerHTML = "";
     return;
@@ -2092,7 +1979,7 @@ function renderToc() {
       ${headings
         .map(
           (heading) => `
-            <a href="#${normalizeHash()}?section=${heading.id}" data-section-link="true" data-level="${heading.tagName === "H3" ? "3" : "2"}" data-id="${heading.id}">
+            <a href="#${normalizeHash()}?section=${heading.id}" data-section-link="true" data-id="${heading.id}">
               ${heading.textContent}
             </a>
           `
@@ -2115,20 +2002,19 @@ function renderToc() {
 
 function renderPage() {
   const currentPath = normalizeHash();
-  const page = pages[currentPath] || pages["/"];
-  const isHomePage = currentPath === "/";
+  const pagePath = currentPath === "/" ? "/quick-start" : currentPath;
+  const page = pages[pagePath] || pages["/quick-start"];
 
-  renderTopNav(currentPath);
-  renderSidebar(currentPath);
-  document.body.classList.toggle("page-home", isHomePage);
+  renderTopNav();
+  renderSidebar(pagePath);
 
   contentEl.innerHTML = `
     <article class="doc-shell">
       <div class="doc">
-        ${page.hero ? "" : `<div class="meta">${page.meta}</div>`}
+        ${pagePath === "/quick-start" ? "" : `<div class="meta">${page.meta}</div>`}
       </div>
       ${page.body}
-      ${buildPager(currentPath)}
+      ${buildPager(pagePath)}
     </article>
   `;
 
