@@ -1,4 +1,5 @@
 const navItems = [
+  { title: "站点主页", href: "https://www.momoapi.shop" },
   { title: "模型价格", href: "https://www.momoapi.shop/pricing" },
   { title: "购买额度", href: "https://pay.ldxp.cn/shop/QJD3AMYP", primary: true },
   { title: "兑换额度", href: "https://www.momoapi.shop/console/topup" },
@@ -10,6 +11,7 @@ const sidebar = [
     title: "开始使用",
     items: [
       { title: "快速开始", path: "/quick-start" },
+      { title: "价格与倍率", path: "/pricing-ratio" },
       { title: "公告与服务说明", path: "/announcements" },
       { title: "账号与令牌", path: "/account-token" },
       { title: "模型与分组", path: "/models-groups" },
@@ -66,7 +68,7 @@ function renderEntryPanel(stacked = false) {
         <div class="service-facts" aria-label="服务关键信息">
           <div class="service-fact">
             <strong>额度比例</strong>
-            <span>当前 <code>1 元人民币 ≈ 1 美元额度</code>，以控制台为准。</span>
+            <span>当前 <code>1 元人民币 = 1 美元额度</code>，以控制台为准。</span>
           </div>
           <div class="service-fact">
             <strong>支持客户端</strong>
@@ -218,6 +220,10 @@ const pages = {
 
         <h2 id="recharge">3. 充值与兑换</h2>
         <p>如果你使用的是按量模式，先确认自己是直接充值还是通过兑换码入账。购买前先评估大致用量，避免一次充得太多。</p>
+        <div class="callout callout--tip">
+          <strong>先分清额度和倍率</strong>
+          <p>当前充值按 <code>1 元人民币 = 1 美元额度</code> 入账；模型倍率表示相对官方美元价格的扣费比例。想看人民币口径下的价格对比，见 <a href="#/pricing-ratio">价格与倍率</a>。</p>
+        </div>
         <div class="step-list">
           <section class="step-item">
             <div class="step-item__eyebrow">步骤 1</div>
@@ -320,6 +326,171 @@ gemini --version</code></pre>
           <li><strong>403</strong>：可能是当前网络环境被拦截，先更换网络、代理或出口 IP，再重新测试。</li>
           <li><strong>503</strong>：当前分组 / 模型 / 上游账号暂时不可用，也可能是选错分组导致模型不兼容；先换普通可用分组或同系列模型测试。</li>
         </ul>
+      </div>
+    `,
+  },
+  "/pricing-ratio": {
+    title: "价格与倍率",
+    section: "开始使用",
+    meta: "解释充值比例、模型倍率和人民币口径下的价格对比。",
+    body: `
+      <div class="doc">
+        <h1>价格与倍率</h1>
+        <div class="price-rule">
+          <span>一句话</span>
+          <strong>所有价格同步官方，只是不同分组乘不同倍率。</strong>
+          <p>站内充值是 <code>1 元人民币 = 1 美元额度</code>。所以 <code>官方美元价 × 分组倍率</code> 得到的站内额度价格，可以直接按同数值人民币理解。</p>
+        </div>
+
+        <h2 id="what-ratio-means">1. 倍率是什么意思</h2>
+        <p>倍率只是把官方价格同步到站内价格时使用的系数。输入、补全、缓存读取等所有价格项都按同一个分组倍率计算。</p>
+        <div class="formula-board">
+          <div>
+            <span>站内价格</span>
+            <strong>官方美元价格 × 分组倍率</strong>
+          </div>
+          <div>
+            <span>和官方人民币价对比</span>
+            <strong>站内人民币价格 ÷ 官方人民币价格</strong>
+          </div>
+        </div>
+        <p>例如默认分组倍率是 <code>0.09</code>，官方输入价格是 <code>$5 / 1M</code>：站内价格是 <code>$5 × 0.09 = 0.45 元</code>；官方人民币价格约是 <code>$5 × 7 = 35 元</code>；所以对比比例是 <code>0.45 ÷ 35 ≈ 1.3%</code>。</p>
+
+        <h2 id="group-ratio">2. 不同分组对应不同倍率</h2>
+        <p>普通 <code>gpt-5.5</code> 的价格由令牌分组决定。你用哪个分组的令牌发请求，就按哪个分组倍率扣费。</p>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>分组</th>
+                <th>倍率</th>
+                <th>按官方输入价 <code>$5</code> 举例</th>
+                <th>约省</th>
+                <th>说明</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>我们的 <code>default</code> 分组</td>
+                <td><code>0.09</code></td>
+                <td>
+                  <div class="calc-steps">
+                    <span>官方：<code>$5 / 1M</code></span>
+                    <span>倍率：<code>$5 × 0.09 = $0.45</code></span>
+                    <span>站内：<code>$0.45 额度 = 0.45 元</code></span>
+                    <span>对比：<code>0.45 ÷ (5 × 7) ≈ 1.3%</code></span>
+                  </div>
+                </td>
+                <td><span class="saving">约省 98.7%</span></td>
+                <td>默认分组，常用低价入口。</td>
+              </tr>
+              <tr>
+                <td>我们的 <code>gpt-plus</code> 分组</td>
+                <td><code>0.14</code></td>
+                <td>
+                  <div class="calc-steps">
+                    <span>官方：<code>$5 / 1M</code></span>
+                    <span>倍率：<code>$5 × 0.14 = $0.70</code></span>
+                    <span>站内：<code>$0.70 额度 = 0.70 元</code></span>
+                    <span>对比：<code>0.70 ÷ (5 × 7) ≈ 2.0%</code></span>
+                  </div>
+                </td>
+                <td><span class="saving">约省 98.0%</span></td>
+                <td>更高分组，按该分组倍率计费。</td>
+              </tr>
+              <tr>
+                <td>我们的 <code>gpt-pro</code> 分组</td>
+                <td><code>0.21</code></td>
+                <td>
+                  <div class="calc-steps">
+                    <span>官方：<code>$5 / 1M</code></span>
+                    <span>倍率：<code>$5 × 0.21 = $1.05</code></span>
+                    <span>站内：<code>$1.05 额度 = 1.05 元</code></span>
+                    <span>对比：<code>1.05 ÷ (5 × 7) ≈ 3.0%</code></span>
+                  </div>
+                </td>
+                <td><span class="saving">约省 97.0%</span></td>
+                <td>pro 分组，按该分组倍率计费。</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="ratio-visual" aria-label="各分组和 DeepSeek 官方价格相对 GPT-5.5 官方人民币价格的比例">
+          <div class="ratio-visual__row ratio-visual__row--official">
+            <span>GPT-5.5 官方</span>
+            <div class="ratio-visual__track">
+              <i style="width: 100%"></i>
+            </div>
+            <strong>100%</strong>
+          </div>
+          <div class="ratio-visual__row ratio-visual__row--reference">
+            <span>DeepSeek V4 Pro 官方</span>
+            <div class="ratio-visual__track">
+              <i style="width: 8.7%"></i>
+            </div>
+            <strong>约 8.7%</strong>
+          </div>
+          <div class="ratio-visual__row ratio-visual__row--reference">
+            <span>DeepSeek V4 Flash 官方</span>
+            <div class="ratio-visual__track">
+              <i style="width: 2.8%"></i>
+            </div>
+            <strong>约 2.8%</strong>
+          </div>
+          <div class="ratio-visual__row">
+            <span>我们的 default 分组</span>
+            <div class="ratio-visual__track">
+              <i style="width: 1.3%"></i>
+            </div>
+            <strong>约 1.3%</strong>
+          </div>
+          <div class="ratio-visual__row">
+            <span>我们的 gpt-plus 分组</span>
+            <div class="ratio-visual__track">
+              <i style="width: 2%"></i>
+            </div>
+            <strong>约 2.0%</strong>
+          </div>
+          <div class="ratio-visual__row">
+            <span>我们的 gpt-pro 分组</span>
+            <div class="ratio-visual__track">
+              <i style="width: 3%"></i>
+            </div>
+            <strong>约 3.0%</strong>
+          </div>
+        </div>
+        <p>上图按输入价格举例：GPT-5.5 官方输入价 <code>$5 / 1M</code> 作为 100%；DeepSeek V4 Pro 当前官方输入价约 <code>$0.435 / 1M</code>，V4 Flash 官方输入价 <code>$0.14 / 1M</code>。</p>
+
+        <h2 id="official-compare">3. 默认分组举例</h2>
+        <p>默认分组倍率是 <code>0.09</code>。官方价格同步后，所有价格项都乘 <code>0.09</code>：</p>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>项目</th>
+                <th>官方美元价</th>
+                <th>站内价格</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>输入</td>
+                <td><code>$5 / 1M</code></td>
+                <td><code>$5 × 0.09 = 0.45 元 / 1M</code></td>
+              </tr>
+              <tr>
+                <td>补全</td>
+                <td><code>$30 / 1M</code></td>
+                <td><code>$30 × 0.09 = 2.70 元 / 1M</code></td>
+              </tr>
+              <tr>
+                <td>缓存读</td>
+                <td><code>$0.50 / 1M</code></td>
+                <td><code>$0.50 × 0.09 ≈ 0.04 元 / 1M</code></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     `,
   },
@@ -2010,9 +2181,6 @@ function renderPage() {
 
   contentEl.innerHTML = `
     <article class="doc-shell">
-      <div class="doc">
-        ${pagePath === "/quick-start" ? "" : `<div class="meta">${page.meta}</div>`}
-      </div>
       ${page.body}
       ${buildPager(pagePath)}
     </article>
