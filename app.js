@@ -416,6 +416,10 @@ gemini --version</code></pre>
           </table>
         </div>
         <div class="ratio-visual" aria-label="各分组和 DeepSeek 官方价格相对 GPT-5.5 官方人民币价格的比例">
+          <div class="ratio-visual__header">
+            <strong>输入价格对比</strong>
+            <span>以 GPT-5.5 官方输入价作为 100%</span>
+          </div>
           <div class="ratio-visual__row ratio-visual__row--official">
             <span>GPT-5.5 官方</span>
             <div class="ratio-visual__track">

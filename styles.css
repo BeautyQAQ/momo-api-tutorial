@@ -742,6 +742,23 @@ th {
   background: var(--bg-elevated);
 }
 
+.ratio-visual__header {
+  display: grid;
+  gap: 4px;
+  padding-bottom: 4px;
+}
+
+.ratio-visual__header strong {
+  color: var(--text);
+  font-size: 16px;
+  line-height: 1.35;
+}
+
+.ratio-visual__header span {
+  color: var(--text-soft);
+  font-size: 13px;
+}
+
 .ratio-visual__row {
   display: grid;
   grid-template-columns: 96px minmax(0, 1fr) 72px;
