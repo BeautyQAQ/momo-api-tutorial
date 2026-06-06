@@ -132,7 +132,7 @@ const pages = {
               </tr>
               <tr>
                 <td>备用线路</td>
-                <td><code>https://www.momo-api.cc.cd</code></td>
+                <td><code>https://www.momo-api.shop</code></td>
                 <td>只在主线路不可达时临时使用。</td>
               </tr>
             </tbody>
@@ -216,7 +216,7 @@ const pages = {
           <li>注册账号。</li>
           <li>登录账号。</li>
         </ol>
-        <p>默认主站是 <code>https://www.momoapi.shop</code>。如果主线路不可达，再临时切到备用地址 <code>https://www.momo-api.cc.cd</code>。</p>
+        <p>默认主站是 <code>https://www.momoapi.shop</code>。如果主线路不可达，再临时切到备用地址 <code>https://www.momo-api.shop</code>。</p>
 
         <h2 id="recharge">3. 充值与兑换</h2>
         <p>如果你使用的是按量模式，先确认自己是直接充值还是通过兑换码入账。购买前先评估大致用量，避免一次充得太多。</p>
@@ -507,7 +507,7 @@ gemini --version</code></pre>
           <li>注册。</li>
           <li>登录。</li>
         </ol>
-        <p>如果注册需要邮箱验证码，等待验证码邮件送达后再继续操作。默认主站不可达时，再临时切到 <code>https://www.momo-api.cc.cd</code>。</p>
+        <p>如果注册需要邮箱验证码，等待验证码邮件送达后再继续操作。默认主站不可达时，再临时切到 <code>https://www.momo-api.shop</code>。</p>
 
         <h2 id="create-token">创建令牌</h2>
         <p>令牌是客户端访问 API 的凭证。建议：</p>
