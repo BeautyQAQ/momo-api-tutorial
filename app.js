@@ -354,7 +354,7 @@ gemini --version</code></pre>
             <strong>站内人民币价格 ÷ 官方人民币价格</strong>
           </div>
         </div>
-        <p>例如默认分组倍率是 <code>0.09</code>，官方输入价格是 <code>$5 / 1M</code>：站内价格是 <code>$5 × 0.09 = 0.45 元</code>；官方人民币价格约是 <code>$5 × 7 = 35 元</code>；所以对比比例是 <code>0.45 ÷ 35 ≈ 1.3%</code>。</p>
+        <p>例如默认分组倍率是 <code>0.09</code>，官方输入价格是 <code>$5 / 1M</code>：站内价格就是 <code>$5 × 0.09 = 0.45 元 / 1M</code>。</p>
 
         <h2 id="group-ratio">2. 不同分组对应不同倍率</h2>
         <p>普通 <code>gpt-5.5</code> 的价格由令牌分组决定。你用哪个分组的令牌发请求，就按哪个分组倍率扣费。</p>
@@ -376,9 +376,7 @@ gemini --version</code></pre>
                 <td>
                   <div class="calc-steps">
                     <span>官方：<code>$5 / 1M</code></span>
-                    <span>倍率：<code>$5 × 0.09 = $0.45</code></span>
-                    <span>站内：<code>$0.45 额度 = 0.45 元</code></span>
-                    <span>对比：<code>0.45 ÷ (5 × 7) ≈ 1.3%</code></span>
+                    <span>站内：<code>$5 × 0.09 = 0.45 元 / 1M</code></span>
                   </div>
                 </td>
                 <td><span class="saving">约省 98.7%</span></td>
@@ -390,9 +388,7 @@ gemini --version</code></pre>
                 <td>
                   <div class="calc-steps">
                     <span>官方：<code>$5 / 1M</code></span>
-                    <span>倍率：<code>$5 × 0.14 = $0.70</code></span>
-                    <span>站内：<code>$0.70 额度 = 0.70 元</code></span>
-                    <span>对比：<code>0.70 ÷ (5 × 7) ≈ 2.0%</code></span>
+                    <span>站内：<code>$5 × 0.14 = 0.70 元 / 1M</code></span>
                   </div>
                 </td>
                 <td><span class="saving">约省 98.0%</span></td>
@@ -404,9 +400,7 @@ gemini --version</code></pre>
                 <td>
                   <div class="calc-steps">
                     <span>官方：<code>$5 / 1M</code></span>
-                    <span>倍率：<code>$5 × 0.21 = $1.05</code></span>
-                    <span>站内：<code>$1.05 额度 = 1.05 元</code></span>
-                    <span>对比：<code>1.05 ÷ (5 × 7) ≈ 3.0%</code></span>
+                    <span>站内：<code>$5 × 0.21 = 1.05 元 / 1M</code></span>
                   </div>
                 </td>
                 <td><span class="saving">约省 97.0%</span></td>
