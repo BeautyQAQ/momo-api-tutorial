@@ -39,32 +39,30 @@
     └── guide/
 ```
 
-## 本地预览
+## 生产部署
 
-推荐使用自动同步脚本启动：
+部署脚本会在服务器的 `~` 目录维护一份源码，然后把源码里除 `.git` 目录以外的全部文件同步到 nginx 站点目录 `/var/www/momo-tutorial`，最后执行 `systemctl reload nginx`。
 
 ```bash
 ./scripts/serve-auto-sync.sh
 ```
 
-脚本会同时做两件事：
+默认配置：
 
-- 启动本地教程网站：`http://127.0.0.1:4173/`
-- 定时检查当前 Git 分支的上游仓库，有新提交时自动快进拉取
+- 源码仓库：`git@github.com:BeautyQAQ/momo-api-tutorial.git`
+- 源码目录：`~/momo-api-tutorial`
+- 站点目录：`/var/www/momo-tutorial`
+- 分支：使用仓库默认分支
 
-如果本地有未提交改动，脚本会跳过本轮拉取，避免覆盖正在编辑的内容。
-如果当前分支没有配置上游仓库，脚本仍会启动网站，但会跳过自动同步。
-按 `Ctrl+C` 可以停止本地服务。
-
-可选参数：
+可以通过环境变量覆盖：
 
 ```bash
-HOST=127.0.0.1 PORT=8080 SYNC_INTERVAL=30 ./scripts/serve-auto-sync.sh
+BRANCH=main REPO_DIR="$HOME/momo-api-tutorial" TARGET_DIR=/var/www/momo-tutorial ./scripts/serve-auto-sync.sh
 ```
 
-- `HOST`：监听地址，默认 `127.0.0.1`
-- `PORT`：监听端口，默认 `4173`
-- `SYNC_INTERVAL`：检查远端更新的间隔秒数，默认 `60`
+脚本需要服务器上有 `git`、`rsync`、`systemctl`。如果当前用户不是 root，会通过 `sudo` 创建和同步 `/var/www/momo-tutorial`，并重载 nginx。
+
+## 本地预览
 
 直接打开：
 
