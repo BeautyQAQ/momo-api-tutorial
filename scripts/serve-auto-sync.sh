@@ -51,41 +51,11 @@ update_repo() {
 deploy_files() {
   log "同步静态文件到：$TARGET_DIR"
   run_as_root mkdir -p "$TARGET_DIR"
-  run_as_root rsync -a --delete --exclude='.git/' "$REPO_DIR"/ "$TARGET_DIR"/
-}
-
-refresh_asset_version() {
-  target_index="$TARGET_DIR/index.html"
-
-  if [ ! -f "$target_index" ]; then
-    log "未找到 $target_index，跳过资源版本刷新。"
-    return 0
-  fi
-
-  version="$(date '+%Y%m%d%H%M%S')"
-  log "刷新前端资源版本：$version"
-
-  if [ "$(id -u)" -eq 0 ]; then
-    sed -i \
-      -e "s#\\./styles\\.css\\([?][^\"']*\\)\\?#./styles.css?v=$version#g" \
-      -e "s#\\./app\\.js\\([?][^\"']*\\)\\?#./app.js?v=$version#g" \
-      "$target_index"
-  else
-    sudo sed -i \
-      -e "s#\\./styles\\.css\\([?][^\"']*\\)\\?#./styles.css?v=$version#g" \
-      -e "s#\\./app\\.js\\([?][^\"']*\\)\\?#./app.js?v=$version#g" \
-      "$target_index"
-  fi
-}
-
-reload_nginx() {
-  log "重载 nginx"
-  run_as_root systemctl reload nginx
+  run_as_root rsync -a --delete --delete-excluded --exclude='.git/' --exclude='scripts/' "$REPO_DIR"/ "$TARGET_DIR"/
 }
 
 require_cmd git
 require_cmd rsync
-require_cmd systemctl
 
 if [ "$(id -u)" -ne 0 ]; then
   require_cmd sudo
@@ -93,7 +63,5 @@ fi
 
 update_repo
 deploy_files
-refresh_asset_version
-reload_nginx
 
 log "部署完成。"

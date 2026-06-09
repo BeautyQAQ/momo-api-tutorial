@@ -41,7 +41,7 @@
 
 ## 生产部署
 
-部署脚本会在服务器的 `~` 目录维护一份源码，然后把源码里除 `.git` 目录以外的全部文件同步到 nginx 站点目录 `/var/www/momo-tutorial`，最后执行 `systemctl reload nginx`。
+部署脚本会在服务器的 `~` 目录维护一份源码，然后把源码里除 `.git` 和 `scripts` 目录以外的文件同步到 nginx 站点目录 `/var/www/momo-tutorial`。
 
 ```bash
 ./scripts/serve-auto-sync.sh
@@ -60,7 +60,7 @@
 BRANCH=main REPO_DIR="$HOME/momo-api-tutorial" TARGET_DIR=/var/www/momo-tutorial ./scripts/serve-auto-sync.sh
 ```
 
-脚本需要服务器上有 `git`、`rsync`、`systemctl`。如果当前用户不是 root，会通过 `sudo` 创建和同步 `/var/www/momo-tutorial`，并重载 nginx。
+脚本需要服务器上有 `git` 和 `rsync`。如果当前用户不是 root，会通过 `sudo` 创建和同步 `/var/www/momo-tutorial`。
 
 ## 本地预览
 
