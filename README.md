@@ -30,11 +30,41 @@
 ├── index.html
 ├── styles.css
 ├── app.js
+├── scripts/
+│   └── serve-auto-sync.sh
+├── docs/
+│   └── plans/
 └── assets/
-    └── relayhub-hero.png
+    ├── momoapi.png
+    └── guide/
 ```
 
 ## 本地预览
+
+推荐使用自动同步脚本启动：
+
+```bash
+./scripts/serve-auto-sync.sh
+```
+
+脚本会同时做两件事：
+
+- 启动本地教程网站：`http://127.0.0.1:4173/`
+- 定时检查当前 Git 分支的上游仓库，有新提交时自动快进拉取
+
+如果本地有未提交改动，脚本会跳过本轮拉取，避免覆盖正在编辑的内容。
+如果当前分支没有配置上游仓库，脚本仍会启动网站，但会跳过自动同步。
+按 `Ctrl+C` 可以停止本地服务。
+
+可选参数：
+
+```bash
+HOST=127.0.0.1 PORT=8080 SYNC_INTERVAL=30 ./scripts/serve-auto-sync.sh
+```
+
+- `HOST`：监听地址，默认 `127.0.0.1`
+- `PORT`：监听端口，默认 `4173`
+- `SYNC_INTERVAL`：检查远端更新的间隔秒数，默认 `60`
 
 直接打开：
 
