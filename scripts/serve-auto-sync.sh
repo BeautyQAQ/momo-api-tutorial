@@ -1,5 +1,5 @@
-#!/usr/bin/env bash
-set -euo pipefail
+#!/bin/sh
+set -eu
 
 REPO_URL="${REPO_URL:-git@github.com:BeautyQAQ/momo-api-tutorial.git}"
 REPO_DIR="${REPO_DIR:-$HOME/momo-api-tutorial}"
@@ -18,7 +18,7 @@ require_cmd() {
 }
 
 run_as_root() {
-  if [[ "${EUID:-$(id -u)}" -eq 0 ]]; then
+  if [ "$(id -u)" -eq 0 ]; then
     "$@"
   else
     sudo "$@"
@@ -26,11 +26,11 @@ run_as_root() {
 }
 
 update_repo() {
-  if [[ -d "$REPO_DIR/.git" ]]; then
+  if [ -d "$REPO_DIR/.git" ]; then
     log "更新源码：$REPO_DIR"
     git -C "$REPO_DIR" fetch --prune
 
-    if [[ -n "$BRANCH" ]]; then
+    if [ -n "$BRANCH" ]; then
       git -C "$REPO_DIR" checkout "$BRANCH"
     fi
 
@@ -41,7 +41,7 @@ update_repo() {
   log "源码目录不存在，克隆仓库到：$REPO_DIR"
   mkdir -p "$(dirname "$REPO_DIR")"
 
-  if [[ -n "$BRANCH" ]]; then
+  if [ -n "$BRANCH" ]; then
     git clone --branch "$BRANCH" "$REPO_URL" "$REPO_DIR"
   else
     git clone "$REPO_URL" "$REPO_DIR"
@@ -63,7 +63,7 @@ require_cmd git
 require_cmd rsync
 require_cmd systemctl
 
-if [[ "${EUID:-$(id -u)}" -ne 0 ]]; then
+if [ "$(id -u)" -ne 0 ]; then
   require_cmd sudo
 fi
 
