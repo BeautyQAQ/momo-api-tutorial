@@ -29,6 +29,7 @@ const sidebar = [
       { title: "IDE 集成", path: "/ide" },
       { title: "其他 CLI 与插件", path: "/other-clients" },
       { title: "Cherry Studio", path: "/cherry-studio" },
+      { title: "Cherry Studio 生图", path: "/cherry-studio-image" },
     ],
   },
   {
@@ -1712,6 +1713,98 @@ Base URL: https://www.momoapi.shop/v1</code></pre>
         <p>先用轻量模型发一句最小请求：</p>
         <pre><code>你好，请只回复 OK</code></pre>
         <p>如果成功，再切换到目标模型正式使用。</p>
+      </div>
+    `,
+  },
+  "/cherry-studio-image": {
+    title: "Cherry Studio 生图",
+    section: "客户端教程",
+    meta: "在 Cherry Studio 中配置 momoapi 生图模型。",
+    body: `
+      <div class="doc">
+        <h1>Cherry Studio 生图教程</h1>
+        <div class="quick-panel quick-panel--stacked">
+          <div class="quick-panel__group">
+            <strong>准备内容</strong>
+            <a class="chip-link chip-link--primary" href="https://www.momoapi.shop/console/token" target="_blank" rel="noopener noreferrer">创建 API 令牌</a>
+            <a class="chip-link" href="#/cherry-studio">Cherry Studio 基础配置</a>
+          </div>
+          <div class="quick-panel__copy">
+            <strong>推荐生图模型</strong>
+            <span class="copy-chip">gpt-image-2</span>
+            <button
+              class="copy-chip copy-chip--button"
+              type="button"
+              data-copy-text="gpt-image-2"
+              aria-label="复制生图模型名"
+            >
+              复制
+            </button>
+          </div>
+        </div>
+
+        <p class="lead">按下面 4 步配置即可。步骤顺序对应你提供的 4 张截图：先配置 API，再添加生图模型，最后在 Cherry Studio 顶部新建绘画页并选择模型。</p>
+
+        <div class="step-list">
+          <section class="step-item">
+            <div class="step-item__eyebrow">步骤 1</div>
+            <h3>配置 API</h3>
+            <p>进入 Cherry Studio 的 <strong>模型服务</strong>，选择或新增 <strong>New API</strong> 提供商，开启服务，并填写 momoapi 的密钥与地址。</p>
+            <pre><code>API 密钥：sk-你的令牌
+API 地址：https://www.momoapi.shop</code></pre>
+            <p>填写后可以点击检测，确认密钥和地址能正常连通。多个密钥使用逗号分隔即可。</p>
+            <figure class="doc-figure">
+              <img src="./assets/guide/cherry-studio-image/api-config.png" alt="Cherry Studio 配置 New API 密钥和 API 地址截图" loading="lazy" />
+              <figcaption>在 New API 中填写 API 密钥和 API 地址，地址使用 <code>https://www.momoapi.shop</code>。</figcaption>
+            </figure>
+          </section>
+
+          <section class="step-item">
+            <div class="step-item__eyebrow">步骤 2</div>
+            <h3>添加生图模型</h3>
+            <p>在模型区域点击添加，按截图填写模型信息。模型 ID 和模型名称都填 <code>gpt-image-2</code>，分组名称可填 <code>gpt-image</code>。</p>
+            <pre><code>模型 ID：gpt-image-2
+模型名称：gpt-image-2
+分组名称：gpt-image
+端点类型：图像生成（OpenAI）</code></pre>
+            <p>端点类型一定要选 <strong>图像生成（OpenAI）</strong>，否则 Cherry Studio 会把它当成普通聊天模型处理。</p>
+            <figure class="doc-figure">
+              <img src="./assets/guide/cherry-studio-image/add-image-model.png" alt="Cherry Studio 添加 gpt-image-2 生图模型截图" loading="lazy" />
+              <figcaption>添加模型时，模型 ID 填 <code>gpt-image-2</code>，端点类型选择图像生成。</figcaption>
+            </figure>
+          </section>
+
+          <section class="step-item">
+            <div class="step-item__eyebrow">步骤 3</div>
+            <h3>新建绘画页面</h3>
+            <p>回到 Cherry Studio 顶部标签栏，点击 <strong>+</strong>，在应用列表中选择 <strong>绘画</strong>。这一步是进入图片生成工作区，不是在聊天窗口里直接输入提示词。</p>
+            <figure class="doc-figure">
+              <img src="./assets/guide/cherry-studio-image/open-drawing.png" alt="Cherry Studio 顶部点击加号并选择绘画截图" loading="lazy" />
+              <figcaption>顶部点击加号后，在应用列表里选择绘画。</figcaption>
+            </figure>
+          </section>
+
+          <section class="step-item">
+            <div class="step-item__eyebrow">步骤 4</div>
+            <h3>选择生图模型并生成</h3>
+            <p>在绘画页面左侧选择提供商 <strong>New API</strong>，模型选择 <code>gpt-image-2</code>，然后输入提示词即可生成图片。</p>
+            <pre><code>提示词示例：
+momo 风格，可爱粉色 3D 吉祥物，柔和灯光，正方形头像</code></pre>
+            <p>如果模型下拉框里看不到 <code>gpt-image-2</code>，先回到模型服务页确认模型已保存，并检查端点类型是否选择了图像生成。</p>
+            <figure class="doc-figure">
+              <img src="./assets/guide/cherry-studio-image/select-image-model.png" alt="Cherry Studio 绘画页面选择 gpt-image-2 并生成图片截图" loading="lazy" />
+              <figcaption>在绘画页面选择 New API 和 <code>gpt-image-2</code>，输入提示词后即可生成。</figcaption>
+            </figure>
+          </section>
+        </div>
+
+        <h2 id="common-checks">常见检查</h2>
+        <ul>
+          <li>API 地址用 <code>https://www.momoapi.shop</code>，不要在 Cherry Studio 里重复填多余路径。</li>
+          <li>模型必须添加为图像生成端点，不要选普通 OpenAI 聊天端点。</li>
+          <li>如果检测失败，先确认 API Key 没有多复制空格或换行。</li>
+          <li>生图请求通常比文字请求慢，等待时间比聊天模型更长是正常的。</li>
+        </ul>
       </div>
     `,
   },
